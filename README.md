@@ -9,6 +9,6 @@ It is split into two main areas , tools, and game. I also have an area for usefu
 
 The game uses Monogame as a base renderer, though I have had to modify Monogame itself to do what I need it to do. With stock Monogame you will have some rendering issues.
 
-![Image of Yaktocat](\Images\MainMenu.png)
+![Main menu](/Images/MainMenu.png)
 
 
