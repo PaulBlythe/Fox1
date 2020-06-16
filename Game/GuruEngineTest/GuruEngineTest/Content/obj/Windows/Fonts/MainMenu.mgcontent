@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Fonts/MainMenu.spritefont</SourceFile>
+  <SourceTime>2020-02-06T20:25:46.1881334+00:00</SourceTime>
+  <DestFile>C:/Projects/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Fonts/MainMenu.xnb</DestFile>
+  <DestTime>2020-02-06T21:26:43.3978702+00:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2018-09-23T22:55:52+01:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

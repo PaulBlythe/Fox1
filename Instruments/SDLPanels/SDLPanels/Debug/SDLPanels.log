@@ -1,0 +1,5 @@
+﻿  B52_programable_keyboard.cpp
+c:\research\sdl\sdlpanels\sdlpanels\b52_programable_keyboard.cpp(53): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+  MainMenu.cpp
+  Generating Code...
+  SDLPanels.vcxproj -> C:\Research\SDL\SDLPanels\Debug\SDLPanels.exe

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Moon.fx</SourceFile>
+  <SourceTime>2019-02-22T10:14:58+00:00</SourceTime>
+  <DestFile>C:/Projects/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Content/Shaders/Forward/Moon.xnb</DestFile>
+  <DestTime>2019-12-13T14:36:31.4270586+00:00</DestTime>
+  <Importer>EffectImporter</Importer>
+  <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
+  <Processor>EffectProcessor</Processor>
+  <ProcessorTime>2018-09-23T22:55:52+01:00</ProcessorTime>
+  <Parameters>
+    <Key>DebugMode</Key>
+    <Value>Auto</Value>
+  </Parameters>
+  <Dependencies>
+    <string>C:\Projects\GuruEngineTest\GuruEngineTest\Content\Shaders\Forward\ShaderVariables.inc</string>
+  </Dependencies>
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

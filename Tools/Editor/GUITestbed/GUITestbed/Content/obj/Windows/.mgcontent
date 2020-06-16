@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Fonts/MapFont.spritefont</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Fonts/Verdana.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Fonts/verdana_small.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Models/skySphere.fbx</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Shaders/Button.fx</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Shaders/DiffuseFog.fx</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Shaders/SDFont2.fx</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Shaders/Sky/Scatter.fx</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Shaders/Sky/SNoise.fx</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Shaders/Sky/Textured.fx</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Shaders/SpecularDiffuseFog.fx</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Test.fx</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Airport/ac_helipad.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Airport/asphalt.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Airport/asphalt_tiles.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Airport/cc_helipad.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Airport/cement.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Airport/concrete.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Airport/dirt.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Airport/grass1.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Airport/wirefence.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/light.png</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Sky/moon.tga</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Sky/moonglow.tga</File>
+    <File>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Sky/starfield.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>

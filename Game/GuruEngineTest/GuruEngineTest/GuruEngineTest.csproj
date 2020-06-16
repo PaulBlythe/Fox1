@@ -1,0 +1,453 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D3F307F3-05E0-4BC7-BC28-21CC20A47B7A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GuruEngineTest</RootNamespace>
+    <AssemblyName>GuruEngineTest</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Game1.cs" />
+    <Compile Include="GuruEngine\AI\AIManager.cs" />
+    <Compile Include="GuruEngine\AI\Aircraft\Formations\Element.cs" />
+    <Compile Include="GuruEngine\AI\Aircraft\Formations\Formation.cs" />
+    <Compile Include="GuruEngine\AI\Aircraft\Formations\Wing.cs" />
+    <Compile Include="GuruEngine\AI\Aircraft\Gunners\AerialGunnery.cs" />
+    <Compile Include="GuruEngine\AI\Scripting\Script.cs" />
+    <Compile Include="GuruEngine\AI\Scripting\ScriptClasses.cs" />
+    <Compile Include="GuruEngine\AI\Scripting\ScriptManager.cs" />
+    <Compile Include="GuruEngine\AI\Scripting\Scripts\Aircraft\British\Fighter\SpitfireIXc.cs" />
+    <Compile Include="GuruEngine\Audio\ActiveSoundEffect3D.cs" />
+    <Compile Include="GuruEngine\Characters\AirforceCode.cs" />
+    <Compile Include="GuruEngine\Characters\NPC\Crew\CrewMember.cs" />
+    <Compile Include="GuruEngine\Characters\RankCodes.cs" />
+    <Compile Include="GuruEngine\Characters\Ranks\Luftwaffe\LuftwaffeRankTable.cs" />
+    <Compile Include="GuruEngine\Characters\Ranks\RAF\RAFRankTable.cs" />
+    <Compile Include="GuruEngine\Characters\Skill.cs" />
+    <Compile Include="GuruEngine\Characters\SkillCodes.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\DebugMessageQueue.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Aero\BallastComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Aero\FlapComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Aero\GearComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Aero\HStabComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Aero\StallComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Aero\VStabComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\General\FuelManagementComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\General\TurretComponent.cs" />
+    <Compile Include="GuruEngine\AI\AITarget.cs" />
+    <Compile Include="GuruEngine\AI\Generic\AAAGunnerAI.cs" />
+    <Compile Include="GuruEngine\AI\TargetManager.cs" />
+    <Compile Include="GuruEngine\Algebra\DoubleClassExtension.cs" />
+    <Compile Include="GuruEngine\Algebra\Matrix33.cs" />
+    <Compile Include="GuruEngine\Algebra\Matrix33D.cs" />
+    <Compile Include="GuruEngine\Algebra\Matrix44D.cs" />
+    <Compile Include="GuruEngine\Algebra\MatrixOrder.cs" />
+    <Compile Include="GuruEngine\Algebra\Vector3D.cs" />
+    <Compile Include="GuruEngine\Algebra\ViewVolume.cs" />
+    <Compile Include="GuruEngine\Assets\AssetManager.cs" />
+    <Compile Include="GuruEngine\Assets\AssetRecord.cs" />
+    <Compile Include="GuruEngine\Assets\FaceGroup.cs" />
+    <Compile Include="GuruEngine\Assets\Material.cs" />
+    <Compile Include="GuruEngine\Assets\MeshMaterialLibrary.cs" />
+    <Compile Include="GuruEngine\Assets\MeshPart.cs" />
+    <Compile Include="GuruEngine\Assets\MeshPartMaterial.cs" />
+    <Compile Include="GuruEngine\Audio\AudioManager.cs" />
+    <Compile Include="GuruEngine\Cameras\Camera.cs" />
+    <Compile Include="GuruEngine\Cameras\DebugCamera.cs" />
+    <Compile Include="GuruEngine\Data\Code\Airfield.cs" />
+    <Compile Include="GuruEngine\Data\Code\Instruments\American\F16MFDData.cs" />
+    <Compile Include="GuruEngine\Data\Code\Instruments\MFDStateData.cs" />
+    <Compile Include="GuruEngine\Data\Code\Squadron.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\DebugColourPicker.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\DebugFileBrowser.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\DebugFlags.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\DebugLIneDraw.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\DebugRenderer.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\DebugRenderSettings.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\GlobalDebugMenu.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\LogHelper.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\ProfileData.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\Profiler.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\ProfileReport.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftStateComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\American\Modern\OnAPG68v5.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Engines\PistonEngineComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\General\ElectronicECMComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\General\EngineComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\General\FuelTank.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\General\PowerManagementComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\General\RadarCrossSectionComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Thrusters\PropellerComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\AileronsAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\CVTAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\ElevatorAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\FlapAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\PropellorAnimator.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\RudderAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\SmoothedAngleAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\TranslateAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Ships\Standard\RadarAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Cockpit\American\Modern\F16\ColourMFD.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Cockpit\American\Modern\F16\F16HudComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Configuration\PlayerOptionsComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Debug\DebugGunneryTargetDrone.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Effects\ParticleEmitterComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Generic\2DArrayComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Input\InputEventComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Mesh\BasicMeshComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Mesh\CollisionMeshComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Mesh\HookListComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Mesh\LODGroupComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Mesh\MultiMeshComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Physics\DynamicPhysicsComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Ships\ShipGunComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Ships\ShipGunFOFComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Ships\ShipStateComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Weapons\Bombs\BombComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Weapons\Bombs\RetardedBombComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Weapons\Bullets\BulletPropertiesComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Weapons\Guns\GunComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\World\AircraftComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\World\AnimatedMeshComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\World\WorldTransform.cs" />
+    <Compile Include="GuruEngine\ECS\GameComponent.cs" />
+    <Compile Include="GuruEngine\ECS\GameObject.cs" />
+    <Compile Include="GuruEngine\ECS\GameObjectManager.cs" />
+    <Compile Include="GuruEngine\Engine.cs" />
+    <Compile Include="GuruEngine\FilePaths.cs" />
+    <Compile Include="GuruEngine\GameLogic\Missions\MissionData.cs" />
+    <Compile Include="GuruEngine\GameLogic\Navigation\NavPoint.cs" />
+    <Compile Include="GuruEngine\GameLogic\SensorData\RadarContact.cs" />
+    <Compile Include="GuruEngine\Helpers\IOHelper.cs" />
+    <Compile Include="GuruEngine\Helpers\LogFile.cs" />
+    <Compile Include="GuruEngine\Helpers\MathsHelper.cs" />
+    <Compile Include="GuruEngine\Helpers\MultiMap.cs" />
+    <Compile Include="GuruEngine\Helpers\XMLHelper.cs" />
+    <Compile Include="GuruEngine\InputDevices\AircraftInputMapping.cs" />
+    <Compile Include="GuruEngine\InputDevices\FlightSticks\LogitechRudderPedals.cs" />
+    <Compile Include="GuruEngine\InputDevices\FlightSticks\X56HOTASStick.cs" />
+    <Compile Include="GuruEngine\InputDevices\FlightSticks\X56HOTASThrottle.cs" />
+    <Compile Include="GuruEngine\InputDevices\InputDescriptor.cs" />
+    <Compile Include="GuruEngine\InputDevices\InputDescriptorType.cs" />
+    <Compile Include="GuruEngine\InputDevices\InputDevice.cs" />
+    <Compile Include="GuruEngine\InputDevices\InputDeviceManager.cs" />
+    <Compile Include="GuruEngine\InputDevices\InputDeviceMonitor.cs" />
+    <Compile Include="GuruEngine\InputDevices\InputDeviceSetupParameters.cs" />
+    <Compile Include="GuruEngine\InputDevices\InputMappingRecord.cs" />
+    <Compile Include="GuruEngine\InputDevices\PlayerInputMap.cs" />
+    <Compile Include="GuruEngine\InputDevices\PlayerInputValues.cs" />
+    <Compile Include="GuruEngine\Localization\Strings\StringIDS.cs" />
+    <Compile Include="GuruEngine\Localization\Strings\StringLocalizer.cs" />
+    <Compile Include="GuruEngine\Localization\SupportedLanguages.cs" />
+    <Compile Include="GuruEngine\Maths\Intersections.cs" />
+    <Compile Include="GuruEngine\Maths\MathConstants.cs" />
+    <Compile Include="GuruEngine\Maths\Mathd.cs" />
+    <Compile Include="GuruEngine\Maths\MathUtils.cs" />
+    <Compile Include="GuruEngine\Maths\MurmurHash.cs" />
+    <Compile Include="GuruEngine\Maths\Uint128.cs" />
+    <Compile Include="GuruEngine\Maths\Vector2d.cs" />
+    <Compile Include="GuruEngine\Maths\Vector3d.cs" />
+    <Compile Include="GuruEngine\Maths\Vector3I.cs" />
+    <Compile Include="GuruEngine\ObjectPool.cs" />
+    <Compile Include="GuruEngine\Physics\Aircraft\AuxiliaryStateData.cs" />
+    <Compile Include="GuruEngine\Physics\Aircraft\Hook.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\BulletManager.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\BulletRecord.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\Collision.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionContext.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionDetector.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionDetectors\BoxBoxCollisionDetector.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionDetectors\BoxMeshCollisionDetector.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionDetectors\BoxPlaneCollisionDetector.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionDetectors\BoxSphereCollisionDetector.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionDetectors\SphereMeshCollisionDetector.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionDetectors\SpherePlaneCollisionDetector.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionDetectors\SphereSphereCollisionDetector.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionGroup.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionMesh.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionMeshPart.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionMeshPartCollection.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionRay.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionShape.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionShapes\CollisionBox.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionShapes\CollisionMesh.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionShapes\CollisionMeshProxies\HeightmapCollisionMeshProxy.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionShapes\CollisionMeshProxies\ModelCollisionMeshProxy.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionShapes\CollisionMeshProxy.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionShapes\CollisionPlane.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionShapes\CollisionSphere.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionShapes\CollisionTriangle.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionShapes\CollisionWall.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionSystem.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionSystems\GridCollisionSystem.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionSystems\OctreeCollisionSystem.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionSystems\QuadtreeCollisionSystem.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionSystems\SimpleCollisionSystem.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\CollisionSystems\SweepAndPruneCollisionSystem.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\Constraint.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\ICollisionCallback.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\MassBlob.cs" />
+    <Compile Include="GuruEngine\Physics\Collision\RigidBody.cs" />
+    <Compile Include="GuruEngine\Physics\PhysicsMass.cs" />
+    <Compile Include="GuruEngine\Physics\Propulsion\AircraftEngine.cs" />
+    <Compile Include="GuruEngine\Physics\Propulsion\Engines\Turbine.cs" />
+    <Compile Include="GuruEngine\Physics\World\AtmosphericModel.cs" />
+    <Compile Include="GuruEngine\Physics\World\Constants.cs" />
+    <Compile Include="GuruEngine\Physics\World\Geodetic\Angle.cs" />
+    <Compile Include="GuruEngine\Physics\World\Geodetic\Ellipsoid.cs" />
+    <Compile Include="GuruEngine\Physics\World\Geodetic\GeodeticCalculator.cs" />
+    <Compile Include="GuruEngine\Physics\World\Geodetic\GeodeticCurve.cs" />
+    <Compile Include="GuruEngine\Physics\World\Geodetic\GeodeticMeasurement.cs" />
+    <Compile Include="GuruEngine\Physics\World\Geodetic\GlobalCoordinates.cs" />
+    <Compile Include="GuruEngine\Physics\World\Geodetic\GlobalPosition.cs" />
+    <Compile Include="GuruEngine\Physics\World\SimplifiedAtmosphere.cs" />
+    <Compile Include="GuruEngine\Player\Records\AircraftCertificationRecord.cs" />
+    <Compile Include="GuruEngine\Player\Records\Campaign\CampaignPeriods.cs" />
+    <Compile Include="GuruEngine\Player\Records\Campaign\PlayerCampaignRecord.cs" />
+    <Compile Include="GuruEngine\Player\Records\Display\Pages\British\Form414\FrontPage.cs" />
+    <Compile Include="GuruEngine\Player\Records\Display\Pages\British\Form414\Page1.cs" />
+    <Compile Include="GuruEngine\Player\Records\Display\Pages\British\Form414\Page2.cs" />
+    <Compile Include="GuruEngine\Player\Records\Display\Pages\Page.cs" />
+    <Compile Include="GuruEngine\Player\Records\PlayerRecord.cs" />
+    <Compile Include="GuruEngine\Characters\Rank.cs" />
+    <Compile Include="GuruEngine\Rendering\BufferManager.cs" />
+    <Compile Include="GuruEngine\Rendering\Deferred\DeferredRender.cs" />
+    <Compile Include="GuruEngine\Rendering\Forward\Renderer.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\Gui.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\GuiEventListener.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\GuiItems\Button.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\GuiItems\Frame.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\GuiItems\GuiDrawRecord.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\GuiItems\GuiItem.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\GuiItems\Label.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\GuiItems\SmallButton.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\GuiManager.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\Instruments\CockpitInstrument.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\Instruments\InstrumentButtonRecord.cs" />
+    <Compile Include="GuruEngine\Rendering\Gui\Instruments\InstrumentManager.cs" />
+    <Compile Include="GuruEngine\Rendering\LightManager.cs" />
+    <Compile Include="GuruEngine\Rendering\Lights\DirectionalLight.cs" />
+    <Compile Include="GuruEngine\Rendering\Lights\PointLight.cs" />
+    <Compile Include="GuruEngine\Rendering\MeshType.cs" />
+    <Compile Include="GuruEngine\Rendering\Particles\ParticleEmitter.cs" />
+    <Compile Include="GuruEngine\Rendering\Particles\ParticleSystem.cs" />
+    <Compile Include="GuruEngine\Rendering\Particles\ParticleVertex.cs" />
+    <Compile Include="GuruEngine\Rendering\Particles\PaticleSettings.cs" />
+    <Compile Include="GuruEngine\Rendering\Primitives2D.cs" />
+    <Compile Include="GuruEngine\Rendering\Primitives\CircleRender.cs" />
+    <Compile Include="GuruEngine\Rendering\Primitives\LineRenderer.cs" />
+    <Compile Include="GuruEngine\Rendering\Primitives\QuadRenderer.cs" />
+    <Compile Include="GuruEngine\Rendering\RasteriserStates.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommand.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommandSet.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommands\RenderDeepOcean.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommands\RenderMeshPart.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommands\RenderMoonCommand.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommands\RenderPlaneCommand.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommands\RenderPlanetsCommand.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommands\RenderSpritesCommand.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommands\RenderStarsCommand.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommands\RenderTextCommand.cs" />
+    <Compile Include="GuruEngine\Rendering\Renderer.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderInterface.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderPasses.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderSettings.cs" />
+    <Compile Include="GuruEngine\Rendering\ShaderVariables.cs" />
+    <Compile Include="GuruEngine\Rendering\VertexDeclarations\LeafVertex.cs" />
+    <Compile Include="GuruEngine\Rendering\VertexDeclarations\OceanVertex.cs" />
+    <Compile Include="GuruEngine\Rendering\VertexDeclarations\TreeVertex.cs" />
+    <Compile Include="GuruEngine\SceneManagement\SubScene.cs" />
+    <Compile Include="GuruEngine\World\Developer\WindTunnel.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Align.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Backward.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Bone.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Call.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Child.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Forward.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Leaf.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Level.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Maybe.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Pitch.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Production.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\RequireLevel.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Scale.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\ScaleRadius.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\TreeBuilderInstruction.cs" />
+    <Compile Include="GuruEngine\World\Trees\Instructions\Twist.cs" />
+    <Compile Include="GuruEngine\World\Trees\TreeBone.cs" />
+    <Compile Include="GuruEngine\World\Trees\TreeBranch.cs" />
+    <Compile Include="GuruEngine\World\Trees\TreeBuilder.cs" />
+    <Compile Include="GuruEngine\World\Trees\TreeContraints.cs" />
+    <Compile Include="GuruEngine\World\Trees\TreeLeaf.cs" />
+    <Compile Include="GuruEngine\World\Trees\TreeLeafCloud.cs" />
+    <Compile Include="GuruEngine\World\Trees\TreeSkeleton.cs" />
+    <Compile Include="History\Common\Geographic\GeographicLocation.cs" />
+    <Compile Include="History\Common\Organisation\AircraftType.cs" />
+    <Compile Include="History\RAF\Common\RAFGroup.cs" />
+    <Compile Include="History\RAF\Common\RAFGroupRole.cs" />
+    <Compile Include="History\RAF\Common\RAFSquadron.cs" />
+    <Compile Include="History\RAF\Common\RAFStation.cs" />
+    <Compile Include="History\RAF\Common\RAFStationTypes.cs" />
+    <Compile Include="History\RAF\Common\RAFWing.cs" />
+    <Compile Include="History\RAF\Common\RAFWingType.cs" />
+    <Compile Include="History\RAF\Setups\RAFBattleOfBritain.cs" />
+    <Compile Include="History\RAF\WWII\RAFCommandGroupWWII.cs" />
+    <Compile Include="Scenes\Campaign\WWII\British\PilotRecord.cs" />
+    <Compile Include="Scenes\Debug\CarrierTest.cs" />
+    <Compile Include="GuruEngine\SceneManagement\Scene.cs" />
+    <Compile Include="GuruEngine\SceneManagement\SceneManager.cs" />
+    <Compile Include="GuruEngine\Settings.cs" />
+    <Compile Include="GuruEngine\Simulation\Components\Radar\Airbourne\AirbourneRadarTarget.cs" />
+    <Compile Include="GuruEngine\Simulation\Components\Radar\Airbourne\Modern\AirbourneRadarInterface.cs" />
+    <Compile Include="GuruEngine\Simulation\Components\Radar\CrossSections\CylinderRadarCrossSection.cs" />
+    <Compile Include="GuruEngine\Simulation\Components\Radar\CrossSections\ModernAirframeRadarCrossSection.cs" />
+    <Compile Include="GuruEngine\Simulation\Components\Radar\CrossSections\RadarCrossSection.cs" />
+    <Compile Include="GuruEngine\Simulation\Components\Radar\CrossSections\SphereRadarCrossSection.cs" />
+    <Compile Include="GuruEngine\Simulation\Systems\RadarSimulation.cs" />
+    <Compile Include="GuruEngine\Simulation\Weapons\AAA\WeaponAAA.cs" />
+    <Compile Include="GuruEngine\Simulation\Weapons\AAA\WeaponDataBase.cs" />
+    <Compile Include="GuruEngine\Simulation\Weapons\Ammunition\AAARound.cs" />
+    <Compile Include="GuruEngine\Simulation\Weapons\Ammunition\AmmunitionDatabase.cs" />
+    <Compile Include="GuruEngine\Text\CharRecord.cs" />
+    <Compile Include="GuruEngine\Text\GlyphBatch.cs" />
+    <Compile Include="GuruEngine\Text\MSDFFont.cs" />
+    <Compile Include="GuruEngine\Text\SDFFont.cs" />
+    <Compile Include="GuruEngine\World\AircraftState.cs" />
+    <Compile Include="GuruEngine\World\Calculators\ColourSpace.cs" />
+    <Compile Include="GuruEngine\World\Ephemeris\Ephemeris.cs" />
+    <Compile Include="GuruEngine\World\Ephemeris\Spectrum.cs" />
+    <Compile Include="GuruEngine\World\Ephemeris\Moon\MoonCalculator.cs" />
+    <Compile Include="GuruEngine\World\Items\Moon.cs" />
+    <Compile Include="GuruEngine\World\Items\OrbitalElements.cs" />
+    <Compile Include="GuruEngine\World\Items\Planets.cs" />
+    <Compile Include="GuruEngine\World\Items\Sky.cs" />
+    <Compile Include="GuruEngine\World\Items\Stars.cs" />
+    <Compile Include="GuruEngine\World\Items\TracedSky.cs" />
+    <Compile Include="GuruEngine\World\PaintSchemes\BritishPaintScheme.cs" />
+    <Compile Include="GuruEngine\World\PaintSchemes\GermanPaintScheme.cs" />
+    <Compile Include="GuruEngine\World\PaintSchemes\PaintScheme.cs" />
+    <Compile Include="GuruEngine\World\Payloads\Weapon.cs" />
+    <Compile Include="GuruEngine\World\Terrain\TerrainCelll.cs" />
+    <Compile Include="GuruEngine\World\Terrain\TerrainManager.cs" />
+    <Compile Include="GuruEngine\World\Terrain\TerrainPatch.cs" />
+    <Compile Include="GuruEngine\World\Terrain\TerrainPatches\DeepOceanPatch.cs" />
+    <Compile Include="GuruEngine\World\UpdateLoop.cs" />
+    <Compile Include="GuruEngine\World\World.cs" />
+    <Compile Include="GuruEngine\World\WorldConstants.cs" />
+    <Compile Include="GuruEngine\World\WorldItem.cs" />
+    <Compile Include="GuruEngine\World\WorldState.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenes\Debug\ParticleEditorScene.cs" />
+    <Compile Include="Scenes\Developer\AircraftPhysicsTest.cs" />
+    <Compile Include="Scenes\Developer\Subs\LoadAircraft.cs" />
+    <Compile Include="Scenes\Generic\Helpers\MainMenuItem.cs" />
+    <Compile Include="Scenes\Generic\LoadingScene.cs" />
+    <Compile Include="Scenes\Generic\MainMenu.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="HidLibrary">
+      <HintPath>..\..\Modules\InputDeviceManager\Libraries\HidLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework, Version=3.7.0.1708, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Research\Monogame\MonoGame\MonoGame.Framework\bin\Windows\AnyCPU\Release\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Music\music1.mp3" />
+    <Content Include="Content\SFX\Click.wav" />
+    <Content Include="Content\SFX\sos.wav" />
+    <Content Include="Content\Shaders\2D\Loading.fx" />
+    <Content Include="Content\Shaders\2D\mfd.fx" />
+    <Content Include="Content\Shaders\2D\ParticleEffect.fx" />
+    <Content Include="Content\Shaders\2D\SDFFont2.fx" />
+    <Content Include="Content\Shaders\2D\Sprite.fx" />
+    <Content Include="Content\Shaders\2D\Wobble.fx" />
+    <Content Include="Content\Shaders\Deferred\ClearGBuffer.fx" />
+    <Content Include="Content\Shaders\Deferred\CombineFinal.fx" />
+    <Content Include="Content\Shaders\Deferred\DirectionalLight.fx" />
+    <Content Include="Content\Shaders\Deferred\FFTWater.fx" />
+    <Content Include="Content\Shaders\Deferred\MeshPart.fx" />
+    <Content Include="Content\Shaders\Deferred\Ocean.fx" />
+    <Content Include="Content\Shaders\Deferred\PointLight.fx" />
+    <Content Include="Content\Shaders\Forward\ExtendedMesh.fx" />
+    <Content Include="Content\Shaders\Forward\Glass.fx" />
+    <Content Include="Content\Shaders\Deferred\Leaves.fx" />
+    <Content Include="Content\Shaders\Forward\MeshPartShader.fx" />
+    <Content Include="Content\Shaders\Forward\Moon.fx" />
+    <Content Include="Content\Shaders\Forward\MSDFShader.fx" />
+    <Content Include="Content\Shaders\Forward\Ocean.fx" />
+    <Content Include="Content\Shaders\Forward\ParticleShader.fx" />
+    <Content Include="Content\Shaders\Forward\ScatteredSky.fx" />
+    <Content Include="Content\Shaders\Forward\SDFFont2.fx" />
+    <Content Include="Content\Shaders\Forward\ShaderVariables.inc" />
+    <Content Include="Content\Shaders\Forward\ShadowMap.fx" />
+    <Content Include="Content\Shaders\Forward\Shadows.inc" />
+    <Content Include="Content\Shaders\Forward\TracedSky.fx" />
+    <Content Include="Content\Textures\gaze.png" />
+    <Content Include="Content\Textures\loading_aircraft.png" />
+    <Content Include="Content\Textures\mouse.png" />
+    <Content Include="Content\Textures\noise.png" />
+    <Content Include="Content\Textures\SGG.png" />
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="app.manifest" />
+    <None Include="Content\Fonts\DebugFont.spritefont" />
+    <None Include="Content\Fonts\MainMenu.spritefont" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\StaticMeshes\" />
+    <Folder Include="GuruEngine\Characters\Ranks\RAAF\" />
+    <Folder Include="GuruEngine\ECS\Components\Cockpit\American\Early Years\" />
+    <Folder Include="GuruEngine\Player\Records\WWII\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Panels">
+      <UniqueIdentifier>{1379bae8-51b7-4dc3-8591-4ab88b66633a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering">
+      <UniqueIdentifier>{15871fbc-623d-4a93-96ae-9d172788431a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Networking">
+      <UniqueIdentifier>{b043c14e-1b03-4741-9273-a64bc5884eb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulation">
+      <UniqueIdentifier>{3ad44bf1-d8a5-4398-ba90-396060c38545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulation\Programs">
+      <UniqueIdentifier>{71352db5-6ae7-4412-8a5b-5808811f0fae}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="f16RWRUS.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmappedFont.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="UDPComms.cpp">
+      <Filter>Source Files\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="PackedFont.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="f4_fuel_flow_panel.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Scalars.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniComputer.cpp">
+      <Filter>Source Files\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="RamTest.cpp">
+      <Filter>Source Files\Simulation\Programs</Filter>
+    </ClCompile>
+    <ClCompile Include="RomTest.cpp">
+      <Filter>Source Files\Simulation\Programs</Filter>
+    </ClCompile>
+    <ClCompile Include="CPUTest.cpp">
+      <Filter>Source Files\Simulation\Programs</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGTest.cpp">
+      <Filter>Source Files\Simulation\Programs</Filter>
+    </ClCompile>
+    <ClCompile Include="EndProgram.cpp">
+      <Filter>Source Files\Simulation\Programs</Filter>
+    </ClCompile>
+    <ClCompile Include="DelayedEvent.cpp">
+      <Filter>Source Files\Simulation\Programs</Filter>
+    </ClCompile>
+    <ClCompile Include="CommTest.cpp">
+      <Filter>Source Files\Simulation\Programs</Filter>
+    </ClCompile>
+    <ClCompile Include="B52_programable_keyboard.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="f16RWRUS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmappedFont.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UDPComms.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RWRThreat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PackedFont.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="f4_fuel_flow_panel.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Scalars.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="B52_Programable_keyboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonRecord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniComputer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RamTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RomTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CPUTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EndProgram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DelayedEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

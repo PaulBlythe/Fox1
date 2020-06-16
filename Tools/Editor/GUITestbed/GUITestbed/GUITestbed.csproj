@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{97BAE904-625A-4EFD-B5B2-D7C1951B9835}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GUITestbed</RootNamespace>
+    <AssemblyName>GUITestbed</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="DataHandlers\CSV.cs" />
+    <Compile Include="DataHandlers\DataBase.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\Airport.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\AirportObjectList.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\ApronEdgeLight.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\Helipad.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\ObjectPack.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\PackObject.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\Runway.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwayApproachLights.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwayBlastPad.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwayBoundaryFence.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwayGlideSlope.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwayILS.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwayLights.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwayMarkings.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwayPavement.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwaySceneryObject.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwayTaxiwayPath.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwayTaxiwayPoint.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\RunwayVasi.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\StaticMeshInstance.cs" />
+    <Compile Include="DataHandlers\Fox1\Objects\WavefrontObject.cs" />
+    <Compile Include="DataHandlers\IL2\CollisionMesh.cs" />
+    <Compile Include="DataHandlers\IL2\CollisionMeshBlock.cs" />
+    <Compile Include="DataHandlers\IL2\CollisionMeshPart.cs" />
+    <Compile Include="DataHandlers\IL2\FaceGroup.cs" />
+    <Compile Include="DataHandlers\IL2\Lod.cs" />
+    <Compile Include="DataHandlers\IL2\Material.cs" />
+    <Compile Include="DataHandlers\IL2\TextMSH.cs" />
+    <Compile Include="DataHandlers\Mapping\ColourMapping\ColourMap.cs" />
+    <Compile Include="DataHandlers\Mapping\ColourMapping\ColourRecord.cs" />
+    <Compile Include="DataHandlers\Mapping\ColourMapping\UKMap.cs" />
+    <Compile Include="DataHandlers\Mapping\Graphs\TaxiwayGraphCreator.cs" />
+    <Compile Include="DataHandlers\Mapping\Projections\FlatProjection.cs" />
+    <Compile Include="DataHandlers\Mapping\Projections\MercatorProjection.cs" />
+    <Compile Include="DataHandlers\Mapping\Projections\Projection.cs" />
+    <Compile Include="DataHandlers\Mapping\Types\DatabaseHeaderItem.cs" />
+    <Compile Include="DataHandlers\Mapping\Types\DoublePoint.cs" />
+    <Compile Include="DataHandlers\Mapping\Types\IntPoint.cs" />
+    <Compile Include="DataHandlers\Mapping\Types\Region.cs" />
+    <Compile Include="DataHandlers\Shape\ShapeFile.cs" />
+    <Compile Include="DataHandlers\Shape\SHP\SHPElement.cs" />
+    <Compile Include="DataHandlers\Shape\SHP\SHPMultiPoint.cs" />
+    <Compile Include="DataHandlers\Shape\SHP\SHPPoint.cs" />
+    <Compile Include="DataHandlers\Shape\SHP\SHPPointZ.cs" />
+    <Compile Include="DataHandlers\Shape\SHP\SHPPolygon.cs" />
+    <Compile Include="DataHandlers\Shape\SHP\SHPPolyLine.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="GUI\Dialogs\MessageBox.cs" />
+    <Compile Include="GUI\Dialogs\OpenFileDialog.cs" />
+    <Compile Include="GUI\Dialogs\SaveFileDialog.cs" />
+    <Compile Include="GUI\FrameCounter.cs" />
+    <Compile Include="GUI\GlyphBatch.cs" />
+    <Compile Include="GUI\GUIBatch.cs" />
+    <Compile Include="GUI\GuiFont.cs" />
+    <Compile Include="GUI\GuiItem.cs" />
+    <Compile Include="GUI\GuiManager.cs" />
+    <Compile Include="GUI\GuiTheme.cs" />
+    <Compile Include="GUI\GUIVertex.cs" />
+    <Compile Include="GUI\Items\MainMenu.cs" />
+    <Compile Include="GUI\Widget.cs" />
+    <Compile Include="GUI\Widgets\Button.cs" />
+    <Compile Include="GUI\Widgets\CheckBox.cs" />
+    <Compile Include="GUI\Widgets\Dialog.cs" />
+    <Compile Include="GUI\Widgets\GroupBox.cs" />
+    <Compile Include="GUI\Widgets\InvertedPanel.cs" />
+    <Compile Include="GUI\Widgets\Label.cs" />
+    <Compile Include="GUI\Widgets\ListView.cs" />
+    <Compile Include="GUI\Widgets\NumericUpDown.cs" />
+    <Compile Include="GUI\Widgets\Panel.cs" />
+    <Compile Include="GUI\Widgets\Selector.cs" />
+    <Compile Include="GUI\Widgets\SideBar.cs" />
+    <Compile Include="GUI\Widgets\Slider.cs" />
+    <Compile Include="GUI\Widgets\SmallButton.cs" />
+    <Compile Include="GUI\Widgets\StatusBar.cs" />
+    <Compile Include="GUI\Widgets\TextBox.cs" />
+    <Compile Include="GUI\Widgets\ToolBar.cs" />
+    <Compile Include="Primitives2D.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rendering\3D\Camera.cs" />
+    <Compile Include="Rendering\3D\FenceObject.cs" />
+    <Compile Include="Rendering\3D\FreeCamera.cs" />
+    <Compile Include="Rendering\3D\GroundPlaneSystem.cs" />
+    <Compile Include="Rendering\3D\LightManager.cs" />
+    <Compile Include="Rendering\3D\QuadRenderComponent.cs" />
+    <Compile Include="Rendering\3D\RunwayObject.cs" />
+    <Compile Include="Rendering\3D\ShaderManager.cs" />
+    <Compile Include="Rendering\3D\SkyDomeParameters.cs" />
+    <Compile Include="Rendering\3D\SkyDomeSystem.cs" />
+    <Compile Include="Rendering\3D\StaticMesh.cs" />
+    <Compile Include="Rendering\DebugLineDraw.cs" />
+    <Compile Include="Rendering\ScanLineConverter.cs" />
+    <Compile Include="SerialisableData\Location.cs" />
+    <Compile Include="SerialisableData\MapGeneratorData.cs" />
+    <Compile Include="SerialisableData\SerialisableObject.cs" />
+    <Compile Include="Tools\MapGenerator.cs" />
+    <Compile Include="Tools\Tool.cs" />
+    <Compile Include="Tools\WorldDisplayTool.cs" />
+    <Compile Include="World\Cartography.cs" />
+    <Compile Include="World\Constants.cs" />
+    <Compile Include="World\MathUtils.cs" />
+    <Compile Include="World\Vector2D.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Triangle">
+      <HintPath>..\..\..\..\Projects\AirportConverter\AirportConverter\bin\x64\Debug\Triangle.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Shaders\Button.fx" />
+    <Content Include="Content\Shaders\DiffuseFog.fx" />
+    <Content Include="Content\Shaders\SDFont2.fx" />
+    <Content Include="Content\Shaders\Sky\Scatter.fx" />
+    <Content Include="Content\Shaders\Sky\SNoise.fx" />
+    <Content Include="Content\Shaders\Sky\Textured.fx" />
+    <Content Include="Content\Shaders\SpecularDiffuseFog.fx" />
+    <Content Include="Content\Textures\Airport\asphalt.png" />
+    <Content Include="Content\Textures\Airport\asphalt_tiles.png" />
+    <Content Include="Content\Textures\Airport\cc_helipad.png" />
+    <Content Include="Content\Textures\Airport\cement.png" />
+    <Content Include="Content\Textures\Airport\concrete.png" />
+    <Content Include="Content\Textures\Airport\dirt.png" />
+    <Content Include="Content\Textures\Airport\grass1.png" />
+    <Content Include="Content\Textures\Sky\moon.tga" />
+    <Content Include="Content\Textures\Sky\moonglow.tga" />
+    <Content Include="Content\Textures\Sky\starfield.png" />
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="app.manifest" />
+    <None Include="Content\MapFont.spritefont" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\Models\" />
+    <Folder Include="Scenes\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,16 @@
+C:\Research\SDL\TestHost\TestHost\bin\Debug\TestHost.exe.config
+C:\Research\SDL\TestHost\TestHost\bin\Debug\TestHost.exe
+C:\Research\SDL\TestHost\TestHost\bin\Debug\TestHost.pdb
+C:\Research\SDL\TestHost\TestHost\obj\Debug\TestHost.csprojResolveAssemblyReference.cache
+C:\Research\SDL\TestHost\TestHost\obj\Debug\TestHost.Form1.resources
+C:\Research\SDL\TestHost\TestHost\obj\Debug\TestHost.Properties.Resources.resources
+C:\Research\SDL\TestHost\TestHost\obj\Debug\TestHost.csproj.GenerateResource.cache
+C:\Research\SDL\TestHost\TestHost\obj\Debug\TestHost.csproj.CoreCompileInputs.cache
+C:\Research\SDL\TestHost\TestHost\obj\Debug\TestHost.exe
+C:\Research\SDL\TestHost\TestHost\obj\Debug\TestHost.pdb
+C:\Research\SDL\TestHost\TestHost\bin\Debug\fighter.png
+C:\Research\SDL\TestHost\TestHost\bin\Debug\transport.png
+C:\Research\SDL\TestHost\TestHost\bin\Debug\SAM.png
+C:\Research\SDL\TestHost\TestHost\bin\Debug\aaa.png
+C:\Research\SDL\TestHost\TestHost\bin\Debug\naval.png
+C:\Research\SDL\TestHost\TestHost\bin\Debug\heli.png
