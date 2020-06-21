@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Textures/loading_aircraft.png</SourceFile>
+  <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Textures/loading_aircraft.png</SourceFile>
   <SourceTime>2020-02-04T18:38:52.2807204+00:00</SourceTime>
-  <DestFile>C:/Projects/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Content/Textures/loading_aircraft.xnb</DestFile>
-  <DestTime>2020-02-04T18:52:31.5387112+00:00</DestTime>
+  <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Content/Textures/loading_aircraft.xnb</DestFile>
+  <DestTime>2020-06-17T14:27:06.0043262+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

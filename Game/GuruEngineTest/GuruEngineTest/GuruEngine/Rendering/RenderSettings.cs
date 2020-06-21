@@ -18,6 +18,14 @@ namespace GuruEngine.Rendering
         Filter5x5,
         Filter7x7
     }
+
+    public enum SSAOTypes
+    {
+        None,
+        Simple,
+        HDAO,
+        ASSAO
+    }
     public class RenderSettings
     {
 
@@ -25,7 +33,7 @@ namespace GuruEngine.Rendering
 
         public Skies SkyType = Skies.Traced;
         public bool HDREnabled = false;
-        public bool RenderShadows = true;
+        public bool RenderShadows = false;
         public bool CascadeShadowMaps = false;
         public int ShadowMapSize = 2048;
         public int ShadowMapCascades = 4;
@@ -35,6 +43,14 @@ namespace GuruEngine.Rendering
         public float SplitDistance2 = 0.5f;
         public float SplitDistance3 = 1.0f;
         public FixedFilterSize FixedFilterSize = FixedFilterSize.Filter2x2;
+
+
+        #region SSAO
+        public SSAOTypes SSAOType = SSAOTypes.None;
+        public float SSAOSampleRadius = 0.5f;
+        public float SSAODistanceScale = 100.0f;
+        #endregion
+
 
         public int FixedFilterKernelSize
         {

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Content;
 using GuruEngine.Assets;
 using GuruEngine.World;
 using GuruEngine.DebugHelpers;
+using GuruEngine.Rendering;
 
 namespace GuruEngine.DebugHelpers
 {
@@ -66,26 +67,33 @@ namespace GuruEngine.DebugHelpers
         }
     }
 
-    public class RendererTopMenu : GDMenuItem
+    public class DebugTexturedisplay: GDMenuItem
     {
-        public RendererTopMenu()
+        public DebugTexturedisplay()
         {
             Rectangle b = new Rectangle(15, 15, 286, 32);
             buttons.Add(b);
             b = new Rectangle(15, 15 + (1 * 50), 286, 32);
             buttons.Add(b);
+            b = new Rectangle(15, 15 + (2 * 50), 286, 32);
+            buttons.Add(b);
+
             b = new Rectangle(15, 15 + (12 * 50), 286, 32);
             buttons.Add(b);
 
             text.Add("Display moon texture");
             text.Add("Display shadow texture");
+            text.Add("Display depth texture");
 
             text.Add("Back");
 
             textpositions.Add(new Vector2(18, 20));
             textpositions.Add(new Vector2(18, 20 + (1 * 50)));
+            textpositions.Add(new Vector2(18, 20 + (2 * 50)));
+
             textpositions.Add(new Vector2(18, 20 + (12 * 50)));
         }
+
         public override GDMenuItem HandleEvent(int i)
         {
             switch (i)
@@ -95,6 +103,50 @@ namespace GuruEngine.DebugHelpers
                     break;
                 case 1:
                     DebugRenderSettings.RenderShadowMap = !DebugRenderSettings.RenderShadowMap;
+                    break;
+                case 2:
+                    DebugRenderSettings.RenderDepthMap = !DebugRenderSettings.RenderDepthMap;
+                    break;
+               
+                case 3:
+                    return new RendererTopMenu();
+            }
+            return this;
+        }
+    }
+
+    public class RendererTopMenu : GDMenuItem
+    {
+        public RendererTopMenu()
+        {
+            Rectangle b = new Rectangle(15, 15, 286, 32);
+            buttons.Add(b);
+            b = new Rectangle(15, 15 + (1 * 50), 286, 32);
+            buttons.Add(b);
+
+            b = new Rectangle(15, 15 + (12 * 50), 286, 32);
+            buttons.Add(b);
+
+            text.Add("Textures");
+            text.Add("SSAO");
+            text.Add("Back");
+
+            textpositions.Add(new Vector2(18, 20));
+            textpositions.Add(new Vector2(18, 20 + (1 * 50)));
+
+            textpositions.Add(new Vector2(18, 20 + (12 * 50)));
+        }
+        public override GDMenuItem HandleEvent(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    return new DebugTexturedisplay();
+                case 1:
+                    if (Renderer.Instance.renderSettings.SSAOType == SSAOTypes.None)
+                        Renderer.Instance.renderSettings.SSAOType = SSAOTypes.Simple;
+                    else
+                        Renderer.Instance.renderSettings.SSAOType = SSAOTypes.None;
                     break;
                 case 2:
                     return new TopLevelMenu();

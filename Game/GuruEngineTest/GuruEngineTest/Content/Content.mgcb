@@ -99,6 +99,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/Deferred/DirectionalLight.fx
 
+#begin Shaders/Deferred/DSSAO.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Deferred/DSSAO.fx
+
 #begin Shaders/Deferred/FFTWater.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -128,6 +134,12 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/Deferred/PointLight.fx
+
+#begin Shaders/DisplayDepth.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/DisplayDepth.fx
 
 #begin Shaders/Forward/ExtendedMesh.fx
 /importer:EffectImporter

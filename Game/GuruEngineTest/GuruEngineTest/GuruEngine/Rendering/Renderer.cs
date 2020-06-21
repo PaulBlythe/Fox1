@@ -16,6 +16,10 @@ using GuruEngine.Helpers;
 using GuruEngine.Assets;
 using GuruEngine.Rendering.Particles;
 
+#if DEBUG
+using GuruEngineTest;
+#endif
+
 namespace GuruEngine.Rendering
 {
     public class Renderer
@@ -24,9 +28,14 @@ namespace GuruEngine.Rendering
         public RenderSettings renderSettings = new RenderSettings();
         public Dictionary<RasteriserStates, RasterizerState> rasterStates = new Dictionary<RasteriserStates, RasterizerState>();
         public Dictionary<int, SamplerState> samplerStates = new Dictionary<int, SamplerState>();
-       
 
+        #region Useful stuff
+        public Texture2D RandomVectors;
         public RenderInterface current;
+        public Random rand = new Random();
+        public Vector4[] UniformSpaceVectors;
+        #endregion
+
         GraphicsDevice device;
         BufferManager bufferManager;
         LightManager lightManager;
@@ -43,6 +52,7 @@ namespace GuruEngine.Rendering
         BasicEffect debug_effect;
         SpriteBatch spriteBatch;
         WorldState worldstate = null;
+        Effect depthDisplay;
 #endif
 
         public Renderer(GraphicsDevice dev, bool Forward)
@@ -61,7 +71,45 @@ namespace GuruEngine.Rendering
             {
                 current = new Deferred.DeferredRender(dev);
             }
-           
+
+            // Start with 14 uniformly distributed vectors.  We choose the 8 corners of the cube
+            // and the 6 center points along each cube face.  We always alternate the points on 
+            // opposites sides of the cubes.  This way we still get the vectors spread out even
+            // if we choose to use less than 14 samples.
+            UniformSpaceVectors = new Vector4[14];
+
+            // 8 cube corners
+            UniformSpaceVectors[0] = new Vector4(+1.0f, +1.0f, +1.0f, 0.0f);
+            UniformSpaceVectors[1] = new Vector4(-1.0f, -1.0f, -1.0f, 0.0f);
+
+            UniformSpaceVectors[2] = new Vector4(-1.0f, +1.0f, +1.0f, 0.0f);
+            UniformSpaceVectors[3] = new Vector4(+1.0f, -1.0f, -1.0f, 0.0f);
+
+            UniformSpaceVectors[4] = new Vector4(+1.0f, +1.0f, -1.0f, 0.0f);
+            UniformSpaceVectors[5] = new Vector4(-1.0f, -1.0f, +1.0f, 0.0f);
+
+            UniformSpaceVectors[6] = new Vector4(-1.0f, +1.0f, -1.0f, 0.0f);
+            UniformSpaceVectors[7] = new Vector4(+1.0f, -1.0f, +1.0f, 0.0f);
+
+            // 6 centers of cube faces
+            UniformSpaceVectors[8] = new Vector4(-1.0f, 0.0f, 0.0f, 0.0f);
+            UniformSpaceVectors[9] = new Vector4(+1.0f, 0.0f, 0.0f, 0.0f);
+
+            UniformSpaceVectors[10] = new Vector4(0.0f, -1.0f, 0.0f, 0.0f);
+            UniformSpaceVectors[11] = new Vector4(0.0f, +1.0f, 0.0f, 0.0f);
+
+            UniformSpaceVectors[12] = new Vector4(0.0f, 0.0f, -1.0f, 0.0f);
+            UniformSpaceVectors[13] = new Vector4(0.0f, 0.0f, +1.0f, 0.0f);
+
+            for (int i = 0; i < 14; ++i)
+            {
+                // Create random lengths in [0.25, 1.0].
+                float s = (float)((rand.NextDouble() * 0.75) + 0.25);
+
+                Vector4 v = s * UniformSpaceVectors[i];
+                v.Normalize();
+                UniformSpaceVectors[i] = v;
+            }
         }
 
         
@@ -130,7 +178,6 @@ namespace GuruEngine.Rendering
             rasterStates.Add(RasteriserStates.ShadowMap, nodepth_nocull);
             #endregion
 
-
             #region Setup sampler state library
             for (int i = 0; i < 64; i++)
             {
@@ -177,6 +224,23 @@ namespace GuruEngine.Rendering
             BufferManager.AddNamedIndexBuffer("OceanIB", OceanIB);
             #endregion
 
+            #region Generate standard textures
+
+            Color[] initData = new Color[256 * 256];
+            for (int i = 0; i < 256; ++i)
+            {
+                for (int j = 0; j < 256; ++j)
+                {
+                    Vector3 v = new Vector3((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
+
+                    initData[i * 256 + j] = new Color(v.X, v.Y, v.Z, 0.0f);
+                }
+            }
+            RandomVectors = new Texture2D(device, 256, 256);
+            RandomVectors.SetData<Color>(initData);
+
+            #endregion
+
 
             current.Initialise();
 #if DEBUG
@@ -192,6 +256,8 @@ namespace GuruEngine.Rendering
             normal_rs.MultiSampleAntiAlias = true;
 
             spriteBatch = new SpriteBatch(device);
+
+            depthDisplay = Game1.GameInstance.Content.Load<Effect>("Shaders/DisplayDepth");
 #endif
         }
 
@@ -245,6 +311,16 @@ namespace GuruEngine.Rendering
                 spriteBatch.Draw(RegisteredTextures["Moon"], debugregion, Color.White);
                 spriteBatch.End();
                 debugregion.X += 256;
+            }
+            if (DebugRenderSettings.RenderDepthMap)
+            {
+                if (!UsingForwardRenderer)
+                {
+                    spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Opaque,null,null,null,depthDisplay);
+                    spriteBatch.Draw(Deferred.DeferredRender.Instance.depthRT, debugregion, Color.White);
+                    spriteBatch.End();
+                    debugregion.X += 256;
+                }
             }
             if (DebugRenderSettings.RenderShadowMap)
             {

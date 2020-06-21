@@ -52,6 +52,8 @@ namespace GuruEngine.Rendering.RenderCommands
             AssetManager.AddTextureToQue(normalpath);
             textures = new int[] {normalpath.GetHashCode()};
 
+            
+
         }
 
         /// <summary>

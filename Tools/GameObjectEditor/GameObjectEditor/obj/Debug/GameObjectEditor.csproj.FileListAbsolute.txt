@@ -1,0 +1,15 @@
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\bin\Debug\GameObjectEditor.exe.config
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\bin\Debug\GameObjectEditor.exe
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\bin\Debug\GameObjectEditor.pdb
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor.csprojAssemblyReference.cache
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\MainWindow.g.cs
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\App.g.cs
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor_MarkupCompile.cache
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor_MarkupCompile.lref
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\MainWindow.baml
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor.g.resources
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor.Properties.Resources.resources
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor.csproj.GenerateResource.cache
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor.csproj.CoreCompileInputs.cache
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor.exe
+C:\Research\WPF\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor.pdb

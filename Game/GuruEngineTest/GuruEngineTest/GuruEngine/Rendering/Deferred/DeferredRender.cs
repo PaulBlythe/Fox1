@@ -21,7 +21,6 @@ namespace GuruEngine.Rendering.Deferred
     {
         public static DeferredRender Instance;
 
-
         RenderTargetCube rtc;
 
         public GraphicsDevice device;
@@ -51,11 +50,12 @@ namespace GuruEngine.Rendering.Deferred
         Effect finalCombineEffect;
         Effect pointLightEffect;
         Effect ocean;
+        Effect ssao;
         #endregion
 
         RenderTarget2D colorRT;     // Color and Specular Intensity
         RenderTarget2D normalRT;    // Normals and Specular Power
-        RenderTarget2D depthRT;     // Depth
+        public RenderTarget2D depthRT;     // Depth
         RenderTarget2D lightRT;     // Light accumulator
         RenderTarget2D materialRT;  // Material properties (x = specular strength, y = specular power / 255)
         RenderTarget2D skyRT;
@@ -143,6 +143,7 @@ namespace GuruEngine.Rendering.Deferred
             AssetManager.AddShaderToQue(@"Shaders\Deferred\PointLight");
             AssetManager.AddShaderToQue(@"Shaders\Deferred\Ocean");
             AssetManager.AddShaderToQue(@"Shaders\2D\ParticleEffect");
+            AssetManager.AddShaderToQue(@"Shaders\Deferred\DSSAO");
 
             String mesh = @"StaticMeshes\sphere";
             AssetManager.AddStaticMeshToQue(mesh);
@@ -187,6 +188,7 @@ namespace GuruEngine.Rendering.Deferred
                 finalCombineEffect = AssetManager.Shader(@"Shaders\Deferred\CombineFinal".GetHashCode());
                 pointLightEffect = AssetManager.Shader(@"Shaders\Deferred\PointLight".GetHashCode());
                 ocean = AssetManager.Shader(@"Shaders\Deferred\Ocean".GetHashCode());
+                ssao = AssetManager.Shader(@"Shaders\Deferred\DSSAO".GetHashCode());
 
 
                 sphereModel = AssetManager.StaticMesh(GUID);
@@ -218,8 +220,6 @@ namespace GuruEngine.Rendering.Deferred
                     r.PreRender(device);
                 }
             }
-
-
 
             for (int pass = 0; pass < RenderPasses.TotalPasses; pass++)
             {
@@ -296,17 +296,43 @@ namespace GuruEngine.Rendering.Deferred
                 }
             }
             ResolveGBuffer();
+
             DrawLights(View, Projection);
             device.DepthStencilState = DepthStencilState.None;
 
-            finalCombineEffect.Parameters["colorMap"].SetValue(colorRT);
-            finalCombineEffect.Parameters["lightMap"].SetValue(lightRT);
-            finalCombineEffect.Parameters["halfPixel"].SetValue(halfPixel);
-            finalCombineEffect.Parameters["sky"].SetValue(skyRT);
-            finalCombineEffect.Parameters["depthmap"].SetValue(depthRT);
+            switch (Renderer.Instance.renderSettings.SSAOType)
+            {
+                case SSAOTypes.Simple:
+                    {
+                        if (ssao.Parameters["depthMap"] != null)
+                            ssao.Parameters["depthMap"].SetValue(depthRT);
+                        if (ssao.Parameters["normalMap"] != null)
+                            ssao.Parameters["normalMap"].SetValue(normalRT);
+                        if (ssao.Parameters["randomMap"] != null)
+                            ssao.Parameters["randomMap"].SetValue(Renderer.Instance.RandomVectors);
 
-            finalCombineEffect.Techniques[0].Passes[0].Apply();
-            QRender.Render(Vector2.One * -1, Vector2.One);
+                        ssao.Parameters["sampleRadius"].SetValue(Renderer.Instance.renderSettings.SSAOSampleRadius);
+                        ssao.Parameters["distanceScale"].SetValue(Renderer.Instance.renderSettings.SSAODistanceScale);
+                        ssao.Parameters["Projection"].SetValue(Projection);
+                        ssao.Parameters["viewDirection"].SetValue(CameraForward);
+
+                        ssao.Techniques[0].Passes[0].Apply();
+                        QRender.Render(Vector2.One * -1, Vector2.One);
+                    }
+                    break;
+
+                default:
+                    finalCombineEffect.Parameters["colorMap"].SetValue(colorRT);
+                    finalCombineEffect.Parameters["lightMap"].SetValue(lightRT);
+                    finalCombineEffect.Parameters["halfPixel"].SetValue(halfPixel);
+                    finalCombineEffect.Parameters["sky"].SetValue(skyRT);
+                    finalCombineEffect.Parameters["depthmap"].SetValue(depthRT);
+                    
+                    finalCombineEffect.Techniques[0].Passes[0].Apply();
+                    QRender.Render(Vector2.One * -1, Vector2.One);
+                    break;
+            }
+
 
             SignalRenderingComplete();
             Engine.EndDrawFrame(gt);
@@ -455,7 +481,6 @@ namespace GuruEngine.Rendering.Deferred
             AssetManager.Instance.environment = rtc;
 
         }
-
 
         #region Shader management
         public override void AddShader(String name, Effect fx)
@@ -749,7 +774,6 @@ namespace GuruEngine.Rendering.Deferred
 
         }
 
-
         private void DrawToSkyBuffer(RenderCommandSet rs, WorldState state)
         {
             device.RasterizerState = Renderer.GetRasteriser(rs.RS);
@@ -821,7 +845,6 @@ namespace GuruEngine.Rendering.Deferred
                 }
             }
         }
-
-       
+    
     }
 }

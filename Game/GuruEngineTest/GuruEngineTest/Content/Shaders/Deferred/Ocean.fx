@@ -97,8 +97,6 @@ VertexOutput BumpReflectWaveVS(AppData IN)
 	float4 norm = tex2Dlod(normalMapSampler, float4(samplepos, 0, 1));
 	norm = (2 * norm) - 1;
 
-
-
 	P = IN.Position;
 	P.y += norm.y * waveAmp;
 
@@ -150,7 +148,7 @@ PixelShaderOutput OceanMain(VertexOutput IN) : COLOR
 
 	output.Color.xyz = reflection.xyz;
 	output.Color.a = 0.0f;
-	output.Depth = IN.DepthVS.x / IN.DepthVS.y;
+	output.Depth = (IN.DepthVS.x / IN.DepthVS.y);
 	output.Normal.rgb = 0.5f * (N + 1.0f);
 	output.Normal.a = 1.0f;
 	output.Material = float4(0.75f, 0.25f, 1.0f, 1.0f);

@@ -4,50 +4,54 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Fonts/DebugFont.spritefont</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Fonts/MainMenu.spritefont</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Music/music1.mp3</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/SFX/Click.wav</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/SFX/sos.wav</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Loading.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/mfd.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/ParticleEffect.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/SDFFont2.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Sprite.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Wobble.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/ClearGBuffer.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/CombineFinal.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/DirectionalLight.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/FFTWater.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/Leaves.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/MeshPart.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/Ocean.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/PointLight.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ExtendedMesh.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Glass.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/MeshPartShader.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Moon.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/MSDFShader.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Ocean.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ParticleShader.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ScatteredSky.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/SDFFont2.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ShadowMap.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/TracedSky.fx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/box.fbx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/sphere.x</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/World/skydome.fbx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/World/skydome2.fbx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/World/sphere.fbx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/World/sphere2.fbx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/World/SphereHighPoly.fbx</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Textures/gaze.png</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Textures/loading_aircraft.png</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Textures/mouse.png</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Textures/noise.png</File>
-    <File>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Textures/SGG.png</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Fonts/DebugFont.spritefont</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Fonts/MainMenu.spritefont</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Music/music1.mp3</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/SFX/Click.wav</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/SFX/sos.wav</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Loading.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/mfd.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/ParticleEffect.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/SDFFont2.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Sprite.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Wobble.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/ClearGBuffer.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/CombineFinal.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/DirectionalLight.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/DSSAO.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/FFTWater.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/Leaves.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/MeshPart.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/Ocean.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/PointLight.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/DisplayDepth.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ExtendedMesh.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Glass.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/MeshPartShader.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Moon.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/MSDFShader.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Ocean.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ParticleShader.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ScatteredSky.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/SDFFont2.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ShadowMap.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/TracedSky.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/box.fbx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/sphere.x</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/World/skydome.fbx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/World/skydome2.fbx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/World/sphere.fbx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/World/sphere2.fbx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/StaticMeshes/World/SphereHighPoly.fbx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Textures/gaze.png</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Textures/loading_aircraft.png</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Textures/mouse.png</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Textures/noise.png</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Textures/SGG.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

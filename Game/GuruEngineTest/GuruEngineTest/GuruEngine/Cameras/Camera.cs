@@ -15,6 +15,7 @@ namespace GuruEngine.Cameras
         public Vector3 Position;
         public Vector3 Forward;
         public Vector3 Right;
+        public float FarClip;
 
         public abstract void Update(float gt);
 

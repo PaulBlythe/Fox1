@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Projects/GuruEngineTest/GuruEngineTest/Content/Fonts/MainMenu.spritefont</SourceFile>
+  <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Fonts/MainMenu.spritefont</SourceFile>
   <SourceTime>2020-02-06T20:25:46.1881334+00:00</SourceTime>
-  <DestFile>C:/Projects/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Fonts/MainMenu.xnb</DestFile>
-  <DestTime>2020-02-06T21:26:43.3978702+00:00</DestTime>
+  <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Fonts/MainMenu.xnb</DestFile>
+  <DestTime>2020-06-17T14:28:26.7251688+01:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

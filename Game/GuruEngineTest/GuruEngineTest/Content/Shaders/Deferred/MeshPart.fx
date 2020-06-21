@@ -83,7 +83,7 @@ PixelShaderOutput MainPS(VertexShaderOutput input)
 	output.Color.a = 0.0f;                                
 	output.Normal.rgb = 0.5f * (normalize(input.Normal) + 1.0f);		// transform normal domain
 	output.Normal.a = 1.0f;
-	output.Depth = input.Depth.x / input.Depth.y;                       // output Depth
+	output.Depth = (input.Depth.x / input.Depth.y);										    // output Depth
 	
 	return output;
 }

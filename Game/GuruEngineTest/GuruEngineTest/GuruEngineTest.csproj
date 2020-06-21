@@ -385,7 +385,7 @@
     </Reference>
     <Reference Include="MonoGame.Framework, Version=3.7.0.1708, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Research\Monogame\MonoGame\MonoGame.Framework\bin\Windows\AnyCPU\Release\MonoGame.Framework.dll</HintPath>
+      <HintPath>..\..\..\..\..\Research\Monogame\MonoGame\MonoGame.Framework\bin\Windows\AnyCPU\Release\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
@@ -404,10 +404,12 @@
     <Content Include="Content\Shaders\Deferred\ClearGBuffer.fx" />
     <Content Include="Content\Shaders\Deferred\CombineFinal.fx" />
     <Content Include="Content\Shaders\Deferred\DirectionalLight.fx" />
+    <Content Include="Content\Shaders\Deferred\DSSAO.fx" />
     <Content Include="Content\Shaders\Deferred\FFTWater.fx" />
     <Content Include="Content\Shaders\Deferred\MeshPart.fx" />
     <Content Include="Content\Shaders\Deferred\Ocean.fx" />
     <Content Include="Content\Shaders\Deferred\PointLight.fx" />
+    <Content Include="Content\Shaders\DisplayDepth.fx" />
     <Content Include="Content\Shaders\Forward\ExtendedMesh.fx" />
     <Content Include="Content\Shaders\Forward\Glass.fx" />
     <Content Include="Content\Shaders\Deferred\Leaves.fx" />

@@ -22,6 +22,7 @@ namespace GuruEngine.Cameras
 
         public DebugCamera(float aspectratio)
         {
+            FarClip = 60000.0f;
             Position = new Vector3(-100, 135, 50);
             Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60), aspectratio, 0.01f, 60000.0f);
             Up = Vector3.Up;
