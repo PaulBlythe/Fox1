@@ -35,6 +35,7 @@ namespace GuruEngine.Rendering
         public bool HDREnabled = false;
         public bool RenderShadows = false;
         public bool CascadeShadowMaps = false;
+        public bool Forward = false;
         public int ShadowMapSize = 2048;
         public int ShadowMapCascades = 4;
         public bool StabilizeCascades = true;
@@ -48,7 +49,7 @@ namespace GuruEngine.Rendering
         #region SSAO
         public SSAOTypes SSAOType = SSAOTypes.None;
         public float SSAOSampleRadius = 0.5f;
-        public float SSAODistanceScale = 100.0f;
+        public float SSAODistanceScale = 1.0f;
         #endregion
 
 

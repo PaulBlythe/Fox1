@@ -11,26 +11,35 @@
 // Inputs
 ///////////////////////////////////////////////////////////////////////////////////////
 
-float sampleRadius;
-float distanceScale;
+#define NUMSAMPLES 8
+
+//Projection matrix
 float4x4 Projection;
-float3 viewDirection;
+//Corner Fustrum
+float3 cornerFustrum;
+//Sample Radius
+float sampleRadius;
+//Distance Scale
+float distanceScale;
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Constants
 ///////////////////////////////////////////////////////////////////////////////////////
+
 float4 samples[8] =
 {
-	float4(0.355512, 	-0.709318, 	-0.102371,	0.0),
-	float4(0.534186, 	0.71511, 	-0.115167,	0.0),
-	float4(-0.87866, 	0.157139, 	-0.115167,	0.0),
-	float4(0.140679, 	-0.475516, 	-0.0639818,	0.0),
-	float4(-0.0796121, 	0.158842, 	-0.677075,	0.0),
-	float4(-0.0759516, 	-0.101676, 	-0.483625,	0.0),
-	float4(0.12493, 	-0.0223423,	-0.483625,	0.0),
-	float4(-0.0720074, 	0.243395, 	-0.967251,	0.0)
+	float4(0.355512, -0.709318, -0.102371, 0.0),
+	float4(0.534186, 0.71511, -0.115167, 0.0),
+	float4(-0.87866, 0.157139, -0.115167, 0.0),
+	float4(0.140679, -0.475516, -0.0639818, 0.0),
+	float4(-0.207641, 0.414286, 0.187755, 0.0),
+	float4(-0.277332, -0.371262, 0.187755, 0.0),
+	float4(0.63864, -0.114214, 0.262857, 0.0),
+	float4(-0.184051, 0.622119, 0.262857, 0.0)
 };
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Textures
@@ -47,9 +56,9 @@ sampler depthSampler = sampler_state
 	Texture = (depthMap);
 	AddressU = CLAMP;
 	AddressV = CLAMP;
-	MagFilter = POINT;
-	MinFilter = POINT;
-	Mipfilter = POINT;
+	MagFilter = LINEAR;
+	MinFilter = LINEAR;
+	Mipfilter = LINEAR;
 };
 
 sampler normalSampler = sampler_state
@@ -84,7 +93,8 @@ struct VertexShaderInput
 struct VertexShaderOutput
 {
 	float4 Position			: SV_POSITION;
-	float2 UV				: TEXCOORD1;
+	float2 UV				: TEXCOORD0;
+	float3 ViewDirection	: TEXCOORD1;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -97,7 +107,15 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	output.Position = float4(input.Position, 1);
 	output.UV = input.UV;
 
+	//Set up ViewDirection vector
+	output.ViewDirection = float3(-cornerFustrum.x * input.Position.x, cornerFustrum.y * input.Position.y, cornerFustrum.z);
+
 	return output;
+}
+
+float3 decode(float3 enc)
+{
+	return (2.0f * enc.xyz - 1.0f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -105,44 +123,62 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 ///////////////////////////////////////////////////////////////////////////////////////
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-	float3 view = normalize(viewDirection);
+	//Normalize the input ViewDirection
+	float3 ViewDirection = normalize(input.ViewDirection);
 
+	//Sample the depth
 	float depth = tex2D(depthSampler, input.UV).r;
-	float3 se = depth * view;
 
-	float3 randNormal = tex2D(randomSampler, input.UV).rgb;
-	randNormal = (2.0 * randNormal) - 1.0;
+	//Calculate the depth at this pixel along the view direction
+	float3 se = depth * ViewDirection;
 
-	//float3 normal = tex2D(normalSampler, input.UV).rgb;
-	//normal = (2.0 * normal) - 1.0;
+	//Sample a random normal vector
+	float3 randNormal = decode(tex2D(randomSampler, input.UV * 200.0f).xyz);
 
+	//Sample the Normal for this pixel
+	float3 normal = decode(tex2D(normalSampler, input.UV).xyz);
+
+	//No assymetry in HLSL, workaround
 	float finalColor = 0.0f;
-	float sampleDepth;
 
-	[unroll]
-	for (int i = 0; i < 8; i++)
+	//SSAO loop
+	for (int i = 0; i < NUMSAMPLES; i++)
 	{
+		//Calculate the Reflection Ray
 		float3 ray = reflect(samples[i].xyz, randNormal) * sampleRadius;
 
-		float4 smple = float4(se + ray, 1.0f);
-		float4 ss = mul(smple, Projection);
+		//Test the Reflection Ray against the surface normal
+		if (dot(ray, normal) < 0) ray += normal * sampleRadius;
 
+		//Calculate the Sample vector
+		float4 sample = float4(se + ray, 1.0f);
+
+		//Project the Sample vector into ScreenSpace
+		float4 ss = mul(sample, Projection);
+
+		//Convert SS into UV space
 		float2 sampleTexCoord = (0.5f * ss.xy / ss.w) + float2(0.5f, 0.5f);
-		sampleDepth = tex2D(depthSampler, sampleTexCoord).r;
 
+		//Sample the Depth along the ray
+		float sampleDepth = tex2D(depthSampler, sampleTexCoord).r;
+
+		//Check the sampled depth value
 		if (sampleDepth > depth)
 		{
+			//Non-Occluded sample
 			finalColor++;
-		}	
+		}
 		else
 		{
-			//float occlusion = distanceScale * max(depth - sampleDepth, 0.0f);
-			//finalColor += 1.0f / (1.0f + occlusion * occlusion );
+			//Calculate Occlusion
+			float occlusion = distanceScale * max(depth - sampleDepth, 0.0f);
+			//Accumulate to finalColor
+			finalColor += 1.0f / (1.0f + occlusion * occlusion * 0.1);
 		}
 	}
-	return float4(finalColor / 8.0, finalColor / 8.0, finalColor / 8.0, 1.0f);
-	
 
+	//Output the Average of finalColor
+	return float4(finalColor / NUMSAMPLES, finalColor / NUMSAMPLES, finalColor / NUMSAMPLES, 1.0f);
 }
 
 technique BasicColorDrawing

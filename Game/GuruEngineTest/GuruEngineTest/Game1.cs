@@ -64,9 +64,9 @@ namespace GuruEngineTest
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             engine.Initialise(GraphicsDevice, Content, Services, false);
-            //engine.SetScene(new Scenes.MainMenu());
+            engine.SetScene(new Scenes.MainMenu());
             //engine.SetScene(new Scenes.LoadingScene());
-            engine.SetScene(new Scenes.Gebug.CarrierTest());
+            //engine.SetScene(new Scenes.Gebug.CarrierTest());
             //engine.SetScene(new Scenes.Campaign.WWII.British.PilotRecord());
             //engine.SetScene(new Scenes.Debug.ParticleEditorScene());
             //engine.SetScene(new Scenes.Developer.AircraftPhysicsTest());

@@ -14,36 +14,41 @@ using GuruEngine.Rendering;
 using GuruEngine.Localization.Strings;
 using GuruEngineTest.Scenes.Helpers;
 using GuruEngine.Audio;
+using GuruEngineTest.Scenes.Generic.MenuPages;
+using GuruEngineTest.Scenes.Generic.Helpers;
 
 namespace GuruEngineTest.Scenes
 {
     public class MainMenu : Scene
     {
+        public static MainMenu Instance;
+
         GraphicsDevice device;
         Effect backdrop;
         Texture2D Noise;
         Texture2D Logo;
         SpriteBatch batch;
-        SpriteFont font;
+        public SpriteFont font;
         Rectangle fs;
         Rectangle lg;
         float time = 0;
         MouseState OldMouseState;
         int TransitState = 0;
-        int NextState = 0;
         float TransitTime = 0;
 
-        List<MainMenuItem> Items = new List<MainMenuItem>();
+        MenuPage currentPage;
+        MenuPage nextPage;
 
         Vector2 lift = new Vector2(-2, -2);
 
         public override void Init()
         {
+            Instance = this;
             device = Renderer.GetGraphicsDevice();
             batch = new SpriteBatch(device);
             fs = new Rectangle(0, 0, device.Viewport.Width, device.Viewport.Height);
 
-            SetTopLevel();
+            currentPage = new MainPage();
 
             lg = new Rectangle(10, 100, 256, 256);
             AudioManager.PlaySong(0);
@@ -69,6 +74,7 @@ namespace GuruEngineTest.Scenes
             batch.End();
 
             MouseState ms = Mouse.GetState();
+            float dt = gt.ElapsedGameTime.Milliseconds / 1000.0f;
 
             batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
@@ -77,9 +83,9 @@ namespace GuruEngineTest.Scenes
                 #region Menu on
                 case 0:
                     {
-                        foreach (MainMenuItem mi in Items)
+                        foreach (MainMenuWidget mi in currentPage.Items)
                         {
-                            if (mi.IsSlider)
+                            if (mi.OwnerDrawn)
                             {
                                 mi.Check(ms.X, ms.Y, ms.LeftButton == ButtonState.Pressed);
                                 mi.Draw(batch, 0);
@@ -91,7 +97,9 @@ namespace GuruEngineTest.Scenes
                                     batch.DrawString(font, mi.Text, mi.Position + lift, Color.Firebrick);
                                     if ((ms.LeftButton == ButtonState.Released) && (OldMouseState.LeftButton == ButtonState.Pressed))
                                     {
-                                        DoAction(mi.ID);
+                                        TransitState = currentPage.DoAction(mi.ID, out nextPage);
+                                        if (nextPage != null)
+                                            TransitTime = 0.0f;
                                         AudioManager.PlaySFXOnce("CLICK");
                                     }
                                 }
@@ -108,35 +116,57 @@ namespace GuruEngineTest.Scenes
                 #region Menu going off
                 case 1:
                     {
-                        float t = TransitTime;
-
-                        foreach (MainMenuItem mi in Items)
+                        TransitTime += dt * 2;
+                        if (TransitTime > 1.6)
                         {
-                            if (mi.IsSlider)
+                            TransitTime = 1;
+                            TransitState++;
+                        }
+                        else
+                        {
+                            float t = TransitTime;
+                            foreach (MainMenuWidget mi in currentPage.Items)
                             {
-                                int x = (int)MathHelper.SmoothStep(0, 2000, t);
-                                mi.Draw(batch, x);
-                            }
-                            else
-                            {
-                                Vector2 delta = new Vector2(MathHelper.SmoothStep(0, -600, t), 0);
-                                batch.DrawString(font, mi.Text, mi.Position + delta, Color.Black);
-                            }
-                            t -= 0.1f;
+                                if (mi.OwnerDrawn)
+                                {
+                                    int x = (int)MathHelper.SmoothStep(0, 2000, t);
+                                    mi.Draw(batch, x);
+                                }
+                                else
+                                {
+                                    Vector2 delta = new Vector2(MathHelper.SmoothStep(0, -600, t), 0);
+                                    batch.DrawString(font, mi.Text, mi.Position + delta, Color.Black);
+                                }
+                                t -= 0.1f;
 
+                            }
                         }
                     }
                     break;
                 #endregion
 
+                case 2:
+                    {
+                        currentPage = nextPage;
+                        TransitState++;
+                        TransitTime = 0;
+
+                    }
+                    break;
+
                 #region Menu coming on
                 case 3:
                     {
                         float t = TransitTime;
-
-                        foreach (MainMenuItem mi in Items)
+                        TransitTime += dt * 2;
+                        if (TransitTime > 1.6)
                         {
-                            if (mi.IsSlider)
+                            TransitState = 0;
+                            TransitTime = 1;
+                        }
+                        foreach (MainMenuWidget mi in currentPage.Items)
+                        {
+                            if (mi.OwnerDrawn)
                             {
                                 int x = (int)MathHelper.SmoothStep(2000, 0, t);
                                 mi.Draw(batch, x);
@@ -155,7 +185,6 @@ namespace GuruEngineTest.Scenes
             }
 
             batch.Draw(Logo, lg, Color.White);
-
             batch.End();
 
             OldMouseState = ms;
@@ -165,271 +194,8 @@ namespace GuruEngineTest.Scenes
         {
             time += dt;
             backdrop.Parameters["iTime"].SetValue(time);
-            switch (TransitState)
-            {
-                case 1:
-                    {
-                        TransitTime += dt * 2;
-                        if (TransitTime > 1.6)
-                        {
-                            TransitTime = 1;
-                            TransitState++;
-                        }
-                    }
-                    break;
-
-                case 2:
-                    {
-                        switch (NextState)
-                        {
-                            case 0:     // Back to main menu
-                                SetTopLevel();
-                                break;
-                            case 1:
-                                SetNewGame();
-                                break;
-                            case 3:     // Enter top level options menu
-                                SetTopOptions();
-                                break;
-                            case 12:
-                                SetAudioOptions();
-                                break;
-                            case 21:
-                                SetSinglePlayer();
-                                break;
-                        }
-                        TransitState++;
-
-                    }
-                    break;
-
-                case 3:
-                    {
-                        TransitTime += dt * 2;
-                        if (TransitTime > 1.6)
-                        {
-                            TransitTime = 1;
-                            TransitState = 0;
-                        }
-                    }
-                    break;
-
-            }
+            
         }
 
-        void DoAction(int i)
-        {
-            switch (i)
-            {
-                case 4:
-                    {
-                        Game1.GameInstance.Exit();
-                    }
-                    break;
-
-                case 15:
-                    {
-                        TransitState++;
-                        NextState = 0;
-                    }
-                    break;
-
-                case 16:
-                    {
-                        TransitState++;
-                        NextState = 3;
-                    }
-                    break;
-
-                default:
-                    {
-                        TransitState++;
-                        NextState = i;
-                    }
-                    break;
-            }
-            TransitTime = 0;
-        }
-
-        #region Menu level setup methods
-        void SetTopLevel()
-        {
-            Items.Clear();
-
-            MainMenuItem item1 = new MainMenuItem();
-            item1.ID = 1;
-            item1.Text = StringLocalizer.GetString(StringIDS.NewGame);
-            item1.Position = new Vector2(50, 400);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 2;
-            item1.Text = StringLocalizer.GetString(StringIDS.LoadGame);
-            item1.Position = new Vector2(50, 440);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 3;
-            item1.Text = StringLocalizer.GetString(StringIDS.Options);
-            item1.Position = new Vector2(50, 480);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 4;
-            item1.Text = StringLocalizer.GetString(StringIDS.Exit);
-            item1.Position = new Vector2(50, 520);
-            item1.SetRegion();
-            Items.Add(item1);
-        }
-
-        void SetTopOptions()
-        {
-            Items.Clear();
-
-            MainMenuItem item1 = new MainMenuItem();
-            item1.ID = 11;
-            item1.Text = StringLocalizer.GetString(StringIDS.Display);
-            item1.Position = new Vector2(50, 400);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 12;
-            item1.Text = StringLocalizer.GetString(StringIDS.Audio);
-            item1.Position = new Vector2(50, 440);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 13;
-            item1.Text = StringLocalizer.GetString(StringIDS.Language);
-            item1.Position = new Vector2(50, 480);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 14;
-            item1.Text = StringLocalizer.GetString(StringIDS.Network);
-            item1.Position = new Vector2(50, 520);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 15;
-            item1.Text = StringLocalizer.GetString(StringIDS.Back);
-            item1.Position = new Vector2(50, 560);
-            item1.SetRegion();
-            Items.Add(item1);
-        }
-
-        void SetAudioOptions()
-        {
-            Items.Clear();
-
-            MainMenuItem item1 = new MainMenuItem();
-            item1.ID = -1;
-            item1.Text = StringLocalizer.GetString(StringIDS.MusicVolume);
-            item1.Position = new Vector2(50, 400);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = -1;
-            item1.Text = StringLocalizer.GetString(StringIDS.SoundEffectVolume);
-            item1.Position = new Vector2(50, 440);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 16;
-            item1.Text = StringLocalizer.GetString(StringIDS.Back);
-            item1.Position = new Vector2(50, 560);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = -2;
-            item1.SetAsSlider();
-            item1.Position = new Vector2(350, 400);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = -3;
-            item1.SetAsSlider();
-            item1.Position = new Vector2(350, 440);
-            item1.SetRegion();
-            Items.Add(item1);
-        }
-
-        void SetNewGame()
-        {
-            Items.Clear();
-
-            MainMenuItem item1 = new MainMenuItem();
-            item1.ID = 21;
-            item1.Text = StringLocalizer.GetString(StringIDS.SinglePlayer);
-            item1.Position = new Vector2(50, 400);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 22;
-            item1.Text = StringLocalizer.GetString(StringIDS.MultiPlayer);
-            item1.Position = new Vector2(50, 440);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 0;
-            item1.Text = StringLocalizer.GetString(StringIDS.Back);
-            item1.Position = new Vector2(50, 560);
-            item1.SetRegion();
-            Items.Add(item1);
-        }
-
-        void SetSinglePlayer()
-        {
-            Items.Clear();
-
-            MainMenuItem item1 = new MainMenuItem();
-            item1.ID = 31;
-            item1.Text = StringLocalizer.GetString(StringIDS.FreeFlight);
-            item1.Position = new Vector2(50, 400);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 32;
-            item1.Text = StringLocalizer.GetString(StringIDS.SingleMission);
-            item1.Position = new Vector2(50, 440);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 33;
-            item1.Text = StringLocalizer.GetString(StringIDS.Career);
-            item1.Position = new Vector2(50, 480);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 34;
-            item1.Text = StringLocalizer.GetString(StringIDS.Campaign);
-            item1.Position = new Vector2(50, 520);
-            item1.SetRegion();
-            Items.Add(item1);
-
-            item1 = new MainMenuItem();
-            item1.ID = 1;
-            item1.Text = StringLocalizer.GetString(StringIDS.Back);
-            item1.Position = new Vector2(50, 560);
-            item1.SetRegion();
-            Items.Add(item1);
-        }
-        #endregion
     }
 }

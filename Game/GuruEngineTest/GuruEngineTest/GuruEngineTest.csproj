@@ -24,6 +24,7 @@
     <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -375,9 +376,20 @@
     <Compile Include="Scenes\Debug\ParticleEditorScene.cs" />
     <Compile Include="Scenes\Developer\AircraftPhysicsTest.cs" />
     <Compile Include="Scenes\Developer\Subs\LoadAircraft.cs" />
+    <Compile Include="Scenes\Generic\Helpers\MainMenuButton.cs" />
     <Compile Include="Scenes\Generic\Helpers\MainMenuItem.cs" />
+    <Compile Include="Scenes\Generic\Helpers\MainMenuSlider.cs" />
+    <Compile Include="Scenes\Generic\Helpers\MainMenuSwitch.cs" />
+    <Compile Include="Scenes\Generic\Helpers\MainMenuWidget.cs" />
     <Compile Include="Scenes\Generic\LoadingScene.cs" />
     <Compile Include="Scenes\Generic\MainMenu.cs" />
+    <Compile Include="Scenes\Generic\MenuPages\AudioOptionsPage.cs" />
+    <Compile Include="Scenes\Generic\MenuPages\DisplayOptions.cs" />
+    <Compile Include="Scenes\Generic\MenuPages\MainPage.cs" />
+    <Compile Include="Scenes\Generic\MenuPages\MenuPage.cs" />
+    <Compile Include="Scenes\Generic\MenuPages\NewGamePage.cs" />
+    <Compile Include="Scenes\Generic\MenuPages\OptionsPage.cs" />
+    <Compile Include="Scenes\Generic\MenuPages\SinglePlayerPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="HidLibrary">

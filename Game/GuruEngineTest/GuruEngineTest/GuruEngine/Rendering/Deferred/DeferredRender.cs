@@ -298,12 +298,15 @@ namespace GuruEngine.Rendering.Deferred
             ResolveGBuffer();
 
             DrawLights(View, Projection);
-            device.DepthStencilState = DepthStencilState.None;
+
+            
 
             switch (Renderer.Instance.renderSettings.SSAOType)
             {
                 case SSAOTypes.Simple:
                     {
+                        device.DepthStencilState = DepthStencilState.None;
+
                         if (ssao.Parameters["depthMap"] != null)
                             ssao.Parameters["depthMap"].SetValue(depthRT);
                         if (ssao.Parameters["normalMap"] != null)
@@ -311,10 +314,18 @@ namespace GuruEngine.Rendering.Deferred
                         if (ssao.Parameters["randomMap"] != null)
                             ssao.Parameters["randomMap"].SetValue(Renderer.Instance.RandomVectors);
 
+
+                        //Calculate Frustum Corner of the Camera
+                        Vector3 cornerFrustum = Vector3.Zero;
+                        cornerFrustum.Y = (float)Math.Tan(Math.PI / 3.0 / 2.0) * 60000.0f;
+                        cornerFrustum.X = cornerFrustum.Y *device.Viewport.AspectRatio;
+                        cornerFrustum.Z = 60000.0f;
+
+                        //Set SSAO parameters
+                        ssao.Parameters["cornerFustrum"].SetValue(cornerFrustum);
                         ssao.Parameters["sampleRadius"].SetValue(Renderer.Instance.renderSettings.SSAOSampleRadius);
                         ssao.Parameters["distanceScale"].SetValue(Renderer.Instance.renderSettings.SSAODistanceScale);
                         ssao.Parameters["Projection"].SetValue(Projection);
-                        ssao.Parameters["viewDirection"].SetValue(CameraForward);
 
                         ssao.Techniques[0].Passes[0].Apply();
                         QRender.Render(Vector2.One * -1, Vector2.One);

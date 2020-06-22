@@ -1,6 +1,6 @@
 8
-0
-0.95
+0.781579
+0.4368421
 English
 C:\Data\Fox1\/PaintSchemes/
 10

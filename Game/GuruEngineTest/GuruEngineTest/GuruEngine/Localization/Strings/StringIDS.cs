@@ -31,6 +31,10 @@ namespace GuruEngine.Localization.Strings
         Career,
         Campaign,
 
+        Renderer,
+        Forward,
+        Deffered,
+
         TOTAL_STRINGS
     }
 }
