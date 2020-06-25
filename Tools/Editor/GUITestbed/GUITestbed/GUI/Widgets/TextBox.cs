@@ -14,6 +14,7 @@ namespace GUITestbed.GUI.Widgets
         MouseState oldms;
         KeyboardState oldks;
         bool HasFocus = false;
+        float time = 0;
 
         public TextBox(Rectangle r, String text)
         {
@@ -23,6 +24,7 @@ namespace GUITestbed.GUI.Widgets
 
         public override void Update(float dt)
         {
+            time += dt;
             MouseState ms = Mouse.GetState();
             if (Region.Contains(ms.X, ms.Y))
             {
@@ -88,10 +90,27 @@ namespace GUITestbed.GUI.Widgets
         public override void Draw(GuiFont b)
         {
             Vector2 w = b.MeasureString(Text);
+            float width = w.X;
+
             w.X *= -0.5f;
             w.X = (Region.X + 4);
             w.Y = (Region.Y + (Region.Height - (w.Y / 2)));
             b.DrawString(Text, w, GuiManager.Instance.Theme.AlternateFontColour);
+
+            if (HasFocus)
+            {
+                if (time>0.5)
+                {
+                    w.X += width;
+                    w.X += 5;
+                    w.Y -= 1;
+                    b.DrawString(":", w, GuiManager.Instance.Theme.AlternateFontColour);
+                }
+                if (time>=1)
+                {
+                    time = 0;
+                }
+            }
         }
 
         public override void Message(string s)

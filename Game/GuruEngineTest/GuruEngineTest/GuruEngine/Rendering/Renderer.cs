@@ -176,6 +176,24 @@ namespace GuruEngine.Rendering
             nodepth_nocull.ScissorTestEnable = false;
             nodepth_nocull.MultiSampleAntiAlias = false;
             rasterStates.Add(RasteriserStates.ShadowMap, nodepth_nocull);
+
+            nodepth_nocull = new RasterizerState();
+            nodepth_nocull.CullMode = CullMode.CullCounterClockwiseFace;
+            nodepth_nocull.DepthBias = 0;
+            nodepth_nocull.DepthClipEnable = true;
+            nodepth_nocull.FillMode = FillMode.Solid;
+            nodepth_nocull.ScissorTestEnable = false;
+            nodepth_nocull.MultiSampleAntiAlias = false;
+            rasterStates.Add(RasteriserStates.CullCounterclockwise, nodepth_nocull);
+
+            nodepth_nocull = new RasterizerState();
+            nodepth_nocull.CullMode = CullMode.CullClockwiseFace;
+            nodepth_nocull.DepthBias = 0;
+            nodepth_nocull.DepthClipEnable = true;
+            nodepth_nocull.FillMode = FillMode.Solid;
+            nodepth_nocull.ScissorTestEnable = false;
+            nodepth_nocull.MultiSampleAntiAlias = false;
+            rasterStates.Add(RasteriserStates.CullClockwise, nodepth_nocull);
             #endregion
 
             #region Setup sampler state library
@@ -511,7 +529,6 @@ namespace GuruEngine.Rendering
             return Instance.device.Viewport.AspectRatio;
         }
 
-       
 
         public static String GetShaderName(String ID)
         {
@@ -537,6 +554,8 @@ namespace GuruEngine.Rendering
                         return @"Shaders\Deferred\Ocean";
                     case "Glass":
                         return @"Shaders\Forward\Glass";
+                    case "Cirrus":
+                        return @"Shaders\Deferred\CirrusClouds";
                 }
             }
             return "";

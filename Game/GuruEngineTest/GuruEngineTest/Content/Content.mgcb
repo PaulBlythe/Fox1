@@ -81,6 +81,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/2D/Wobble.fx
 
+#begin Shaders/Deferred/CirrusClouds.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Deferred/CirrusClouds.fx
+
 #begin Shaders/Deferred/ClearGBuffer.fx
 /importer:EffectImporter
 /processor:EffectProcessor

@@ -113,6 +113,7 @@
     <Compile Include="GUI\Dialogs\MessageBox.cs" />
     <Compile Include="GUI\Dialogs\OpenFileDialog.cs" />
     <Compile Include="GUI\Dialogs\SaveFileDialog.cs" />
+    <Compile Include="GUI\Dialogs\TextEntryDialog.cs" />
     <Compile Include="GUI\FrameCounter.cs" />
     <Compile Include="GUI\GlyphBatch.cs" />
     <Compile Include="GUI\GUIBatch.cs" />

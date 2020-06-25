@@ -15,6 +15,7 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/SDFFont2.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Sprite.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Wobble.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/CirrusClouds.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/ClearGBuffer.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/CombineFinal.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/DirectionalLight.fx</File>
@@ -50,6 +51,7 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Textures/SGG.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

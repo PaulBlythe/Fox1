@@ -23,6 +23,7 @@ using GuruEngine.ECS.Components.World;
 using GuruEngine.AI;
 using GuruEngine.Physics.Collision;
 using GuruEngine.AI.Scripting;
+using GuruEngine.World.Weather;
 
 
 namespace GuruEngine.World
@@ -36,6 +37,7 @@ namespace GuruEngine.World
         public TargetManager targetManager;
         public BulletManager bulletManager;
         public ScriptManager scriptManager;
+        public WeatherManager weatherManager;
 
 #if DEBUG
         DebugHelpers.DebugMessageQueue dmq = new DebugHelpers.DebugMessageQueue();
@@ -57,6 +59,7 @@ namespace GuruEngine.World
             targetManager = new TargetManager();
             bulletManager = new BulletManager();
             scriptManager = new ScriptManager();
+            weatherManager = new WeatherManager();
         }
 
         public void Initialise(ContentManager Content)

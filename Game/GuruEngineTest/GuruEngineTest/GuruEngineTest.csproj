@@ -275,6 +275,7 @@
     <Compile Include="GuruEngine\Rendering\RasteriserStates.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommand.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommandSet.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommands\RenderCirrusCommand.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderDeepOcean.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderMeshPart.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderMoonCommand.cs" />
@@ -316,6 +317,7 @@
     <Compile Include="GuruEngine\World\Trees\TreeLeaf.cs" />
     <Compile Include="GuruEngine\World\Trees\TreeLeafCloud.cs" />
     <Compile Include="GuruEngine\World\Trees\TreeSkeleton.cs" />
+    <Compile Include="GuruEngine\World\Weather\WeatherManager.cs" />
     <Compile Include="History\Common\Geographic\GeographicLocation.cs" />
     <Compile Include="History\Common\Organisation\AircraftType.cs" />
     <Compile Include="History\RAF\Common\RAFGroup.cs" />
@@ -413,6 +415,7 @@
     <Content Include="Content\Shaders\2D\SDFFont2.fx" />
     <Content Include="Content\Shaders\2D\Sprite.fx" />
     <Content Include="Content\Shaders\2D\Wobble.fx" />
+    <Content Include="Content\Shaders\Deferred\CirrusClouds.fx" />
     <Content Include="Content\Shaders\Deferred\ClearGBuffer.fx" />
     <Content Include="Content\Shaders\Deferred\CombineFinal.fx" />
     <Content Include="Content\Shaders\Deferred\DirectionalLight.fx" />

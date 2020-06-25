@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Shaders/Sky/Scatter.fx</SourceFile>
+  <SourceFile>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/Sky/Scatter.fx</SourceFile>
   <SourceTime>2020-05-22T18:13:16.8318714+01:00</SourceTime>
-  <DestFile>C:/Research/Monogame/GUITestbed/GUITestbed/Content/bin/Windows/Content/Shaders/Sky/Scatter.xnb</DestFile>
-  <DestTime>2020-05-22T18:35:59.4444081+01:00</DestTime>
+  <DestFile>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/bin/Windows/Content/Shaders/Sky/Scatter.xnb</DestFile>
+  <DestTime>2020-06-24T12:32:51.3779725+01:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>EffectProcessor</Processor>

@@ -14,6 +14,8 @@ namespace GuruEngine.Rendering
         NoDepthNoCull,
         Wireframe,
         ShadowMap,
+        CullCounterclockwise,
+        CullClockwise,
         TotalStates
     }
 }

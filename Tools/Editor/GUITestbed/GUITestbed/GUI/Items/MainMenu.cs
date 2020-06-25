@@ -19,6 +19,7 @@ namespace GUITestbed.GUI.Items
         MapGeneratorData mapgen = null;
         SaveFileDialog saver = null;
         OpenFileDialog loader = null;
+        TextEntryDialog textentry = null;
 
         Airport currentAirport;
 
@@ -241,6 +242,20 @@ namespace GUITestbed.GUI.Items
                     }
                     break;
 
+                case "Button:Find ICAO":
+                    {
+                        textentry = new TextEntryDialog("ICAO", SearchAPTForICAO);
+                        GuiManager.Instance.Add(textentry);
+                    }
+                    break;
+
+                case "Button:Find name":
+                    {
+                        textentry = new TextEntryDialog("Name", SearchAPTForName);
+                        GuiManager.Instance.Add(textentry);
+                    }
+                    break;
+
                 case "DayNight":
                     {
                         Slider sl = (Slider)Widgets[8];
@@ -276,6 +291,17 @@ namespace GUITestbed.GUI.Items
         }
 
         #region Callbacks
+        public bool SearchAPTForName(String f)
+        {
+            GuiManager.Instance.RemoveTopLevelDialog();
+            return true;
+        }
+
+        public bool SearchAPTForICAO(String f)
+        {
+            GuiManager.Instance.RemoveTopLevelDialog();
+            return true;
+        }
 
         public bool SaveMap(String f)
         {
@@ -565,6 +591,16 @@ namespace GUITestbed.GUI.Items
 
                 GroupBox gb = new GroupBox("FSX", new Rectangle(15, 45, 226, 160));
                 Widgets.Add(gb);
+
+                gb = new GroupBox("APT", new Rectangle(15, 215, 226, 160));
+                Widgets.Add(gb);
+
+                b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 235, 200, 30), "Scan APT.DAT");
+                Widgets.Add(b);
+                b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 275, 200, 30), "Find ICAO");
+                Widgets.Add(b);
+                b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 315, 200, 30), "Find name");
+                Widgets.Add(b);
             }
         }
 

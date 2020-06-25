@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Airport/asphalt_tiles.png</SourceFile>
+  <SourceFile>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Textures/Airport/asphalt_tiles.png</SourceFile>
   <SourceTime>2020-05-26T19:45:56.1289411+01:00</SourceTime>
-  <DestFile>C:/Research/Monogame/GUITestbed/GUITestbed/Content/bin/Windows/Content/Textures/Airport/asphalt_tiles.xnb</DestFile>
-  <DestTime>2020-05-26T19:46:24.0982068+01:00</DestTime>
+  <DestFile>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/bin/Windows/Content/Textures/Airport/asphalt_tiles.xnb</DestFile>
+  <DestTime>2020-06-24T12:32:52.3219512+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

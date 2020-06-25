@@ -71,8 +71,16 @@ namespace GUITestbed.GUI
             {
                 String s = pendingEvents[0];
                 pendingEvents.RemoveAt(0);
-                foreach (GuiItem i in Items)
-                    i.HandleEvent(s);
+
+                if (dialogs.Count > 0)
+                {
+                    dialogs[dialogs.Count - 1].Message(s);
+                }
+                else
+                {
+                    foreach (GuiItem i in Items)
+                        i.HandleEvent(s);
+                }
             }
             if (dialogs.Count > 0)
             {
@@ -90,8 +98,7 @@ namespace GUITestbed.GUI
 
         public void Draw()
         {
-           
-
+ 
             batch.Begin(BlendState.NonPremultiplied);
             foreach (GuiItem i in Items)
                 i.Draw(batch);
