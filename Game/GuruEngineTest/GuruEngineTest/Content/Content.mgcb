@@ -141,6 +141,18 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/Deferred/PointLight.fx
 
+#begin Shaders/Deferred/RestoreDepthBuffer.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Deferred/RestoreDepthBuffer.fx
+
+#begin Shaders/Deferred/Windsock.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Deferred/Windsock.fx
+
 #begin Shaders/DisplayDepth.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -207,11 +219,23 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/Forward/ShadowMap.fx
 
+#begin Shaders/Forward/Textured.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Forward/Textured.fx
+
 #begin Shaders/Forward/TracedSky.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/Forward/TracedSky.fx
+
+#begin Shaders/Forward/Windsock.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Forward/Windsock.fx
 
 #begin StaticMeshes/box.fbx
 /importer:FbxImporter

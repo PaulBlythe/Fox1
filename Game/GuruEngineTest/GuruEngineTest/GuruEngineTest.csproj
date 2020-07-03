@@ -134,6 +134,7 @@
     <Compile Include="GuruEngine\ECS\Components\Mesh\HookListComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Mesh\LODGroupComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Mesh\MultiMeshComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Mesh\WindsockComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Physics\DynamicPhysicsComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Ships\ShipGunComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Ships\ShipGunFOFComponent.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="GuruEngine\GameLogic\Missions\MissionData.cs" />
     <Compile Include="GuruEngine\GameLogic\Navigation\NavPoint.cs" />
     <Compile Include="GuruEngine\GameLogic\SensorData\RadarContact.cs" />
+    <Compile Include="GuruEngine\Geometry\Geometry.cs" />
     <Compile Include="GuruEngine\Helpers\IOHelper.cs" />
     <Compile Include="GuruEngine\Helpers\LogFile.cs" />
     <Compile Include="GuruEngine\Helpers\MathsHelper.cs" />
@@ -264,6 +266,7 @@
     <Compile Include="GuruEngine\Rendering\Lights\DirectionalLight.cs" />
     <Compile Include="GuruEngine\Rendering\Lights\PointLight.cs" />
     <Compile Include="GuruEngine\Rendering\MeshType.cs" />
+    <Compile Include="GuruEngine\Rendering\Objects\TriangleMesh.cs" />
     <Compile Include="GuruEngine\Rendering\Particles\ParticleEmitter.cs" />
     <Compile Include="GuruEngine\Rendering\Particles\ParticleSystem.cs" />
     <Compile Include="GuruEngine\Rendering\Particles\ParticleVertex.cs" />
@@ -281,6 +284,7 @@
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderMoonCommand.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderPlaneCommand.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderPlanetsCommand.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderCommands\RenderSimpleMeshCommand.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderSpritesCommand.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderStarsCommand.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderTextCommand.cs" />
@@ -289,6 +293,7 @@
     <Compile Include="GuruEngine\Rendering\RenderPasses.cs" />
     <Compile Include="GuruEngine\Rendering\RenderSettings.cs" />
     <Compile Include="GuruEngine\Rendering\ShaderVariables.cs" />
+    <Compile Include="GuruEngine\Rendering\VertexDeclarations\AnimatedVertex.cs" />
     <Compile Include="GuruEngine\Rendering\VertexDeclarations\LeafVertex.cs" />
     <Compile Include="GuruEngine\Rendering\VertexDeclarations\OceanVertex.cs" />
     <Compile Include="GuruEngine\Rendering\VertexDeclarations\TreeVertex.cs" />
@@ -377,7 +382,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenes\Debug\ParticleEditorScene.cs" />
     <Compile Include="Scenes\Developer\AircraftPhysicsTest.cs" />
+    <Compile Include="Scenes\Developer\ObjectTester.cs" />
     <Compile Include="Scenes\Developer\Subs\LoadAircraft.cs" />
+    <Compile Include="Scenes\Developer\Subs\LoadObject.cs" />
     <Compile Include="Scenes\Generic\Helpers\MainMenuButton.cs" />
     <Compile Include="Scenes\Generic\Helpers\MainMenuItem.cs" />
     <Compile Include="Scenes\Generic\Helpers\MainMenuSlider.cs" />
@@ -424,6 +431,8 @@
     <Content Include="Content\Shaders\Deferred\MeshPart.fx" />
     <Content Include="Content\Shaders\Deferred\Ocean.fx" />
     <Content Include="Content\Shaders\Deferred\PointLight.fx" />
+    <Content Include="Content\Shaders\Deferred\RestoreDepthBuffer.fx" />
+    <Content Include="Content\Shaders\Deferred\Windsock.fx" />
     <Content Include="Content\Shaders\DisplayDepth.fx" />
     <Content Include="Content\Shaders\Forward\ExtendedMesh.fx" />
     <Content Include="Content\Shaders\Forward\Glass.fx" />
@@ -438,7 +447,9 @@
     <Content Include="Content\Shaders\Forward\ShaderVariables.inc" />
     <Content Include="Content\Shaders\Forward\ShadowMap.fx" />
     <Content Include="Content\Shaders\Forward\Shadows.inc" />
+    <Content Include="Content\Shaders\Forward\Textured.fx" />
     <Content Include="Content\Shaders\Forward\TracedSky.fx" />
+    <Content Include="Content\Shaders\Forward\Windsock.fx" />
     <Content Include="Content\Textures\gaze.png" />
     <Content Include="Content\Textures\loading_aircraft.png" />
     <Content Include="Content\Textures\mouse.png" />

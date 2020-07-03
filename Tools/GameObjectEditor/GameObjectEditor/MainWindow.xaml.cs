@@ -28,7 +28,7 @@ namespace GameObjectEditor
     /// </summary>
     public partial class MainWindow : Window
     {
-        String gamepath = @"C:\Projects\GuruEngineTest\GuruEngineTest\GuruEngine\ECS";
+        String gamepath = @"C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\GuruEngine\ECS";
         String InitialDirectory = @"C:\Data\Fox1";
         Dictionary<String, GameComponentDescriptor> componentTypes = new Dictionary<string, GameComponentDescriptor>();
         private ScaleTransform _scaleTransform;

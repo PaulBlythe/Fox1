@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/CirrusClouds.fx</SourceFile>
+  <SourceTime>2020-06-25T11:36:43.5361211+01:00</SourceTime>
+  <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Content/Shaders/Deferred/CirrusClouds.xnb</DestFile>
+  <DestTime>2020-06-29T18:16:32.0060308+01:00</DestTime>
+  <Importer>EffectImporter</Importer>
+  <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
+  <Processor>EffectProcessor</Processor>
+  <ProcessorTime>2018-09-23T22:55:52+01:00</ProcessorTime>
+  <Parameters>
+    <Key>DebugMode</Key>
+    <Value>Auto</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

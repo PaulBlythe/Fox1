@@ -264,7 +264,6 @@ namespace GuruEngine.ECS.Components.Mesh
             }
             else
             {
-
                 Active = true;
             }
         }

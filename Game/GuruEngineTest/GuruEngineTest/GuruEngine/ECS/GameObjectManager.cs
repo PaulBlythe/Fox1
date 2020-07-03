@@ -299,6 +299,10 @@ namespace GuruEngine.ECS
                         newobj = new AircraftStateComponent();
                         break;
 
+                    case "WindsockComponent":
+                        newobj = new WindsockComponent();
+                        break;
+
 
                     default:
                         throw new Exception("Game component " + gor.Type + " Not added to the game object manager");

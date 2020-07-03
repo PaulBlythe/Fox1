@@ -39,6 +39,8 @@ namespace GUITestbed.GUI.Dialogs
 
         public override void Message(string s)
         {
+            GuiManager.Instance.DelayedRemoveTop();
+
             base.Message(s);
         }
     }

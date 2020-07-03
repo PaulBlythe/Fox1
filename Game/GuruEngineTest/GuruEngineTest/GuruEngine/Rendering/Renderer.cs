@@ -373,6 +373,7 @@ namespace GuruEngine.Rendering
         {
             current.AddShader(name, fx);
         }
+
         public Effect ApplyShader(WorldState state, RenderCommand r)
         {
             return current.ApplyShader(state, r);
@@ -516,19 +517,21 @@ namespace GuruEngine.Rendering
         {
             Renderer.Instance.AddCommand(rs);
         }
+
         public static bool IsHDREnabled()
         {
             return Renderer.Instance.renderSettings.HDREnabled;
         }
+
         public static Skies GetSkyType()
         {
             return Renderer.Instance.renderSettings.SkyType;
         }
+
         public static float GetAspectRatio()
         {
             return Instance.device.Viewport.AspectRatio;
         }
-
 
         public static String GetShaderName(String ID)
         {
@@ -542,12 +545,22 @@ namespace GuruEngine.Rendering
                         return @"Shaders\Forward\Ocean";
                     case "Glass":
                         return @"Shaders\Forward\Glass";
+                    case "Windsock":
+                        return @"Shaders\Forward\Windsock";
+                    case "Textured":
+                        return @"Shaders\Forward\Textured";
+
+                    default:
+                        throw new Exception("missing shader");
                 }
             }
             else
             {
                 switch (ID)
                 {
+                    case "Windsock":
+                        return @"Shaders\Deferred\Windsock";
+
                     case "MeshPartShader":
                         return @"Shaders\Deferred\MeshPart";
                     case "Ocean":
@@ -556,6 +569,8 @@ namespace GuruEngine.Rendering
                         return @"Shaders\Forward\Glass";
                     case "Cirrus":
                         return @"Shaders\Deferred\CirrusClouds";
+                    case "Textured":
+                        return @"Shaders\Deferred\Textured";
                 }
             }
             return "";

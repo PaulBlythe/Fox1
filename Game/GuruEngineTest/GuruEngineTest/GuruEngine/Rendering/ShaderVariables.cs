@@ -49,6 +49,9 @@ namespace GuruEngine.Rendering
         Lit,                // lit by the sun
         MoonLit,            // lit by the moon
 
+        WindSpeed,
+        WindDirection,
+
         TOTAL
     }
 }

@@ -262,6 +262,5 @@ namespace GuruEngineTest.Scenes.Developer
             batch.DrawRectangle(r, Color.White);
         }
 
-
     }
 }

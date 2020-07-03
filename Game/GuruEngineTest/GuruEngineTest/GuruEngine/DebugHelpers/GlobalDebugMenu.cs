@@ -13,6 +13,7 @@ using GuruEngine.Assets;
 using GuruEngine.World;
 using GuruEngine.DebugHelpers;
 using GuruEngine.Rendering;
+using GuruEngine.World.Weather;
 
 namespace GuruEngine.DebugHelpers
 {
@@ -23,6 +24,7 @@ namespace GuruEngine.DebugHelpers
         public List<Vector2> textpositions = new List<Vector2>();
 
         public abstract GDMenuItem HandleEvent(int i);
+        public abstract void DrawExtra(SpriteBatch batch);
     }
 
     #region Menus
@@ -64,6 +66,10 @@ namespace GuruEngine.DebugHelpers
                     break;
             }
             return this;
+        }
+
+        public override void DrawExtra(SpriteBatch batch)
+        {
         }
     }
 
@@ -113,6 +119,9 @@ namespace GuruEngine.DebugHelpers
             }
             return this;
         }
+        public override void DrawExtra(SpriteBatch batch)
+        {
+        }
     }
 
     public class RendererTopMenu : GDMenuItem
@@ -153,7 +162,54 @@ namespace GuruEngine.DebugHelpers
             }
             return this;
         }
+        public override void DrawExtra(SpriteBatch batch)
+        {
+        }
     }
+
+    public class WeatherMenu : GDMenuItem
+    {
+        public WeatherMenu()
+        {
+            Rectangle b = new Rectangle(15, 15, 286, 32);
+            buttons.Add(b);
+            b = new Rectangle(15, 15 + (1 * 50), 286, 32);
+            buttons.Add(b);
+
+            b = new Rectangle(15, 15 + (12 * 50), 286, 32);
+            buttons.Add(b);
+
+            text.Add("Windspeed +");
+            text.Add("Windspeed -");
+            text.Add("Back");
+
+            textpositions.Add(new Vector2(18, 20));
+            textpositions.Add(new Vector2(18, 20 + (1 * 50)));
+
+            textpositions.Add(new Vector2(18, 20 + (12 * 50)));
+        }
+        public override GDMenuItem HandleEvent(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    WeatherManager.SetWindSpeed(WeatherManager.GetWindSpeed() + 1);
+                    break;
+                case 1:
+                    WeatherManager.SetWindSpeed(WeatherManager.GetWindSpeed() - 1);
+                    break;
+                case 2:
+                    return new WorldTopLevelMenu();
+            }
+            return this;
+        }
+        public override void DrawExtra(SpriteBatch batch)
+        {
+            String t = String.Format("Wind speed {0}", WeatherManager.GetWindSpeed());
+            batch.DrawString(AssetManager.GetDebugFont(), t, new Vector2(960, 30), Color.Black);
+        }
+    }
+
 
     public class PhysicsTopLevelMenu : GDMenuItem
     {
@@ -212,6 +268,10 @@ namespace GuruEngine.DebugHelpers
             }
             return this;
         }
+
+        public override void DrawExtra(SpriteBatch batch)
+        {
+        }
     }
 
     public class WorldTopLevelMenu : GDMenuItem
@@ -226,6 +286,8 @@ namespace GuruEngine.DebugHelpers
             buttons.Add(b);
             b = new Rectangle(15, 15 + (3 * 50), 286, 32);
             buttons.Add(b);
+            b = new Rectangle(15, 15 + (4 * 50), 286, 32);
+            buttons.Add(b);
             b = new Rectangle(15, 15 + (12 * 50), 286, 32);
             buttons.Add(b);
 
@@ -233,12 +295,14 @@ namespace GuruEngine.DebugHelpers
             text.Add("Show clock");
             text.Add("Time * 10");
             text.Add("Time / 10");
+            text.Add("Weather");
             text.Add("Back");
 
             textpositions.Add(new Vector2(18, 20));
             textpositions.Add(new Vector2(18, 20 + (1 * 50)));
             textpositions.Add(new Vector2(18, 20 + (2 * 50)));
             textpositions.Add(new Vector2(18, 20 + (3 * 50)));
+            textpositions.Add(new Vector2(18, 20 + (4 * 50)));
             textpositions.Add(new Vector2(18, 20 + (12 * 50)));
         }
 
@@ -259,9 +323,15 @@ namespace GuruEngine.DebugHelpers
                     WorldState.ChangeTimeStepMultiplier(1.0f / 10.0f);
                     break;
                 case 4:
+                    return new WeatherMenu();
+                case 5:
                     return new TopLevelMenu();
             }
             return this;
+        }
+        public override void DrawExtra(SpriteBatch batch)
+        {
+           
         }
     }
 
@@ -320,6 +390,7 @@ namespace GuruEngine.DebugHelpers
                 {
                     batch.DrawString(AssetManager.GetDebugFont(), current.text[i], current.textpositions[i], Color.White);
                 }
+                current.DrawExtra(batch);
                 batch.End();
 
                 if (ms.LeftButton == ButtonState.Released)

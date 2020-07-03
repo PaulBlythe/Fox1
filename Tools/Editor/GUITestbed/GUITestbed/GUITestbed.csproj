@@ -63,6 +63,24 @@
   <ItemGroup>
     <Compile Include="DataHandlers\CSV.cs" />
     <Compile Include="DataHandlers\DataBase.cs" />
+    <Compile Include="DataHandlers\FG\Airport.cs" />
+    <Compile Include="DataHandlers\FG\AirportDatabase.cs" />
+    <Compile Include="DataHandlers\FG\APTHelper.cs" />
+    <Compile Include="DataHandlers\FG\Boundary.cs" />
+    <Compile Include="DataHandlers\FG\Helipad.cs" />
+    <Compile Include="DataHandlers\FG\LightingObject.cs" />
+    <Compile Include="DataHandlers\FG\LinearFeature.cs" />
+    <Compile Include="DataHandlers\FG\LineNode.cs" />
+    <Compile Include="DataHandlers\FG\Node.cs" />
+    <Compile Include="DataHandlers\FG\Pavement.cs" />
+    <Compile Include="DataHandlers\FG\PointSequence.cs" />
+    <Compile Include="DataHandlers\FG\RadioFrequency.cs" />
+    <Compile Include="DataHandlers\FG\Runway.cs" />
+    <Compile Include="DataHandlers\FG\RunwayEnd.cs" />
+    <Compile Include="DataHandlers\FG\Segment2.cs" />
+    <Compile Include="DataHandlers\FG\Sign.cs" />
+    <Compile Include="DataHandlers\FG\ViewPoint.cs" />
+    <Compile Include="DataHandlers\FG\Windsock.cs" />
     <Compile Include="DataHandlers\Fox1\Objects\Airport.cs" />
     <Compile Include="DataHandlers\Fox1\Objects\AirportObjectList.cs" />
     <Compile Include="DataHandlers\Fox1\Objects\ApronEdgeLight.cs" />
@@ -102,6 +120,7 @@
     <Compile Include="DataHandlers\Mapping\Types\DoublePoint.cs" />
     <Compile Include="DataHandlers\Mapping\Types\IntPoint.cs" />
     <Compile Include="DataHandlers\Mapping\Types\Region.cs" />
+    <Compile Include="DataHandlers\Parser.cs" />
     <Compile Include="DataHandlers\Shape\ShapeFile.cs" />
     <Compile Include="DataHandlers\Shape\SHP\SHPElement.cs" />
     <Compile Include="DataHandlers\Shape\SHP\SHPMultiPoint.cs" />
@@ -159,9 +178,11 @@
     <Compile Include="SerialisableData\Location.cs" />
     <Compile Include="SerialisableData\MapGeneratorData.cs" />
     <Compile Include="SerialisableData\SerialisableObject.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Tools\MapGenerator.cs" />
     <Compile Include="Tools\Tool.cs" />
     <Compile Include="Tools\WorldDisplayTool.cs" />
+    <Compile Include="World\BezierVector2D.cs" />
     <Compile Include="World\Cartography.cs" />
     <Compile Include="World\Constants.cs" />
     <Compile Include="World\MathUtils.cs" />

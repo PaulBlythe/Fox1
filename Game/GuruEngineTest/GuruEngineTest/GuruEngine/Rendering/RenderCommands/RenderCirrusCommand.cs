@@ -20,6 +20,8 @@ namespace GuruEngine.Rendering.RenderCommands
             Shader = Renderer.GetShaderName("Cirrus");
             ShaderTechnique = "BasicColorDrawing";
             World = Matrix.Identity;
+
+
         }
 
         public override void PreRender(GraphicsDevice dev)

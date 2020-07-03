@@ -9,6 +9,7 @@ using GUITestbed.Tools;
 using GUITestbed.SerialisableData;
 using GUITestbed.GUI.Dialogs;
 using GUITestbed.DataHandlers.Fox1.Objects;
+using GUITestbed.DataHandlers.FG;
 
 namespace GUITestbed.GUI.Items
 {
@@ -21,7 +22,8 @@ namespace GUITestbed.GUI.Items
         OpenFileDialog loader = null;
         TextEntryDialog textentry = null;
 
-        Airport currentAirport;
+        GUITestbed.DataHandlers.Fox1.Objects.Airport currentAirport;
+        AirportDatabase currentDatabase = null;
 
         public MainMenu()
         {
@@ -242,6 +244,13 @@ namespace GUITestbed.GUI.Items
                     }
                     break;
 
+                case "Button:Scan APT.DAT":
+                    {
+                        loader = new OpenFileDialog(Settings.APTDirectory, "Load apt.dat", ".dat", new Rectangle((1920 - 800) / 2, 100, 800, 700), ScanAPT);
+                        GuiManager.Instance.Add(loader);
+                    }
+                    break;
+
                 case "Button:Find ICAO":
                     {
                         textentry = new TextEntryDialog("ICAO", SearchAPTForICAO);
@@ -291,15 +300,46 @@ namespace GUITestbed.GUI.Items
         }
 
         #region Callbacks
+        public bool ScanAPT(String f)
+        {
+            if (f != "")
+            {
+                currentDatabase = new AirportDatabase(f);
+                for (int i=0;i<Widgets.Count;i++)
+                {
+                    if (Widgets[i] is Button)
+                    {
+                        Button b = (Button)Widgets[i];
+                        b.Active = true;
+                    }
+                }
+            }
+            return true;
+        }
         public bool SearchAPTForName(String f)
         {
             GuiManager.Instance.RemoveTopLevelDialog();
+            int indx = currentDatabase.FindName(f);
+            if (indx<0)
+            {
+                GuiManager.Instance.Add(new MessageBox("Search for name", "No Airport node"));
+                return false;
+            }
+
             return true;
         }
 
         public bool SearchAPTForICAO(String f)
         {
             GuiManager.Instance.RemoveTopLevelDialog();
+
+            int indx = currentDatabase.FindICAO(f);
+            if (indx < 0)
+            {
+                GuiManager.Instance.Add(new MessageBox("Search for ICAO", "No Airport node"));
+                return false;
+            }
+            
             return true;
         }
 
@@ -472,13 +512,13 @@ namespace GUITestbed.GUI.Items
 
         public bool LoadAirport(String f)
         {
-           
+
             if (WorldDisplayTool.Instance == null)
             {
                 WorldDisplayTool w = new WorldDisplayTool();
                 Game1.Instance.current = w;
             }
-            currentAirport = new Airport(f);
+            currentAirport = new GUITestbed.DataHandlers.Fox1.Objects.Airport(f);
             WorldDisplayTool.Instance.AddAirport(currentAirport);
             WorldDisplayTool.Instance.ScanObjects();
 
@@ -598,8 +638,10 @@ namespace GUITestbed.GUI.Items
                 b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 235, 200, 30), "Scan APT.DAT");
                 Widgets.Add(b);
                 b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 275, 200, 30), "Find ICAO");
+                b.Active = false;
                 Widgets.Add(b);
                 b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 315, 200, 30), "Find name");
+                b.Active = false;
                 Widgets.Add(b);
             }
         }

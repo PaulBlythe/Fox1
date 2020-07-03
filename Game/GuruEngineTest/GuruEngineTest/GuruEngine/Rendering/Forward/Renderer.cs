@@ -17,6 +17,7 @@ using GuruEngine.World;
 using GuruEngine.Assets;
 using GuruEngine.Maths;
 using GuruEngine.Rendering.Particles;
+using GuruEngine.World.Weather;
 
 namespace GuruEngine
 {
@@ -93,14 +94,15 @@ namespace GuruEngine
             }
             #endregion
 
- 
             #region Register standard shaders
-          
+
+            AssetManager.AddShaderToQue(@"Shaders\Forward\Windsock");
             AssetManager.AddShaderToQue(@"Shaders\Forward\MeshPartShader");
             AssetManager.AddShaderToQue(@"Shaders\Forward\Glass");
             AssetManager.AddShaderToQue(@"Shaders\Forward\Ocean");
             AssetManager.AddShaderToQue(@"Shaders\Forward\ShadowMap");
             AssetManager.AddShaderToQue(@"Shaders\2D\ParticleEffect");
+            AssetManager.AddShaderToQue(@"Shaders\Forward\Textured");
             #endregion
 
             rtc = new RenderTargetCube(device, 256, false, SurfaceFormat.Color, DepthFormat.None);
@@ -143,7 +145,6 @@ namespace GuruEngine
                     CameraForward = Copy(state.CameraForward);
                 }
             }
-
 
             SwapBuffers();
             TellUpdateToContinue();
@@ -638,9 +639,21 @@ namespace GuruEngine
                 {
                     switch (s)
                     {
+                        case ShaderVariables.WindSpeed:
+                            if (fx.Parameters["WindSpeed"] != null)
+                                fx.Parameters["WindSpeed"].SetValue(WeatherManager.GetWindSpeed());
+                            break;
+
+                        case ShaderVariables.WindDirection:
+                            if (fx.Parameters["WindDirection"] != null)
+                                fx.Parameters["WindDirection"].SetValue(WeatherManager.GetWindDirection());
+                            break;
+
                         case ShaderVariables.Lit:
                             {
                                 float h1 = MathUtils.HorizonDistance(r.World.Translation.Y);
+                                if (h1 < 1)
+                                    h1 = 1;
                                 Vector2 i1, i2;
                                 MathUtils.FindCircleCircleIntersections(0, 0, 6357000.0f, 0, r.World.Translation.Y + 6357000.0f, h1, out i1, out i2);
                                 Vector3 direction = new Vector3(0, r.World.Translation.Y, 0) - new Vector3(i1.X, i1.Y - 6357000.0f, 0);

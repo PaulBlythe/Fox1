@@ -1,0 +1,267 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using GuruEngine.Rendering.Objects;
+using GuruEngine.Rendering.VertexDeclarations;
+
+namespace GuruEngine.Geometry
+{
+    public static class Geometry
+    {
+        public static TriangleMesh GenerateTaperedCylinder(Vector3 sp, float start_radius, float end_radius, float length, int segments, int ridges)
+        {
+            TriangleMesh result = new TriangleMesh();
+
+            List<VertexPositionNormalTexture> Circles = new List<VertexPositionNormalTexture>();
+            List<short> inds = new List<short>();
+
+            float angle_step = (2 * MathHelper.Pi) / (segments - 1);
+            float current_radius = start_radius;
+
+            Vector3 cp = sp;
+            float radius_step = (start_radius - end_radius) / ridges;
+
+            float texx = 0;
+            for (int i=0; i<=ridges; i++)
+            {
+                float angle = 0;
+                
+                for (int j=0; j<segments; j++)
+                {
+                    Matrix m = Matrix.CreateRotationZ(angle);
+
+                    Vector3 n = Vector3.Transform(Vector3.Up, m);
+                    Vector3 p = cp + (n * current_radius);
+                    Vector2 t = new Vector2(texx, angle / MathHelper.TwoPi);
+
+                    VertexPositionNormalTexture v = new VertexPositionNormalTexture();
+                    v.Position = p;
+                    v.Normal = n;
+                    v.TextureCoordinate = t;
+                    Circles.Add(v);
+
+                    angle += angle_step;
+                }
+                cp.Z += (length / ridges);
+                current_radius -= radius_step;
+                texx += 1.0f / (ridges);
+            }
+            result.Vertices = Circles.ToArray();
+
+            int sv = 0;
+            for (int i=0; i<ridges; i++)
+            {
+                for (int j=0; j<segments; j++)
+                {
+                    if (j == segments - 1)
+                    {
+                        inds.Add((short)(sv + j));
+                        inds.Add((short)sv);
+                        inds.Add((short)(sv + segments));
+
+                        inds.Add((short)(sv + j));
+                        inds.Add((short)(sv + j + segments));
+                        inds.Add((short)(sv + segments));
+                    }
+                    else
+                    {
+                        inds.Add((short)(sv + j));
+                        inds.Add((short)(sv + j + 1));
+                        inds.Add((short)(sv + j + 1 + segments));
+
+                        inds.Add((short)(sv + j));
+                        inds.Add((short)(sv + j + segments));
+                        inds.Add((short)(sv + j + 1 + segments));
+                    }
+
+
+                }
+                sv += segments;
+            }
+            result.Indices = inds.ToArray();
+
+            return result;
+        }
+
+        public static TriangleMesh GeneratePost(float height, float side)
+        {
+            TriangleMesh result = new TriangleMesh();
+
+            Vector3 top1 = new Vector3(-side, height, -side);
+            Vector3 top2 = new Vector3(-side, height,  side);
+            Vector3 top3 = new Vector3( side, height,  side);
+            Vector3 top4 = new Vector3( side, height, -side);
+
+
+            Vector3 b1 = new Vector3(-side, 0, -side);
+            Vector3 b2 = new Vector3(-side, 0,  side);
+            Vector3 b3 = new Vector3( side, 0,  side);
+            Vector3 b4 = new Vector3( side, 0, -side);
+
+            List<VertexPositionNormalTexture> verts = new List<VertexPositionNormalTexture>();
+            List<short> inds = new List<short>();
+
+            // Top
+            VertexPositionNormalTexture v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Up;
+            v.Position = top1;
+            v.TextureCoordinate = new Vector2(0, 0);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Up;
+            v.Position = top2;
+            v.TextureCoordinate = new Vector2(0, 1);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Up;
+            v.Position = top3;
+            v.TextureCoordinate = new Vector2(1, 1);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Up;
+            v.Position = top4;
+            v.TextureCoordinate = new Vector2(1, 0);
+            verts.Add(v);
+
+            inds.Add(0); inds.Add(1); inds.Add(2);
+            inds.Add(0); inds.Add(2); inds.Add(3);
+
+            // Bottom
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Down;
+            v.Position = b1;
+            v.TextureCoordinate = new Vector2(0, 0);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Down;
+            v.Position = b2;
+            v.TextureCoordinate = new Vector2(0, 1);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Down;
+            v.Position = b3;
+            v.TextureCoordinate = new Vector2(1, 1);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Down;
+            v.Position = b4;
+            v.TextureCoordinate = new Vector2(1, 0);
+            verts.Add(v);
+
+            inds.Add(0 + 4); inds.Add(1 + 4); inds.Add(2 + 4);
+            inds.Add(0 + 4); inds.Add(2 + 4); inds.Add(3 + 4);
+
+            // Left
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Left;
+            v.Position = top1;
+            v.TextureCoordinate = new Vector2(0, 0);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Left;
+            v.Position = b1;
+            v.TextureCoordinate = new Vector2(0, height);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Left;
+            v.Position = b2;
+            v.TextureCoordinate = new Vector2(side, height);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Left;
+            v.Position = top2;
+            v.TextureCoordinate = new Vector2(side, height);
+            verts.Add(v);
+
+            inds.Add(0 + 8); inds.Add(1 + 8); inds.Add(2 + 8);
+            inds.Add(0 + 8); inds.Add(2 + 8); inds.Add(3 + 8);
+
+            // Right
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Right;
+            v.Position = top3;
+            v.TextureCoordinate = new Vector2(0, 0);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Right;
+            v.Position = b3;
+            v.TextureCoordinate = new Vector2(0, height);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Right;
+            v.Position = b4;
+            v.TextureCoordinate = new Vector2(side, height);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Right;
+            v.Position = top4;
+            v.TextureCoordinate = new Vector2(side, height);
+            verts.Add(v);
+
+            inds.Add(0 + 12); inds.Add(1 + 12); inds.Add(2 + 12);
+            inds.Add(0 + 12); inds.Add(2 + 12); inds.Add(3 + 12);
+
+
+            // Back
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Backward;
+            v.Position = top1;
+            v.TextureCoordinate = new Vector2(0, 0);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Backward;
+            v.Position = b1;
+            v.TextureCoordinate = new Vector2(0, height);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Backward;
+            v.Position = b4;
+            v.TextureCoordinate = new Vector2(side, height);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Backward;
+            v.Position = top4;
+            v.TextureCoordinate = new Vector2(side, height);
+            verts.Add(v);
+
+            inds.Add(0 + 16); inds.Add(1 + 16); inds.Add(2 + 16);
+            inds.Add(0 + 16); inds.Add(2 + 16); inds.Add(3 + 16);
+
+            // Front
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Forward;
+            v.Position = top2;
+            v.TextureCoordinate = new Vector2(0, 0);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Forward;
+            v.Position = b2;
+            v.TextureCoordinate = new Vector2(0, height);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Forward;
+            v.Position = b3;
+            v.TextureCoordinate = new Vector2(side, height);
+            verts.Add(v);
+            v = new VertexPositionNormalTexture();
+            v.Normal = Vector3.Forward;
+            v.Position = top3;
+            v.TextureCoordinate = new Vector2(side, height);
+            verts.Add(v);
+
+            inds.Add(0 + 20); inds.Add(1 + 20); inds.Add(2 + 20);
+            inds.Add(0 + 20); inds.Add(2 + 20); inds.Add(3 + 20);
+
+
+            result.Vertices = verts.ToArray();
+            result.Indices = inds.ToArray();
+            return result;
+        }
+    }
+}

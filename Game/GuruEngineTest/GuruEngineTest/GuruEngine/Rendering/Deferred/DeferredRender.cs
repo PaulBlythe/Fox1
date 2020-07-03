@@ -14,6 +14,7 @@ using GuruEngine.World;
 using GuruEngine.Assets;
 using GuruEngine.Maths;
 using GuruEngine.Rendering.Particles;
+using GuruEngine.World.Weather;
 
 namespace GuruEngine.Rendering.Deferred
 {
@@ -51,6 +52,7 @@ namespace GuruEngine.Rendering.Deferred
         Effect pointLightEffect;
         Effect ocean;
         Effect ssao;
+        Effect restore;
         #endregion
 
         RenderTarget2D colorRT;     // Color and Specular Intensity
@@ -59,6 +61,7 @@ namespace GuruEngine.Rendering.Deferred
         RenderTarget2D lightRT;     // Light accumulator
         RenderTarget2D materialRT;  // Material properties (x = specular strength, y = specular power / 255)
         RenderTarget2D skyRT;
+        RenderTarget2D final;
 
         private Dictionary<String, Effect> loadedShaders = new Dictionary<string, Effect>();
 
@@ -100,6 +103,7 @@ namespace GuruEngine.Rendering.Deferred
             depthRT = new RenderTarget2D(device, backBufferWidth, backBufferHeight, false, SurfaceFormat.Single, DepthFormat.Depth24);
             lightRT = new RenderTarget2D(device, backBufferWidth, backBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
             skyRT = new RenderTarget2D(device, backBufferWidth, backBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
+            final = new RenderTarget2D(device, backBufferWidth, backBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
 
             GBufferTargets[0] = new RenderTargetBinding(colorRT);
             GBufferTargets[1] = new RenderTargetBinding(normalRT);
@@ -144,6 +148,7 @@ namespace GuruEngine.Rendering.Deferred
             AssetManager.AddShaderToQue(@"Shaders\Deferred\Ocean");
             AssetManager.AddShaderToQue(@"Shaders\2D\ParticleEffect");
             AssetManager.AddShaderToQue(@"Shaders\Deferred\DSSAO");
+            AssetManager.AddShaderToQue(@"Shaders\Deferred\RestoreDepthBuffer");
 
             String mesh = @"StaticMeshes\sphere";
             AssetManager.AddStaticMeshToQue(mesh);
@@ -189,7 +194,7 @@ namespace GuruEngine.Rendering.Deferred
                 pointLightEffect = AssetManager.Shader(@"Shaders\Deferred\PointLight".GetHashCode());
                 ocean = AssetManager.Shader(@"Shaders\Deferred\Ocean".GetHashCode());
                 ssao = AssetManager.Shader(@"Shaders\Deferred\DSSAO".GetHashCode());
-
+                restore = AssetManager.Shader(@"Shaders\Deferred\RestoreDepthBuffer".GetHashCode());
 
                 sphereModel = AssetManager.StaticMesh(GUID);
                 if ((sphereModel == null) ||
@@ -198,6 +203,8 @@ namespace GuruEngine.Rendering.Deferred
                     (directionalLightEffect == null) ||
                     (finalCombineEffect == null) ||
                     (pointLightEffect == null) ||
+                    (ssao == null) ||
+                    (restore == null) ||
                     (ocean == null))
                 {
                     SignalRenderingComplete();
@@ -299,8 +306,6 @@ namespace GuruEngine.Rendering.Deferred
 
             DrawLights(View, Projection);
 
-            
-
             switch (Renderer.Instance.renderSettings.SSAOType)
             {
                 case SSAOTypes.Simple:
@@ -333,6 +338,7 @@ namespace GuruEngine.Rendering.Deferred
                     break;
 
                 default:
+                    device.SetRenderTarget(final);
                     finalCombineEffect.Parameters["colorMap"].SetValue(colorRT);
                     finalCombineEffect.Parameters["lightMap"].SetValue(lightRT);
                     finalCombineEffect.Parameters["halfPixel"].SetValue(halfPixel);
@@ -341,9 +347,14 @@ namespace GuruEngine.Rendering.Deferred
                     
                     finalCombineEffect.Techniques[0].Passes[0].Apply();
                     QRender.Render(Vector2.One * -1, Vector2.One);
+                    device.SetRenderTarget(null);
                     break;
             }
 
+            restore.Parameters["colorMap"].SetValue(final);
+            restore.Parameters["depthmap"].SetValue(depthRT);
+            restore.Techniques[0].Passes[0].Apply();
+            QRender.Render(Vector2.One * -1, Vector2.One);
 
             SignalRenderingComplete();
             Engine.EndDrawFrame(gt);
@@ -426,6 +437,10 @@ namespace GuruEngine.Rendering.Deferred
 
         }
 
+        /// <summary>
+        /// Environment map creation
+        /// </summary>
+        /// <param name="renderingRenderCommand"></param>
         private void CreateEnvironmentMap(RenderCommandSet renderingRenderCommand)
         {
             Matrix Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(90), 1, 1, 10000);
@@ -494,6 +509,11 @@ namespace GuruEngine.Rendering.Deferred
         }
 
         #region Shader management
+        /// <summary>
+        /// Add a shader 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fx"></param>
         public override void AddShader(String name, Effect fx)
         {
             if (loadedShaders.ContainsKey(name))
@@ -515,6 +535,14 @@ namespace GuruEngine.Rendering.Deferred
                 {
                     switch (s)
                     {
+                        case ShaderVariables.WindSpeed:
+                            if (fx.Parameters["WindSpeed"] != null)
+                                fx.Parameters["WindSpeed"].SetValue(WeatherManager.GetWindSpeed());
+                            break;
+                        case ShaderVariables.WindDirection:
+                            if (fx.Parameters["WindDirection"] != null)
+                                fx.Parameters["WindDirection"].SetValue(WeatherManager.GetWindDirection());
+                            break;
                         case ShaderVariables.WorldViewProjection:
                             fx.Parameters["WorldViewProjection"].SetValue(r.World * View * Projection);
                             break;

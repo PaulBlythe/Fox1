@@ -16,6 +16,7 @@ namespace GUITestbed.GUI
         Effect button_effect;
         Effect glyph_effect;
         Texture2D verdana_small;
+        bool RemoveTop = false;
 
         public SpriteBatch sbatch;
         public GUIBatch batch;
@@ -67,6 +68,11 @@ namespace GUITestbed.GUI
 
         public void Update(float dt)
         {
+            if (RemoveTop)
+            {
+                RemoveTop = false;
+                RemoveTopLevelDialog();
+            }
             if (pendingEvents.Count>0)
             {
                 String s = pendingEvents[0];
@@ -151,6 +157,11 @@ namespace GUITestbed.GUI
         public String GetTopLevelDialogName()
         {
             return dialogs[dialogs.Count - 1].Name;
+        }
+
+        public void DelayedRemoveTop()
+        {
+            RemoveTop = true;
         }
 
         public String GetString(Keys[] keys)

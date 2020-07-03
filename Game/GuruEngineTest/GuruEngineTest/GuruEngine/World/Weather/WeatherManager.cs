@@ -48,6 +48,11 @@ namespace GuruEngine.World.Weather
         {
             return Instance.WindSpeed;
         }
+
+        public static void SetWindSpeed(float speed)
+        {
+            Instance.WindSpeed = Math.Max(speed,0);
+        }
         #endregion
     }
 }

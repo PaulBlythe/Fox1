@@ -12,6 +12,7 @@ namespace GUITestbed.GUI.Widgets
         String Text;
         Rectangle Region;
         MouseState oldms;
+        public bool Active = true;
 
         public Button(Rectangle r, String text)
         {
@@ -40,10 +41,17 @@ namespace GUITestbed.GUI.Widgets
         {
             MouseState ms = Mouse.GetState();
             {
-                if (Region.Contains(ms.X, ms.Y))
-                    b.FillRectangle(Region, GuiManager.Instance.Theme.HiliteColour);
+                if (Active)
+                {
+                    if (Region.Contains(ms.X, ms.Y))
+                        b.FillRectangle(Region, GuiManager.Instance.Theme.HiliteColour);
+                    else
+                        b.FillRectangle(Region, GuiManager.Instance.Theme.FillColour);
+                }
                 else
+                {
                     b.FillRectangle(Region, GuiManager.Instance.Theme.FillColour);
+                }
             }
         }
 
@@ -53,7 +61,10 @@ namespace GUITestbed.GUI.Widgets
             w.X *= -0.5f;
             w.X += (Region.X + (Region.Width / 2));
             w.Y = (Region.Y + (Region.Height - (w.Y / 2)));
-            b.DrawString(Text, w, GuiManager.Instance.Theme.FontColour);
+            if (Active)
+                b.DrawString(Text, w, GuiManager.Instance.Theme.FontColour);
+            else
+                b.DrawString(Text, w, GuiManager.Instance.Theme.AlternateFontColour);
         }
 
         public override void Message(string s)

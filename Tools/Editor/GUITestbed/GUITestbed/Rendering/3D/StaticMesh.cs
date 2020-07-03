@@ -85,7 +85,6 @@ namespace GUITestbed.Rendering._3D
                 effect.Parameters["SunDirection"].SetValue(new Vector3(sunpos.X, sunpos.Y, sunpos.Z));
             }
 
-
             Game1.Instance.GraphicsDevice.SetVertexBuffer(verts);
             Game1.Instance.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             Game1.Instance.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
