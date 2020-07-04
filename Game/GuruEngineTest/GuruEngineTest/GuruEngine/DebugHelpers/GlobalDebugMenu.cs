@@ -175,16 +175,25 @@ namespace GuruEngine.DebugHelpers
             buttons.Add(b);
             b = new Rectangle(15, 15 + (1 * 50), 286, 32);
             buttons.Add(b);
+            b = new Rectangle(15, 15 + (2 * 50), 286, 32);
+            buttons.Add(b);
+            b = new Rectangle(15, 15 + (3 * 50), 286, 32);
+            buttons.Add(b);
 
             b = new Rectangle(15, 15 + (12 * 50), 286, 32);
             buttons.Add(b);
 
-            text.Add("Windspeed +");
-            text.Add("Windspeed -");
+            text.Add("Wind speed +");
+            text.Add("Wind speed -");
+            text.Add("Wind direction +");
+            text.Add("Wind direction -");
+
             text.Add("Back");
 
             textpositions.Add(new Vector2(18, 20));
             textpositions.Add(new Vector2(18, 20 + (1 * 50)));
+            textpositions.Add(new Vector2(18, 20 + (2 * 50)));
+            textpositions.Add(new Vector2(18, 20 + (3 * 50)));
 
             textpositions.Add(new Vector2(18, 20 + (12 * 50)));
         }
@@ -199,14 +208,22 @@ namespace GuruEngine.DebugHelpers
                     WeatherManager.SetWindSpeed(WeatherManager.GetWindSpeed() - 1);
                     break;
                 case 2:
+                    WeatherManager.SetWindDirection(WeatherManager.GetWindDirectionDegrees() + 5);
+                    break;
+                case 3:
+                    WeatherManager.SetWindDirection(WeatherManager.GetWindDirectionDegrees() - 5);
+                    break;
+                case 4:
                     return new WorldTopLevelMenu();
             }
             return this;
         }
         public override void DrawExtra(SpriteBatch batch)
         {
-            String t = String.Format("Wind speed {0}", WeatherManager.GetWindSpeed());
+            String t = String.Format("Wind speed {0} ms", WeatherManager.GetWindSpeed());
             batch.DrawString(AssetManager.GetDebugFont(), t, new Vector2(960, 30), Color.Black);
+            t = String.Format("Wind direction {0} degrees", WeatherManager.GetWindDirectionDegrees());
+            batch.DrawString(AssetManager.GetDebugFont(), t, new Vector2(960, 50), Color.Black);
         }
     }
 

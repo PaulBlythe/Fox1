@@ -17,6 +17,33 @@ namespace GuruEngine.Maths
             return t;
         }
 
+        public static float TrimAngleDegrees(float d)
+        {
+            if (d < 0)
+                return 360 + d;
+            if (d >= 360)
+                return d - 360;
+            return d;
+        }
+        public static float Clamp(float v, float min, float max)
+        {
+            if (v < min)
+                return min;
+            if (v > max)
+                return max;
+            return v;
+        }
+        public static float repeat(float t, float m)
+        {
+            return Clamp(t - (float)Math.Floor(t / m) * m, 0, m);
+        }
+
+        public static float LerpAngle(float a, float b, float t)
+        {
+            float dt = repeat(b - a, 360);
+            return MathHelper.SmoothStep(a, a + (dt > 180 ? dt - 360 : dt), t);
+        }
+
         public static double TableLookup2D(double rowKey, double colKey, double[] column, double[] row, double[,] data)
         {
             double rFactor, cFactor, col1temp, col2temp, Value;

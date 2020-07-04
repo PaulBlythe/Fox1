@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
+using GuruEngine.Maths;
+
 namespace GuruEngine.World.Weather
 {
     public class WeatherManager
@@ -15,6 +17,7 @@ namespace GuruEngine.World.Weather
         float CirrusCloudAmount;
         Vector3 WindDirection;
         float WindSpeed;            // in metres per second
+        float WindDirectionDegrees = 25;
         #endregion
 
         public WeatherManager()
@@ -24,9 +27,17 @@ namespace GuruEngine.World.Weather
             CirrusCloudHeight = 1000;
             CirrusCloudAmount = 100.0f;
             WindSpeed = 5;
-            WindDirection = new Vector3(1, 0, 0);
+            Matrix wd = Matrix.CreateRotationY(MathHelper.ToDegrees(WindDirectionDegrees));
+            WindDirection = Vector3.Transform(Vector3.Forward, wd);
         }
 
+        void UpdateWindDirection(float degrees)
+        {
+            WindDirectionDegrees = degrees;
+            WindDirectionDegrees = MathUtils.TrimAngleDegrees(WindDirectionDegrees);
+            Matrix wd = Matrix.CreateRotationY(MathHelper.ToDegrees(WindDirectionDegrees));
+            WindDirection = Vector3.Transform(Vector3.Forward, wd);
+        }
 
         #region Getters
         public static float GetCirrusHeight()
@@ -39,6 +50,10 @@ namespace GuruEngine.World.Weather
             return Instance.CirrusCloudAmount;
         }
 
+        public static float GetWindDirectionDegrees()
+        {
+            return Instance.WindDirectionDegrees;
+        }
         public static Vector3 GetWindDirection()
         {
             return Instance.WindDirection;
@@ -49,9 +64,17 @@ namespace GuruEngine.World.Weather
             return Instance.WindSpeed;
         }
 
+       
+        #endregion
+
+        #region Setters
+        public static void SetWindDirection(float degrees)
+        {
+            Instance.UpdateWindDirection(degrees);
+        }
         public static void SetWindSpeed(float speed)
         {
-            Instance.WindSpeed = Math.Max(speed,0);
+            Instance.WindSpeed = Math.Max(speed, 0);
         }
         #endregion
     }
