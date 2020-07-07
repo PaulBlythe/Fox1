@@ -17,15 +17,18 @@ float SunLit;
 float Shininess;
 float SpecularIntensity;
 float  DiffuseIntensity;
-float4 MaterialColour;
-float Windspeed;
-float3 WindDirection;
 
 
-texture ModelTexture;
+const float PI = 3.1415926535897;
+float LightMask = 1.0f;
+float WindSpeed;
+float time = 0;
+
+
+texture Texture1;
 sampler2D textureSampler = sampler_state
 {
-	Texture = (ModelTexture);
+	Texture = (Texture1);
 };
 
 struct VertexShaderInput
@@ -47,7 +50,15 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 {
 	VertexShaderOutput output = (VertexShaderOutput)0;
 
-	float4 worldPosition = mul(input.Position, World);
+	float ns = min(25, WindSpeed) / 25.0;
+	float tc = (2 * cos(time * 30 * ns)) + (cos(time * 52));
+	float delta = 0.08 * ns * input.TextureCoordinate.x * tc;
+
+	float4 pos = input.Position;
+
+	pos.y = lerp(pos.y, pos.y + delta, input.TextureCoordinate.x);
+
+	float4 worldPosition = mul(pos, World);
 	float4 viewPosition = mul(worldPosition, View);
 	output.Position = mul(viewPosition, Projection);
 
@@ -75,7 +86,7 @@ PixelShaderOutput MainPS(VertexShaderOutput input)
 	output.Material.y = Shininess;
 	output.Material.z = MoonLit;
 	output.Material.w = SunLit;
-	output.Color = DiffuseIntensity * colour * MaterialColour;			// output Color
+	output.Color = colour;			// output Color
 	output.Color.a = 0.0f;
 	output.Normal.rgb = 0.5f * (normalize(input.Normal) + 1.0f);		// transform normal domain
 	output.Normal.a = 1.0f;

@@ -63,8 +63,8 @@ namespace GuruEngineTest.Scenes.Developer
             WorldItem Moon = new Moon();
             worldState.AddWorldItem(Moon);
 
-            WindTunnel tunnel = new WindTunnel();
-            worldState.AddWorldItem(tunnel);
+            GroundPlane gp = new GroundPlane();
+            worldState.AddWorldItem(gp);
 
             sub = new LoadObject();
         }

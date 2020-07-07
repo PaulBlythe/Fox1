@@ -147,6 +147,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/Deferred/RestoreDepthBuffer.fx
 
+#begin Shaders/Deferred/Textured.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Deferred/Textured.fx
+
 #begin Shaders/Deferred/Windsock.fx
 /importer:EffectImporter
 /processor:EffectProcessor

@@ -49,7 +49,6 @@ namespace GuruEngine.Assets
                     texturepath = parent.TextureOverrides[Materials[i].Name];
                 }
 
-                
                 texturepath += ".png";
                 AssetManager.AddTextureToQue(texturepath);
                 Materials[i].TextureGUID = texturepath.GetHashCode();

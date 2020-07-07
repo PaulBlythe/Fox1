@@ -140,3 +140,4 @@ C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\bin\Windows\x86\Debug\Content\
 C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\bin\Windows\x86\Debug\Content\Shaders\Deferred\RestoreDepthBuffer.xnb
 C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\bin\Windows\x86\Debug\Content\Shaders\Forward\Windsock.xnb
 C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\bin\Windows\x86\Debug\Content\Shaders\Forward\Textured.xnb
+C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\bin\Windows\x86\Debug\Content\Shaders\Deferred\Textured.xnb

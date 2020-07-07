@@ -53,6 +53,8 @@ namespace GuruEngine.Rendering.Deferred
         Effect ocean;
         Effect ssao;
         Effect restore;
+        Effect textured;
+        Effect windsock;
         #endregion
 
         RenderTarget2D colorRT;     // Color and Specular Intensity
@@ -149,6 +151,8 @@ namespace GuruEngine.Rendering.Deferred
             AssetManager.AddShaderToQue(@"Shaders\2D\ParticleEffect");
             AssetManager.AddShaderToQue(@"Shaders\Deferred\DSSAO");
             AssetManager.AddShaderToQue(@"Shaders\Deferred\RestoreDepthBuffer");
+            AssetManager.AddShaderToQue(@"Shaders\Deferred\Textured");
+            AssetManager.AddShaderToQue(@"Shaders\Deferred\Windsock");
 
             String mesh = @"StaticMeshes\sphere";
             AssetManager.AddStaticMeshToQue(mesh);
@@ -195,6 +199,8 @@ namespace GuruEngine.Rendering.Deferred
                 ocean = AssetManager.Shader(@"Shaders\Deferred\Ocean".GetHashCode());
                 ssao = AssetManager.Shader(@"Shaders\Deferred\DSSAO".GetHashCode());
                 restore = AssetManager.Shader(@"Shaders\Deferred\RestoreDepthBuffer".GetHashCode());
+                textured = AssetManager.Shader(@"Shaders\Deferred\Textured".GetHashCode());
+                windsock = AssetManager.Shader(@"Shaders\Deferred\Windsock".GetHashCode());
 
                 sphereModel = AssetManager.StaticMesh(GUID);
                 if ((sphereModel == null) ||
@@ -205,12 +211,20 @@ namespace GuruEngine.Rendering.Deferred
                     (pointLightEffect == null) ||
                     (ssao == null) ||
                     (restore == null) ||
+                    (textured == null) ||
                     (ocean == null))
                 {
                     SignalRenderingComplete();
                     Engine.EndDrawFrame(gt);
                     SignalRendererFinished();
                     return;
+                }
+                foreach (ModelMesh mesh in sphereModel.Meshes)
+                {
+                    foreach (ModelMeshPart part in mesh.MeshParts)
+                    {
+                        part.Effect = pointLightEffect;
+                    }
                 }
             }
             loaded = true;
@@ -401,7 +415,7 @@ namespace GuruEngine.Rendering.Deferred
                                 r.material.Apply(fx);
                             }
                             device.SamplerStates[0] = Renderer.GetSamplerState(r.SamplerStateID);
-                            //device.BlendState = Bl;
+                            //device.BlendState = r.blendstate;
 
                             foreach (EffectPass p in fx.CurrentTechnique.Passes)
                             {
@@ -423,8 +437,6 @@ namespace GuruEngine.Rendering.Deferred
                                     case MeshType.UserPrimitives:
                                         r.Draw(device);
                                         break;
-
-
 
                                 }
                             }
@@ -593,13 +605,16 @@ namespace GuruEngine.Rendering.Deferred
                             break;
 
                         case ShaderVariables.SunColour:
-                            //fx.Parameters["SunColour"].SetValue(SunColour);
+                            if (fx.Parameters["SunColour"] != null)
+                                fx.Parameters["SunColour"].SetValue(SunColour);
                             break;
                         case ShaderVariables.SunDirection:
-                            //fx.Parameters["SunDirection"].SetValue(SunDirection);
+                            if (fx.Parameters["SunDirection"] != null)
+                                fx.Parameters["SunDirection"].SetValue(SunDirection);
                             break;
                         case ShaderVariables.AmbientColour:
-                            //fx.Parameters["AmbientColour"].SetValue(AmbientColour);
+                            if (fx.Parameters["AmbientColour"] != null)
+                                fx.Parameters["AmbientColour"].SetValue(AmbientColour);
                             break;
                         case ShaderVariables.WorldInverseTranspose:
                             Matrix m = Matrix.Transpose(Matrix.Invert(r.World));
@@ -610,7 +625,8 @@ namespace GuruEngine.Rendering.Deferred
                                 fx.Parameters["environmentMap"].SetValue(AssetManager.Instance.environment);
                             break;
                         case ShaderVariables.Time:
-                            fx.Parameters["time"].SetValue(time);
+                            if (fx.Parameters["time"] != null)
+                                fx.Parameters["time"].SetValue(time);
                             break;
 
                         case ShaderVariables.Texture01:
@@ -727,28 +743,36 @@ namespace GuruEngine.Rendering.Deferred
                 DrawDirectionalLight(View, Projection, d.Direction, d.Colour, d.Sun, d.Moon);
             }
 
-            foreach (GuruEngine.Rendering.Lights.PointLight pl in activeLightManager.pointLights)
-            {
-                DrawPointLight(View, Projection, pl.Position, pl.Colour, pl.Radius, pl.Intensity);
-            }
-
-            device.SetRenderTarget(null);
-
-        }
-
-        private void DrawPointLight(Matrix View, Matrix Projection, Vector3 lightPosition, Color color, float lightRadius, float lightIntensity)
-        {
             //set the G-Buffer parameters
-            pointLightEffect.Parameters["material"].SetValue(materialRT);
-            pointLightEffect.Parameters["normalMap"].SetValue(normalRT);
-            pointLightEffect.Parameters["depthMap"].SetValue(depthRT);
+            if (pointLightEffect.Parameters["material"] != null)
+                pointLightEffect.Parameters["material"].SetValue(materialRT);
+            if (pointLightEffect.Parameters["normalMap"] != null)
+                pointLightEffect.Parameters["normalMap"].SetValue(normalRT);
+            if (pointLightEffect.Parameters["depthMap"] != null)
+                pointLightEffect.Parameters["depthMap"].SetValue(depthRT);
 
-            //compute the light world matrix scale according to light radius, and translate it to light position
-            Matrix sphereWorldMatrix = Matrix.CreateScale(lightRadius) * Matrix.CreateTranslation(lightPosition);
-            pointLightEffect.Parameters["World"].SetValue(sphereWorldMatrix);
             pointLightEffect.Parameters["View"].SetValue(View);
             pointLightEffect.Parameters["Projection"].SetValue(Projection);
 
+            //parameters for specular computations
+            pointLightEffect.Parameters["cameraPosition"].SetValue(CameraPosition);
+            pointLightEffect.Parameters["InvertViewProjection"].SetValue(Matrix.Invert(View * Projection));
+
+            foreach (GuruEngine.Rendering.Lights.PointLight pl in activeLightManager.pointLights)
+            {
+                DrawPointLight(pl.Position, pl.Colour, pl.Radius, pl.Intensity);
+            }
+
+            device.SetRenderTarget(null);
+            device.RasterizerState = cullccw;
+        }
+
+        private void DrawPointLight(Vector3 lightPosition, Color color, float lightRadius, float lightIntensity)
+        {
+            //compute the light world matrix scale according to light radius, and translate it to light position
+            Matrix sphereWorldMatrix = Matrix.CreateScale(lightRadius) * Matrix.CreateTranslation(lightPosition);
+            pointLightEffect.Parameters["World"].SetValue(sphereWorldMatrix);
+          
             //light position
             pointLightEffect.Parameters["lightPosition"].SetValue(lightPosition);
 
@@ -757,22 +781,21 @@ namespace GuruEngine.Rendering.Deferred
             pointLightEffect.Parameters["lightRadius"].SetValue(lightRadius);
             pointLightEffect.Parameters["lightIntensity"].SetValue(lightIntensity);
 
-            //parameters for specular computations
-            pointLightEffect.Parameters["cameraPosition"].SetValue(CameraPosition);
-            pointLightEffect.Parameters["InvertViewProjection"].SetValue(Matrix.Invert(View * Projection));
-
             //size of a halfpixel, for texture coordinates alignment
             pointLightEffect.Parameters["halfPixel"].SetValue(halfPixel);
 
             //calculate the distance between the camera and light center
             float cameraToCenter = Vector3.Distance(CameraPosition, lightPosition);
+
             //if we are inside the light volume, draw the sphere's inside face
             if (cameraToCenter < lightRadius)
                 device.RasterizerState = cullcw;
             else
                 device.RasterizerState = cullccw;
 
+            pointLightEffect.CurrentTechnique = pointLightEffect.Techniques["BasicColorDrawing"];
             pointLightEffect.Techniques[0].Passes[0].Apply();
+
             foreach (ModelMesh mesh in sphereModel.Meshes)
             {
                 mesh.Draw();

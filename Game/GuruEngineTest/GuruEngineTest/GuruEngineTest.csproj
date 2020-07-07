@@ -298,6 +298,7 @@
     <Compile Include="GuruEngine\Rendering\VertexDeclarations\OceanVertex.cs" />
     <Compile Include="GuruEngine\Rendering\VertexDeclarations\TreeVertex.cs" />
     <Compile Include="GuruEngine\SceneManagement\SubScene.cs" />
+    <Compile Include="GuruEngine\World\Developer\GroundPlane.cs" />
     <Compile Include="GuruEngine\World\Developer\WindTunnel.cs" />
     <Compile Include="GuruEngine\World\Trees\Instructions\Align.cs" />
     <Compile Include="GuruEngine\World\Trees\Instructions\Backward.cs" />
@@ -432,6 +433,7 @@
     <Content Include="Content\Shaders\Deferred\Ocean.fx" />
     <Content Include="Content\Shaders\Deferred\PointLight.fx" />
     <Content Include="Content\Shaders\Deferred\RestoreDepthBuffer.fx" />
+    <Content Include="Content\Shaders\Deferred\Textured.fx" />
     <Content Include="Content\Shaders\Deferred\Windsock.fx" />
     <Content Include="Content\Shaders\DisplayDepth.fx" />
     <Content Include="Content\Shaders\Forward\ExtendedMesh.fx" />
@@ -462,9 +464,9 @@
     <None Include="app.manifest" />
     <None Include="Content\Fonts\DebugFont.spritefont" />
     <None Include="Content\Fonts\MainMenu.spritefont" />
+    <None Include="Content\StaticMeshes\sphere.x" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\StaticMeshes\" />
     <Folder Include="GuruEngine\Characters\Ranks\RAAF\" />
     <Folder Include="GuruEngine\ECS\Components\Cockpit\American\Early Years\" />
     <Folder Include="GuruEngine\Player\Records\WWII\" />

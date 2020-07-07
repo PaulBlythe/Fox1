@@ -464,6 +464,51 @@ namespace GuruEngine.Geometry
         }
 
 
+        public static TriangleMesh GeneratePlane(Vector3 centre, float scale, float texturescale)
+        {
+            TriangleMesh t = new TriangleMesh();
+
+            t.Vertices = new VertexPositionNormalTexture[4];
+            t.Indices = new short[6];
+
+            t.Vertices[0] = new VertexPositionNormalTexture();
+            t.Vertices[0].Position = new Vector3(-scale, 0, -scale);
+            t.Vertices[0].Normal = Vector3.Up;
+            t.Vertices[0].TextureCoordinate = new Vector2(-scale / texturescale, -scale / texturescale);
+
+            t.Vertices[1] = new VertexPositionNormalTexture();
+            t.Vertices[1].Position = new Vector3(-scale, 0, scale);
+            t.Vertices[1].Normal = Vector3.Up;
+            t.Vertices[1].TextureCoordinate = new Vector2(-scale / texturescale, scale / texturescale);
+
+            t.Vertices[2] = new VertexPositionNormalTexture();
+            t.Vertices[2].Position = new Vector3(scale, 0, -scale);
+            t.Vertices[2].Normal = Vector3.Up;
+            t.Vertices[2].TextureCoordinate = new Vector2(scale / texturescale, -scale / texturescale);
+
+            t.Vertices[3] = new VertexPositionNormalTexture();
+            t.Vertices[3].Position = new Vector3(scale, 0, scale);
+            t.Vertices[3].Normal = Vector3.Up;
+            t.Vertices[3].TextureCoordinate = new Vector2(scale / texturescale, scale / texturescale);
+
+            t.Indices[0] = 0;
+            t.Indices[1] = 1;
+            t.Indices[2] = 3;
+
+            t.Indices[3] = 0;
+            t.Indices[4] = 3;
+            t.Indices[5] = 2;
+
+            return t;
+        }
+
+        /// <summary>
+        /// Create a cone aligned along the Right vector
+        /// </summary>
+        /// <param name="length"></param>
+        /// <param name="steps"></param>
+        /// <param name="radius"></param>
+        /// <returns></returns>
         public static TriangleMesh GenerateCone(float length, float steps, float radius)
         {
             TriangleMesh mesh = new TriangleMesh();

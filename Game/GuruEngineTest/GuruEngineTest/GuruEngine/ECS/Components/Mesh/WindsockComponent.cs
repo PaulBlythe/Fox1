@@ -114,7 +114,7 @@ namespace GuruEngine.ECS.Components.Mesh
             String normalpath = FilePaths.DataPath + @"Textures\windsock.png";
             AssetManager.AddTextureToQue(normalpath);
             TexID = normalpath.GetHashCode();
-            normalpath = FilePaths.DataPath + @"Textures\Wood01.png";
+            normalpath = FilePaths.DataPath + @"Textures\steel.png";
             AssetManager.AddTextureToQue(normalpath);
             TexID2 = normalpath.GetHashCode();
 
@@ -374,6 +374,15 @@ namespace GuruEngine.ECS.Components.Mesh
                 p1.X = -1.15f;
                 r1 = Matrix.CreateRotationX(MathHelper.PiOver4) * Matrix.CreateRotationY(-MathHelper.PiOver2) * Matrix.CreateTranslation(p1) * w;
                 CopyMatrix(ref GeometrySet.Commands[9].World, ref r1);
+
+                Vector3 pos = Vector3.Transform(new Vector3(0.25f, Height + 3, 0), w);
+                Renderer.AddPointLight(pos, Color.White, 15.0f, 5.0f);
+                pos = Vector3.Transform(new Vector3(-0.25f, Height + 3, 0), w);
+                Renderer.AddPointLight(pos, Color.White, 15.0f, 5.0f);
+                pos = Vector3.Transform(new Vector3(0, Height + 3, 0.25f), w);
+                Renderer.AddPointLight(pos, Color.White, 15.0f, 5.0f);
+                pos = Vector3.Transform(new Vector3(0, Height + 3, -0.25f), w);
+                Renderer.AddPointLight(pos, Color.White, 15.0f, 5.0f);
             }
 
             Renderer.AddRenderCommand(GeometrySet);

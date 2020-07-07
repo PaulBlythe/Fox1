@@ -701,7 +701,8 @@ namespace GuruEngine
                                 fx.Parameters["environmentMap"].SetValue(AssetManager.Instance.environment);
                             break;
                         case ShaderVariables.Time:
-                            fx.Parameters["time"].SetValue(time);
+                            if (fx.Parameters["time"] != null)
+                                fx.Parameters["time"].SetValue(time);
                             break;
 
                         case ShaderVariables.Texture01:
