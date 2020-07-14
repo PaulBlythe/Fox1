@@ -22,6 +22,7 @@ namespace GuruEngine.DebugHelpers
         public List<Rectangle> buttons = new List<Rectangle>();
         public List<String> text = new List<string>();
         public List<Vector2> textpositions = new List<Vector2>();
+        public List<Rectangle> checkboxes = new List<Rectangle>();
 
         public abstract GDMenuItem HandleEvent(int i);
         public abstract void DrawExtra(SpriteBatch batch);
@@ -83,6 +84,8 @@ namespace GuruEngine.DebugHelpers
             buttons.Add(b);
             b = new Rectangle(15, 15 + (2 * 50), 286, 32);
             buttons.Add(b);
+            b = new Rectangle(15, 15 + (3 * 50), 286, 32);
+            buttons.Add(b);
 
             b = new Rectangle(15, 15 + (12 * 50), 286, 32);
             buttons.Add(b);
@@ -90,12 +93,14 @@ namespace GuruEngine.DebugHelpers
             text.Add("Display moon texture");
             text.Add("Display shadow texture");
             text.Add("Display depth texture");
+            text.Add("Display SSAO texture");
 
             text.Add("Back");
 
             textpositions.Add(new Vector2(18, 20));
             textpositions.Add(new Vector2(18, 20 + (1 * 50)));
             textpositions.Add(new Vector2(18, 20 + (2 * 50)));
+            textpositions.Add(new Vector2(18, 20 + (3 * 50)));
 
             textpositions.Add(new Vector2(18, 20 + (12 * 50)));
         }
@@ -113,8 +118,11 @@ namespace GuruEngine.DebugHelpers
                 case 2:
                     DebugRenderSettings.RenderDepthMap = !DebugRenderSettings.RenderDepthMap;
                     break;
-               
                 case 3:
+                    DebugRenderSettings.RenderSSAOTexture = !DebugRenderSettings.RenderSSAOTexture;
+                    break;
+
+                case 4:
                     return new RendererTopMenu();
             }
             return this;
@@ -123,6 +131,99 @@ namespace GuruEngine.DebugHelpers
         {
         }
     }
+
+    public class DebugSSAO : GDMenuItem
+    {
+        public DebugSSAO()
+        {
+            Rectangle b = new Rectangle(15, 15 + (12 * 50), 286, 32);
+            buttons.Add(b);
+
+            b = new Rectangle(150, 25 + (3 * 50), 16, 16);
+            buttons.Add(b);
+            b = new Rectangle(290, 25 + (3 * 50), 16, 16);
+            buttons.Add(b);
+
+            b = new Rectangle(150, 25 + (2 * 50), 16, 16);
+            buttons.Add(b);
+            b = new Rectangle(290, 25 + (2 * 50), 16, 16);
+            buttons.Add(b);
+
+            b = new Rectangle(150, 25 + (1 * 50), 16, 16);
+            buttons.Add(b);
+            b = new Rectangle(290, 25 + (1 * 50), 16, 16);
+            buttons.Add(b);
+
+            b = new Rectangle(260, 15 + (0 * 50), 32, 32);
+            checkboxes.Add(b);
+
+            text.Add("SSAO toggle");
+            text.Add("Area");
+            text.Add("Falloff");
+            text.Add("Radius");
+
+            text.Add("Back");
+
+            textpositions.Add(new Vector2(18, 20));
+            textpositions.Add(new Vector2(18, 20 + (1 * 50)));
+            textpositions.Add(new Vector2(18, 20 + (2 * 50)));
+            textpositions.Add(new Vector2(18, 20 + (3 * 50)));
+
+            textpositions.Add(new Vector2(18, 20 + (12 * 50)));
+        }
+
+        public override GDMenuItem HandleEvent(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    return new RendererTopMenu();
+                case 1:
+                    Renderer.Instance.renderSettings.SSAOSampleRadius -= 0.001f;
+                    break;
+                case 2:
+                    Renderer.Instance.renderSettings.SSAOSampleRadius += 0.001f;
+                    break;
+                case 3:
+                    Renderer.Instance.renderSettings.SSAODistanceScale -= 0.000001f;
+                    break;
+                case 4:
+                    Renderer.Instance.renderSettings.SSAODistanceScale += 0.000001f;
+                    break;
+                case 5:
+                    Renderer.Instance.renderSettings.SSAOArea -= 0.0001f;
+                    break;
+                case 6:
+                    Renderer.Instance.renderSettings.SSAOArea += 0.0001f;
+                    break;
+
+                case 20:
+                    if (Renderer.Instance.renderSettings.SSAOType == SSAOTypes.None)
+                        Renderer.Instance.renderSettings.SSAOType = SSAOTypes.Simple;
+                    else
+                        Renderer.Instance.renderSettings.SSAOType = SSAOTypes.None;
+                    break;
+            }
+            return this;
+        }
+        public override void DrawExtra(SpriteBatch batch)
+        {
+            if (Renderer.Instance.renderSettings.SSAOType != SSAOTypes.None)
+            {
+                Rectangle r = new Rectangle(checkboxes[0].X + 4, checkboxes[0].Y + 4, checkboxes[0].Width - 8, checkboxes[0].Height - 8);
+                batch.FillRectangle(r, Color.Yellow);
+            }
+
+            String s = String.Format("{0:0.000}", Renderer.Instance.renderSettings.SSAOSampleRadius);
+            batch.DrawString(AssetManager.GetDebugFont(), s, new Vector2(180, 170), Color.White);
+            s = String.Format("{0:0.000000}", Renderer.Instance.renderSettings.SSAODistanceScale);
+            batch.DrawString(AssetManager.GetDebugFont(), s, new Vector2(180, 120), Color.White);
+            s = String.Format("{0:0.0000}", Renderer.Instance.renderSettings.SSAOArea);
+            batch.DrawString(AssetManager.GetDebugFont(), s, new Vector2(180, 70), Color.White);
+        }
+    }
+
+
 
     public class RendererTopMenu : GDMenuItem
     {
@@ -152,11 +253,7 @@ namespace GuruEngine.DebugHelpers
                 case 0:
                     return new DebugTexturedisplay();
                 case 1:
-                    if (Renderer.Instance.renderSettings.SSAOType == SSAOTypes.None)
-                        Renderer.Instance.renderSettings.SSAOType = SSAOTypes.Simple;
-                    else
-                        Renderer.Instance.renderSettings.SSAOType = SSAOTypes.None;
-                    break;
+                    return new DebugSSAO();
                 case 2:
                     return new TopLevelMenu();
             }
@@ -407,6 +504,13 @@ namespace GuruEngine.DebugHelpers
                 {
                     batch.DrawString(AssetManager.GetDebugFont(), current.text[i], current.textpositions[i], Color.White);
                 }
+                foreach (Rectangle r in current.checkboxes)
+                {
+                    batch.DrawRectangle(r, Color.White);
+                    Rectangle r2 = new Rectangle(r.X + 1, r.Y + 1, r.Width - 2, r.Height - 2);
+                    batch.DrawRectangle(r2, Color.Blue);
+                }
+
                 current.DrawExtra(batch);
                 batch.End();
 
@@ -421,6 +525,15 @@ namespace GuruEngine.DebugHelpers
                                 if (current.buttons[i].Contains(ms.X,ms.Y))
                                 {
                                     current = current.HandleEvent(i);
+                                    break;
+                                }
+                            }
+
+                            for (int i=0; i<current.checkboxes.Count; i++)
+                            {
+                                if (current.checkboxes[i].Contains(ms.X,ms.Y))
+                                {
+                                    current = current.HandleEvent(i + 20);
                                     break;
                                 }
                             }

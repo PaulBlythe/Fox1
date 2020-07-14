@@ -41,7 +41,8 @@ namespace GuruEngine.Assets
         public int NormalTex;
         public String tname = "";
         public int TextureGUID;
-        
+        public RasterizerState deferred_rs = null;
+
 
         public MeshPartMaterial(BinaryReader bw)
         {
@@ -73,6 +74,14 @@ namespace GuruEngine.Assets
             Colour[1] = bw.ReadSingle();                //  Diffuse colour
             Colour[2] = bw.ReadSingle();                //  Diffuse colour
             Colour[3] = bw.ReadSingle();                //  Diffuse colour
+
+            deferred_rs = new RasterizerState();
+            deferred_rs.FillMode = FillMode.Solid;
+            deferred_rs.CullMode = CullMode.CullClockwiseFace;
+            if (tfDoubleSided)
+                deferred_rs.CullMode = CullMode.None;
+            deferred_rs.DepthBias = tfDepthOffset;
+            
         }
 
         public override void Apply(Effect fx)
@@ -96,8 +105,7 @@ namespace GuruEngine.Assets
                 }
                 
                 fx.Parameters["AlphaCut"].SetValue(AlphaTestVal);
-                fx.Parameters["TestAlpha"].SetValue(tfTestA);
-               
+                fx.Parameters["TestAlpha"].SetValue(tfTestA);               
                 fx.Parameters["ModelTexture"].SetValue(AssetManager.Texture(TextureGUID));
               
                

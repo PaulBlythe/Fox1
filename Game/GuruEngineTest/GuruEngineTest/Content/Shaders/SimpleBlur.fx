@@ -1,0 +1,84 @@
+﻿#if OPENGL
+	#define SV_POSITION POSITION
+	#define VS_SHADERMODEL vs_3_0
+	#define PS_SHADERMODEL ps_3_0
+#else
+	#define VS_SHADERMODEL vs_4_0_level_9_1
+	#define PS_SHADERMODEL ps_4_0_level_9_1
+#endif
+
+///////////////////////////////////////////////////////////////////////////////////////
+// Inputs
+///////////////////////////////////////////////////////////////////////////////////////
+float BlurDistance = 0.002f;
+
+///////////////////////////////////////////////////////////////////////////////////////
+// Textures
+///////////////////////////////////////////////////////////////////////////////////////
+texture colourMap;
+
+///////////////////////////////////////////////////////////////////////////////////////
+// Samplers
+///////////////////////////////////////////////////////////////////////////////////////
+sampler colourSampler = sampler_state
+{
+	Texture = (colourMap);
+	AddressU = CLAMP;
+	AddressV = CLAMP;
+	MagFilter = LINEAR;
+	MinFilter = LINEAR;
+	Mipfilter = LINEAR;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////
+// Structures
+///////////////////////////////////////////////////////////////////////////////////////
+struct VertexShaderInput
+{
+	float3 Position : POSITION0;
+	float2 UV		: TEXCOORD0;
+};
+
+struct VertexShaderOutput
+{
+	float4 Position			: SV_POSITION;
+	float2 UV				: TEXCOORD0;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////
+// Vertex shaders
+///////////////////////////////////////////////////////////////////////////////////////
+VertexShaderOutput MainVS(in VertexShaderInput input)
+{
+	VertexShaderOutput output = (VertexShaderOutput)0;
+
+	output.Position = float4(input.Position, 1);
+	output.UV = input.UV;
+
+	return output;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+// Pixel shaders
+///////////////////////////////////////////////////////////////////////////////////////
+float4 MainPS(VertexShaderOutput input) : COLOR
+{
+	float4 Color;
+
+	Color =  tex2D(colourSampler, float2(input.UV.x + BlurDistance, input.UV.y + BlurDistance));
+	Color += tex2D(colourSampler, float2(input.UV.x - BlurDistance, input.UV.y - BlurDistance));
+	Color += tex2D(colourSampler, float2(input.UV.x + BlurDistance, input.UV.y - BlurDistance));
+	Color += tex2D(colourSampler, float2(input.UV.x - BlurDistance, input.UV.y + BlurDistance));
+
+	Color = Color / 4.0f;
+	return Color;
+}
+
+technique BasicColorDrawing
+{
+	pass P0
+	{
+		VertexShader = compile VS_SHADERMODEL MainVS();
+		PixelShader = compile PS_SHADERMODEL MainPS();
+	}
+};

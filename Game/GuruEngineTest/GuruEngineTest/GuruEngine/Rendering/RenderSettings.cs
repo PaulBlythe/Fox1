@@ -48,8 +48,10 @@ namespace GuruEngine.Rendering
 
         #region SSAO
         public SSAOTypes SSAOType = SSAOTypes.None;
-        public float SSAOSampleRadius = 0.5f;
-        public float SSAODistanceScale = 1.0f;
+        public float SSAOSampleRadius = 0.002f;
+        public float SSAODistanceScale = 0.000001f;
+        public float SSAOArea = 0.0075f;
+        public bool SSAOBlur = true;
         #endregion
 
 

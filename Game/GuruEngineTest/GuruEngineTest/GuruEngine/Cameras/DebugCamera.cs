@@ -24,7 +24,7 @@ namespace GuruEngine.Cameras
         {
             FarClip = 60000.0f;
             Position = new Vector3(-100, 135, 50);
-            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60), aspectratio, 0.01f, 60000.0f);
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60), aspectratio, 0.5f, 60000.0f);
             Up = Vector3.Up;
             Forward = Vector3.Forward;
             View = Matrix.CreateLookAt(Position, Position + Forward, Up);

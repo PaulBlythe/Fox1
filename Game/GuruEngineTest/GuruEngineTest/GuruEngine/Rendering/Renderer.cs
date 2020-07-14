@@ -250,8 +250,9 @@ namespace GuruEngine.Rendering
                 for (int j = 0; j < 256; ++j)
                 {
                     Vector3 v = new Vector3((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
+                    v.Normalize();
 
-                    initData[i * 256 + j] = new Color(v.X, v.Y, v.Z, 0.0f);
+                    initData[i * 256 + j] = new Color(v.X, v.Y, v.Z, 1.0f);
                 }
             }
             RandomVectors = new Texture2D(device, 256, 256);
@@ -350,7 +351,25 @@ namespace GuruEngine.Rendering
                     debugregion.X += 256;
                 }
             }
-
+            if (DebugRenderSettings.RenderSSAOTexture)
+            {
+                if (!UsingForwardRenderer)
+                {
+                    if (renderSettings.SSAOBlur)
+                    {
+                        spriteBatch.Begin();
+                        spriteBatch.Draw(((Deferred.DeferredRender)current).temp, debugregion, Color.White);
+                        spriteBatch.End();
+                    }
+                    else
+                    {
+                        spriteBatch.Begin();
+                        spriteBatch.Draw(((Deferred.DeferredRender)current).ssaoRT, debugregion, Color.White);
+                        spriteBatch.End();
+                    }
+                    debugregion.X += 256;
+                }
+            }
             if (DebugRenderSettings.RenderClock)
             {
                 spriteBatch.Begin();

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
 using GuruEngine.DebugHelpers;
@@ -55,15 +56,19 @@ namespace GuruEngine.Rendering.Deferred
         Effect restore;
         Effect textured;
         Effect windsock;
+        Effect blur;
+        Effect combinessao;
         #endregion
 
-        RenderTarget2D colorRT;     // Color and Specular Intensity
-        RenderTarget2D normalRT;    // Normals and Specular Power
+        public RenderTarget2D colorRT;     // Color and Specular Intensity
+        public RenderTarget2D normalRT;    // Normals and Specular Power
         public RenderTarget2D depthRT;     // Depth
-        RenderTarget2D lightRT;     // Light accumulator
-        RenderTarget2D materialRT;  // Material properties (x = specular strength, y = specular power / 255)
-        RenderTarget2D skyRT;
-        RenderTarget2D final;
+        public RenderTarget2D lightRT;     // Light accumulator
+        public RenderTarget2D materialRT;  // Material properties (x = specular strength, y = specular power / 255)
+        public RenderTarget2D skyRT;
+        public RenderTarget2D final;
+        public RenderTarget2D ssaoRT;
+        public RenderTarget2D temp;
 
         private Dictionary<String, Effect> loadedShaders = new Dictionary<string, Effect>();
 
@@ -76,6 +81,10 @@ namespace GuruEngine.Rendering.Deferred
         bool loaded = false;
 
         int GUID;
+
+#if DEBUG
+        KeyboardState oldks;
+#endif
 
 
         public DeferredRender(GraphicsDevice Device)
@@ -106,6 +115,8 @@ namespace GuruEngine.Rendering.Deferred
             lightRT = new RenderTarget2D(device, backBufferWidth, backBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
             skyRT = new RenderTarget2D(device, backBufferWidth, backBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
             final = new RenderTarget2D(device, backBufferWidth, backBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
+            ssaoRT = new RenderTarget2D(device, backBufferWidth, backBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
+            temp = new RenderTarget2D(device, backBufferWidth, backBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
 
             GBufferTargets[0] = new RenderTargetBinding(colorRT);
             GBufferTargets[1] = new RenderTargetBinding(normalRT);
@@ -153,6 +164,8 @@ namespace GuruEngine.Rendering.Deferred
             AssetManager.AddShaderToQue(@"Shaders\Deferred\RestoreDepthBuffer");
             AssetManager.AddShaderToQue(@"Shaders\Deferred\Textured");
             AssetManager.AddShaderToQue(@"Shaders\Deferred\Windsock");
+            AssetManager.AddShaderToQue(@"Shaders\SimpleBlur");
+            AssetManager.AddShaderToQue(@"Shaders\Deferred\CombineSSAO");
 
             String mesh = @"StaticMeshes\sphere";
             AssetManager.AddStaticMeshToQue(mesh);
@@ -201,6 +214,8 @@ namespace GuruEngine.Rendering.Deferred
                 restore = AssetManager.Shader(@"Shaders\Deferred\RestoreDepthBuffer".GetHashCode());
                 textured = AssetManager.Shader(@"Shaders\Deferred\Textured".GetHashCode());
                 windsock = AssetManager.Shader(@"Shaders\Deferred\Windsock".GetHashCode());
+                blur = AssetManager.Shader(@"Shaders\SimpleBlur".GetHashCode());
+                combinessao = AssetManager.Shader(@"Shaders\Deferred\CombineSSAO".GetHashCode());
 
                 sphereModel = AssetManager.StaticMesh(GUID);
                 if ((sphereModel == null) ||
@@ -212,6 +227,8 @@ namespace GuruEngine.Rendering.Deferred
                     (ssao == null) ||
                     (restore == null) ||
                     (textured == null) ||
+                    (blur == null) ||
+                    (combinessao == null) ||
                     (ocean == null))
                 {
                     SignalRenderingComplete();
@@ -260,7 +277,7 @@ namespace GuruEngine.Rendering.Deferred
                     {
                         switch (pass)
                         {
-                            #region Sky rendering
+#region Sky rendering
                             // there is only one sky object so this is safe
                             case RenderPasses.Sky:
                                 {
@@ -285,15 +302,15 @@ namespace GuruEngine.Rendering.Deferred
 
                                 }
                                 break;
-                            #endregion
+#endregion
 
-                            #region Moon, Stars, and Planets
+#region Moon, Stars, and Planets
                             case RenderPasses.Ephemeris:
                                 {
                                     DrawToSkyBuffer(renderingRenderCommand, state);
                                 }
                                 break;
-                            #endregion
+#endregion
 
                             case RenderPasses.Terrain:
                                 {
@@ -303,7 +320,7 @@ namespace GuruEngine.Rendering.Deferred
 
                             case RenderPasses.Transparent:
                                 {
-
+                                    //DrawToGBuffer(renderingRenderCommand, state);
                                 }
                                 break;
 
@@ -324,35 +341,48 @@ namespace GuruEngine.Rendering.Deferred
             {
                 case SSAOTypes.Simple:
                     {
+                        device.SetRenderTarget(ssaoRT);
                         device.DepthStencilState = DepthStencilState.None;
-
-                        if (ssao.Parameters["depthMap"] != null)
-                            ssao.Parameters["depthMap"].SetValue(depthRT);
-                        if (ssao.Parameters["normalMap"] != null)
-                            ssao.Parameters["normalMap"].SetValue(normalRT);
-                        if (ssao.Parameters["randomMap"] != null)
-                            ssao.Parameters["randomMap"].SetValue(Renderer.Instance.RandomVectors);
-
-
-                        //Calculate Frustum Corner of the Camera
-                        Vector3 cornerFrustum = Vector3.Zero;
-                        cornerFrustum.Y = (float)Math.Tan(Math.PI / 3.0 / 2.0) * 60000.0f;
-                        cornerFrustum.X = cornerFrustum.Y *device.Viewport.AspectRatio;
-                        cornerFrustum.Z = 60000.0f;
-
-                        //Set SSAO parameters
-                        ssao.Parameters["cornerFustrum"].SetValue(cornerFrustum);
-                        ssao.Parameters["sampleRadius"].SetValue(Renderer.Instance.renderSettings.SSAOSampleRadius);
-                        ssao.Parameters["distanceScale"].SetValue(Renderer.Instance.renderSettings.SSAODistanceScale);
-                        ssao.Parameters["Projection"].SetValue(Projection);
-
+                        ssao.Parameters["depthMap"]?.SetValue(depthRT);
+                        ssao.Parameters["normalMap"]?.SetValue(normalRT);
+                        ssao.Parameters["randomMap"]?.SetValue(Renderer.Instance.RandomVectors);
+                        ssao.Parameters["halfPixel"]?.SetValue(halfPixel);
+                        ssao.Parameters["radius"].SetValue(Renderer.Instance.renderSettings.SSAOSampleRadius);
+                        ssao.Parameters["falloff"].SetValue(Renderer.Instance.renderSettings.SSAODistanceScale);
+                        ssao.Parameters["area"].SetValue(Renderer.Instance.renderSettings.SSAOArea);
                         ssao.Techniques[0].Passes[0].Apply();
                         QRender.Render(Vector2.One * -1, Vector2.One);
+
+                        if (Renderer.Instance.renderSettings.SSAOBlur)
+                        {
+                            device.SetRenderTarget(temp);
+                            blur.Parameters["colourMap"]?.SetValue(ssaoRT);
+                            blur.Techniques[0].Passes[0].Apply();
+                            QRender.Render(Vector2.One * -1, Vector2.One);
+                            
+                        }
+
+                        device.SetRenderTarget(final);
+                        if (Renderer.Instance.renderSettings.SSAOBlur)
+                            combinessao.Parameters["ssao"].SetValue(temp);
+                        else
+                            combinessao.Parameters["ssao"].SetValue(ssaoRT);
+
+                        combinessao.Parameters["colorMap"].SetValue(colorRT);
+                        combinessao.Parameters["lightMap"].SetValue(lightRT);
+                        combinessao.Parameters["halfPixel"].SetValue(halfPixel);
+                        combinessao.Parameters["sky"].SetValue(skyRT);
+                        combinessao.Parameters["depthmap"].SetValue(depthRT);
+
+                        combinessao.Techniques[0].Passes[0].Apply();
+                        QRender.Render(Vector2.One * -1, Vector2.One);
+                        device.SetRenderTarget(null);
                     }
                     break;
 
                 default:
                     device.SetRenderTarget(final);
+                    
                     finalCombineEffect.Parameters["colorMap"].SetValue(colorRT);
                     finalCombineEffect.Parameters["lightMap"].SetValue(lightRT);
                     finalCombineEffect.Parameters["halfPixel"].SetValue(halfPixel);
@@ -369,6 +399,14 @@ namespace GuruEngine.Rendering.Deferred
             restore.Parameters["depthmap"].SetValue(depthRT);
             restore.Techniques[0].Passes[0].Apply();
             QRender.Render(Vector2.One * -1, Vector2.One);
+
+            //foreach (RenderCommandSet renderingRenderCommand in renderingRenderCommands)
+            //{
+            //    if (renderingRenderCommand.RenderPass == RenderPasses.Transparent)
+            //    {
+            //
+            //    }
+            //}
 
             SignalRenderingComplete();
             Engine.EndDrawFrame(gt);
@@ -412,6 +450,8 @@ namespace GuruEngine.Rendering.Deferred
                             Effect fx = ApplyShader(state, r);
                             if (r.material != null)
                             {
+                                if (r.material is MeshPartMaterial)
+                                    device.RasterizerState = ((MeshPartMaterial)r.material).deferred_rs;
                                 r.material.Apply(fx);
                             }
                             device.SamplerStates[0] = Renderer.GetSamplerState(r.SamplerStateID);
@@ -520,7 +560,7 @@ namespace GuruEngine.Rendering.Deferred
 
         }
 
-        #region Shader management
+#region Shader management
         /// <summary>
         /// Add a shader 
         /// </summary>
@@ -662,8 +702,7 @@ namespace GuruEngine.Rendering.Deferred
             return null;
         }
 
-
-        #endregion
+#endregion
 
         public static Renderer GetCurrentRenderer()
         {

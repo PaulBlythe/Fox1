@@ -56,7 +56,7 @@ float fresnelBias = 0.1;
 float fresnelPower = 4.0;
 float4 deepColor = float4(0.0f, 0.0f, 0.3f, 1.0f);
 float4 shallowColor = float4(0.0f, 0.1f, 0.8f, 1.0f);
-float4 reflectionColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+float4 reflectionColor = float4(0.7f, 0.7f, 1.0f, 1.0f);
 
 float reflectionAmount = 1.00f;
 float waterAmount = 0.0000045f;
@@ -79,7 +79,7 @@ struct VertexOutput {
 	float3 Normal		: TEXCOORD1;
 	float  Fog			: TEXCOORD2;
 	float3 eyeVector	: TEXCOORD3;
-	float2  DepthVS		: TEXCOORD4;
+	float3  DepthVS		: TEXCOORD4;
 	float3 PositionWS	: POSITIONWS;
 };
 
@@ -97,13 +97,17 @@ VertexOutput BumpReflectWaveVS(AppData IN)
 	float4 norm = tex2Dlod(normalMapSampler, float4(samplepos, 0, 1));
 	norm = (2 * norm) - 1;
 
+	P = mul(P, View);
+	OUT.DepthVS = P.xyz;
+
 	P = IN.Position;
 	P.y += norm.y * waveAmp;
 
 	OUT.Position = mul(P, WorldViewProjection);
 	OUT.Normal = norm.xyz;
-	OUT.DepthVS.x = OUT.Position.z;
-	OUT.DepthVS.y = OUT.Position.w;
+	//OUT.DepthVS.x = OUT.Position.z;
+	//OUT.DepthVS.y = OUT.Position.w;
+	
 
 
 	// pass texture coordinates for fetching the normal map 
@@ -148,7 +152,8 @@ PixelShaderOutput OceanMain(VertexOutput IN) : COLOR
 
 	output.Color.xyz = reflection.xyz;
 	output.Color.a = 0.0f;
-	output.Depth = (IN.DepthVS.x / IN.DepthVS.y);
+	//output.Depth = (IN.DepthVS.x / IN.DepthVS.y);
+	output.Depth = length(IN.DepthVS);
 	output.Normal.rgb = 0.5f * (N + 1.0f);
 	output.Normal.a = 1.0f;
 	output.Material = float4(0.75f, 0.25f, 1.0f, 1.0f);

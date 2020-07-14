@@ -1,53 +1,35 @@
 ﻿#if OPENGL
-	#define SV_POSITION POSITION
-	#define VS_SHADERMODEL vs_3_0
-	#define PS_SHADERMODEL ps_3_0
+#define SV_POSITION POSITION
+#define VS_SHADERMODEL vs_3_0
+#define PS_SHADERMODEL ps_3_0
 #else
-	#define VS_SHADERMODEL vs_4_0
-	#define PS_SHADERMODEL ps_4_0
+#define VS_SHADERMODEL vs_4_0
+#define PS_SHADERMODEL ps_4_0
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Inputs
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#define NUMSAMPLES 8
-
-//Projection matrix
-float4x4 Projection;
-//Corner Fustrum
-float3 cornerFustrum;
-//Sample Radius
-float sampleRadius;
-//Distance Scale
-float distanceScale;
-
+float2 halfPixel;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Constants
 ///////////////////////////////////////////////////////////////////////////////////////
 
-float4 samples[8] =
-{
-	float4(0.355512, -0.709318, -0.102371, 0.0),
-	float4(0.534186, 0.71511, -0.115167, 0.0),
-	float4(-0.87866, 0.157139, -0.115167, 0.0),
-	float4(0.140679, -0.475516, -0.0639818, 0.0),
-	float4(-0.207641, 0.414286, 0.187755, 0.0),
-	float4(-0.277332, -0.371262, 0.187755, 0.0),
-	float4(0.63864, -0.114214, 0.262857, 0.0),
-	float4(-0.184051, 0.622119, 0.262857, 0.0)
-};
-
+const float total_strength = 1.0;
+const float base = 0.2;
+const float area = 0.0075;
+const float falloff = 0.000001;
+const float radius = 0.002;
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Textures
 ///////////////////////////////////////////////////////////////////////////////////////
 texture depthMap;
-texture normalMap;
 texture randomMap;
-
+texture normalMap;
 ///////////////////////////////////////////////////////////////////////////////////////
 // Samplers
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -61,17 +43,8 @@ sampler depthSampler = sampler_state
 	Mipfilter = LINEAR;
 };
 
-sampler normalSampler = sampler_state
-{
-	Texture = (normalMap);
-	AddressU = CLAMP;
-	AddressV = CLAMP;
-	MagFilter = POINT;
-	MinFilter = POINT;
-	Mipfilter = POINT;
-};
 
-sampler randomSampler = sampler_state
+sampler RandomTextureSampler = sampler_state
 {
 	Texture = (randomMap);
 	AddressU = WRAP;
@@ -81,6 +54,16 @@ sampler randomSampler = sampler_state
 	Mipfilter = POINT;
 };
 
+
+sampler NormalSampler = sampler_state
+{
+	Texture = (normalMap);
+	AddressU = CLAMP;
+	AddressV = CLAMP;
+	MagFilter = POINT;
+	MinFilter = POINT;
+	Mipfilter = POINT;
+};
 ///////////////////////////////////////////////////////////////////////////////////////
 // Structures
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +77,6 @@ struct VertexShaderOutput
 {
 	float4 Position			: SV_POSITION;
 	float2 UV				: TEXCOORD0;
-	float3 ViewDirection	: TEXCOORD1;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -107,15 +89,26 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	output.Position = float4(input.Position, 1);
 	output.UV = input.UV;
 
-	//Set up ViewDirection vector
-	output.ViewDirection = float3(-cornerFustrum.x * input.Position.x, cornerFustrum.y * input.Position.y, cornerFustrum.z);
-
 	return output;
 }
 
-float3 decode(float3 enc)
+///////////////////////////////////////////////////////////////////////////////////////
+// Subroutines
+///////////////////////////////////////////////////////////////////////////////////////
+float3 normal_from_depth(float2 texcoords) 
 {
-	return (2.0f * enc.xyz - 1.0f);
+	float3 normal = tex2D(NormalSampler, texcoords);
+	normal = (2.0f * normal) - 1.0f;
+	return normalize(normal);
+}
+
+float doTest(float3 delta, float radius_depth, float3 random, float3 position, float3 normal, float depth)
+{
+	float3 ray = radius_depth * reflect(delta, random);
+	float3 hemi_ray = position + sign(dot(ray, normal)) * ray;
+	float occ_depth = tex2D(depthSampler, saturate(hemi_ray.xy)).r;
+	float difference = (depth - occ_depth);
+	return step(falloff, difference) * (1.0 - smoothstep(falloff, area, difference));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -123,62 +116,35 @@ float3 decode(float3 enc)
 ///////////////////////////////////////////////////////////////////////////////////////
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-	//Normalize the input ViewDirection
-	float3 ViewDirection = normalize(input.ViewDirection);
-
-	//Sample the depth
+	float3 random = normalize(tex2D(RandomTextureSampler, input.UV * 3.9f).rgb);
 	float depth = tex2D(depthSampler, input.UV).r;
+	float3 position = float3(input.UV, depth);
+	float3 normal = normal_from_depth(input.UV);
 
-	//Calculate the depth at this pixel along the view direction
-	float3 se = depth * ViewDirection;
+	float radius_depth = radius / depth;
+	float occlusion = 0.0;
 
-	//Sample a random normal vector
-	float3 randNormal = decode(tex2D(randomSampler, input.UV * 200.0f).xyz);
+	occlusion += doTest(float3(0.5381, 0.1856,-0.4319), radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(0.1379, 0.2486, 0.4430), radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(0.3371, 0.5679,-0.0057), radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(-0.6999,-0.0451,-0.0019),radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(0.0689,-0.1598,-0.8547), radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(0.0560, 0.0069,-0.1843), radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(-0.0146, 0.1402, 0.0762),radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(0.0100,-0.1924,-0.0344), radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(-0.3577,-0.5301,-0.4358),radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(-0.3169, 0.1063, 0.0158),radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(0.0103,-0.5869, 0.0046), radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(-0.0897,-0.4940, 0.3287),radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(0.7119,-0.0154,-0.0918), radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(-0.0533, 0.0596,-0.5411),radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(0.0352,-0.0631, 0.5460), radius_depth,random,position,normal,depth);
+	occlusion += doTest(float3(-0.4776, 0.2847,-0.0271),radius_depth,random,position,normal,depth);
 
-	//Sample the Normal for this pixel
-	float3 normal = decode(tex2D(normalSampler, input.UV).xyz);
+	float ao = 1.0 - total_strength * occlusion * (1.0 / 16.0f);
+	float res = saturate(ao + base);
+	return float4(res, res, res, 1.0);
 
-	//No assymetry in HLSL, workaround
-	float finalColor = 0.0f;
-
-	//SSAO loop
-	for (int i = 0; i < NUMSAMPLES; i++)
-	{
-		//Calculate the Reflection Ray
-		float3 ray = reflect(samples[i].xyz, randNormal) * sampleRadius;
-
-		//Test the Reflection Ray against the surface normal
-		if (dot(ray, normal) < 0) ray += normal * sampleRadius;
-
-		//Calculate the Sample vector
-		float4 sample = float4(se + ray, 1.0f);
-
-		//Project the Sample vector into ScreenSpace
-		float4 ss = mul(sample, Projection);
-
-		//Convert SS into UV space
-		float2 sampleTexCoord = (0.5f * ss.xy / ss.w) + float2(0.5f, 0.5f);
-
-		//Sample the Depth along the ray
-		float sampleDepth = tex2D(depthSampler, sampleTexCoord).r;
-
-		//Check the sampled depth value
-		if (sampleDepth > depth)
-		{
-			//Non-Occluded sample
-			finalColor++;
-		}
-		else
-		{
-			//Calculate Occlusion
-			float occlusion = distanceScale * max(depth - sampleDepth, 0.0f);
-			//Accumulate to finalColor
-			finalColor += 1.0f / (1.0f + occlusion * occlusion * 0.1);
-		}
-	}
-
-	//Output the Average of finalColor
-	return float4(finalColor / NUMSAMPLES, finalColor / NUMSAMPLES, finalColor / NUMSAMPLES, 1.0f);
 }
 
 technique BasicColorDrawing

@@ -41,7 +41,7 @@ PixelShaderOutput PixelShaderFunction(VertexShaderOutput input)
 	output.Color.a = 0.0f;
 	output.Normal.rgb = 0.5f;
 	output.Normal.a = 0.0f;
-	output.Depth = 10000.0f;
+	output.Depth = 100000.0f;
 	output.Material = 0.0f; 
 	return output;
 }

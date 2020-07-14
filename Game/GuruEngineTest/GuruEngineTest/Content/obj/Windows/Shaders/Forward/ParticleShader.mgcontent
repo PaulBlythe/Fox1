@@ -3,7 +3,7 @@
   <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ParticleShader.fx</SourceFile>
   <SourceTime>2019-08-22T15:25:29.8478619+01:00</SourceTime>
   <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Shaders/Forward/ParticleShader.xnb</DestFile>
-  <DestTime>2020-06-17T14:28:31.5748079+01:00</DestTime>
+  <DestTime>2020-07-12T09:49:20.4573347+01:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>EffectProcessor</Processor>

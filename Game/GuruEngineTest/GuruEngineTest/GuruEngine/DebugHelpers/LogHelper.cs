@@ -38,6 +38,20 @@ namespace GuruEngine.DebugHelpers
             Instance = this;
         }
 
+        public void WriteArray(float[] data, int width, int height)
+        {
+            int pos = 0;
+            for (int y=0; y<height; y++)
+            {
+                String t = " ";
+                for (int x=0; x<width; x++)
+                {
+                    t += String.Format("{0},", data[pos++]);
+                }
+                Debug(t);
+            }
+        }
+
         /// <summary>
         /// Log a debug message
         /// </summary>

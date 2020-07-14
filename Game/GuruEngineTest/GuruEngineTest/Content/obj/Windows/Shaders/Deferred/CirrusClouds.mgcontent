@@ -3,7 +3,7 @@
   <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/CirrusClouds.fx</SourceFile>
   <SourceTime>2020-06-25T11:36:43.5361211+01:00</SourceTime>
   <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Shaders/Deferred/CirrusClouds.xnb</DestFile>
-  <DestTime>2020-06-25T11:36:47.0245993+01:00</DestTime>
+  <DestTime>2020-07-12T09:49:17.156843+01:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>EffectProcessor</Processor>

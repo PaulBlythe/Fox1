@@ -10,6 +10,7 @@ namespace GuruEngine.DebugHelpers
     {
         public static bool RenderCollisionMeshes = false;
         public static bool RenderMoonTexture = false;
+        public static bool RenderSSAOTexture = false;
         public static bool RenderClock = false;
         public static bool RenderShadowMap = false;
         public static bool RenderDepthMap = false;

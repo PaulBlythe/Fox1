@@ -3,7 +3,7 @@
   <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Textured.fx</SourceFile>
   <SourceTime>2020-07-03T20:07:56.368384+01:00</SourceTime>
   <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Shaders/Forward/Textured.xnb</DestFile>
-  <DestTime>2020-07-03T20:17:00.1014668+01:00</DestTime>
+  <DestTime>2020-07-12T09:49:21.0537632+01:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>EffectProcessor</Processor>

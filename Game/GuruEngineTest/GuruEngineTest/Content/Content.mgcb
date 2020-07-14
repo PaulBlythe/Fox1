@@ -99,6 +99,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/Deferred/CombineFinal.fx
 
+#begin Shaders/Deferred/CombineSSAO.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Deferred/CombineSSAO.fx
+
 #begin Shaders/Deferred/DirectionalLight.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -242,6 +248,12 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/Forward/Windsock.fx
+
+#begin Shaders/SimpleBlur.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/SimpleBlur.fx
 
 #begin StaticMeshes/box.fbx
 /importer:FbxImporter

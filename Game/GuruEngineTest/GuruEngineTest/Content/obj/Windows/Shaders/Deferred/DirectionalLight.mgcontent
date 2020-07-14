@@ -3,7 +3,7 @@
   <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/DirectionalLight.fx</SourceFile>
   <SourceTime>2019-09-17T07:34:14.8420812+01:00</SourceTime>
   <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Shaders/Deferred/DirectionalLight.xnb</DestFile>
-  <DestTime>2020-06-17T14:28:29.5426158+01:00</DestTime>
+  <DestTime>2020-07-12T09:49:17.5972959+01:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>EffectProcessor</Processor>
