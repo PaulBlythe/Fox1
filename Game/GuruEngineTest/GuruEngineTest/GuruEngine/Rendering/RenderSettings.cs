@@ -45,6 +45,7 @@ namespace GuruEngine.Rendering
         public float SplitDistance3 = 1.0f;
         public FixedFilterSize FixedFilterSize = FixedFilterSize.Filter2x2;
 
+        public float gamma = 1.2f;
 
         #region SSAO
         public SSAOTypes SSAOType = SSAOTypes.None;

@@ -117,6 +117,7 @@ float doTest(float3 delta, float radius_depth, float3 random, float3 position, f
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
 	float3 random = normalize(tex2D(RandomTextureSampler, input.UV * 3.9f).rgb);
+	random = 2.0 *(random - 0.5f);
 	float depth = tex2D(depthSampler, input.UV).r;
 	float3 position = float3(input.UV, depth);
 	float3 normal = normal_from_depth(input.UV);

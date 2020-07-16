@@ -373,6 +373,7 @@ namespace GuruEngine.Rendering.Deferred
                         combinessao.Parameters["halfPixel"].SetValue(halfPixel);
                         combinessao.Parameters["sky"].SetValue(skyRT);
                         combinessao.Parameters["depthmap"].SetValue(depthRT);
+                        combinessao.Parameters["gamma"].SetValue(Renderer.Instance.renderSettings.gamma);
 
                         combinessao.Techniques[0].Passes[0].Apply();
                         QRender.Render(Vector2.One * -1, Vector2.One);
@@ -388,7 +389,8 @@ namespace GuruEngine.Rendering.Deferred
                     finalCombineEffect.Parameters["halfPixel"].SetValue(halfPixel);
                     finalCombineEffect.Parameters["sky"].SetValue(skyRT);
                     finalCombineEffect.Parameters["depthmap"].SetValue(depthRT);
-                    
+                    finalCombineEffect.Parameters["gamma"].SetValue(Renderer.Instance.renderSettings.gamma);
+
                     finalCombineEffect.Techniques[0].Passes[0].Apply();
                     QRender.Render(Vector2.One * -1, Vector2.One);
                     device.SetRenderTarget(null);

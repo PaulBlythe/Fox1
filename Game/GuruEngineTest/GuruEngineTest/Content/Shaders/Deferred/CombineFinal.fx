@@ -8,6 +8,7 @@
 #endif
 
 float2 halfPixel;
+float gamma = 2.2;
 
 texture colorMap;
 texture lightMap;
@@ -89,6 +90,8 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 	float3 diffuse = diffuseColor * diffuseLight;
 	float3 specular = float3(specularLight, specularLight, specularLight);
 	float3 col = saturate(diffuse + specular);
+	float g = 1.0 / gamma;
+	col = pow(col, g);
 	return float4(col,1);
 }
 

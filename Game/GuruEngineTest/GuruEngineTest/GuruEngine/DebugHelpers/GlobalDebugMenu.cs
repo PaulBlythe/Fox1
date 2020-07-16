@@ -224,6 +224,49 @@ namespace GuruEngine.DebugHelpers
     }
 
 
+    public class RenderSettings : GDMenuItem
+    {
+        public RenderSettings()
+        {
+            Rectangle b = new Rectangle(15, 15 + (12 * 50), 286, 32);
+            buttons.Add(b);
+
+            b = new Rectangle(150, 25 + (0 * 50), 16, 16);
+            buttons.Add(b);
+            b = new Rectangle(290, 25 + (0 * 50), 16, 16);
+            buttons.Add(b);
+
+            text.Add("Gamma");
+            text.Add("Back");
+
+            textpositions.Add(new Vector2(18, 20));
+            textpositions.Add(new Vector2(18, 20 + (12 * 50)));
+        }
+
+        public override GDMenuItem HandleEvent(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    return new RendererTopMenu();
+                case 1:
+                    Renderer.Instance.renderSettings.gamma -= 0.1f;
+                    break;
+                case 2:
+                    Renderer.Instance.renderSettings.gamma += 0.1f;
+                    break;
+
+            }
+            return this;
+        }
+        public override void DrawExtra(SpriteBatch batch)
+        {
+          
+            String s = String.Format("{0:0.00}", Renderer.Instance.renderSettings.gamma);
+            batch.DrawString(AssetManager.GetDebugFont(), s, new Vector2(180, 20), Color.White);
+           
+        }
+    }
 
     public class RendererTopMenu : GDMenuItem
     {
@@ -233,16 +276,19 @@ namespace GuruEngine.DebugHelpers
             buttons.Add(b);
             b = new Rectangle(15, 15 + (1 * 50), 286, 32);
             buttons.Add(b);
-
+            b = new Rectangle(15, 15 + (2 * 50), 286, 32);
+            buttons.Add(b);
             b = new Rectangle(15, 15 + (12 * 50), 286, 32);
             buttons.Add(b);
 
             text.Add("Textures");
             text.Add("SSAO");
+            text.Add("Settings");
             text.Add("Back");
 
             textpositions.Add(new Vector2(18, 20));
             textpositions.Add(new Vector2(18, 20 + (1 * 50)));
+            textpositions.Add(new Vector2(18, 20 + (2 * 50)));
 
             textpositions.Add(new Vector2(18, 20 + (12 * 50)));
         }
@@ -255,6 +301,8 @@ namespace GuruEngine.DebugHelpers
                 case 1:
                     return new DebugSSAO();
                 case 2:
+                    return new RenderSettings();
+                case 3:
                     return new TopLevelMenu();
             }
             return this;
@@ -323,7 +371,6 @@ namespace GuruEngine.DebugHelpers
             batch.DrawString(AssetManager.GetDebugFont(), t, new Vector2(960, 50), Color.Black);
         }
     }
-
 
     public class PhysicsTopLevelMenu : GDMenuItem
     {

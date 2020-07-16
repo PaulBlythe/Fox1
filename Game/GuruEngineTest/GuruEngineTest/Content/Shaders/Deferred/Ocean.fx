@@ -1,6 +1,6 @@
 ﻿#include "../Forward/ShaderVariables.inc"
 
-bool sparkle = false;
+bool sparkle = true;
 float time = 0.6;
 
 //////////////// TEXTURES /////////////////// 
@@ -55,11 +55,11 @@ float2 bumpSpeed = float2(-0.05, 0.0);
 float fresnelBias = 0.1;
 float fresnelPower = 4.0;
 float4 deepColor = float4(0.0f, 0.0f, 0.3f, 1.0f);
-float4 shallowColor = float4(0.0f, 0.1f, 0.8f, 1.0f);
+float4 shallowColor = float4(0.0f, 0.3f, 0.9f, 1.0f);
 float4 reflectionColor = float4(0.7f, 0.7f, 1.0f, 1.0f);
 
-float reflectionAmount = 1.00f;
-float waterAmount = 0.0000045f;
+float reflectionAmount = 0.8f;
+float waterAmount = 0.2f;
 float waveAmp = 2.2;
 float2 waveFreq = float2(0.0003, -0.0003);
 
@@ -147,12 +147,9 @@ PixelShaderOutput OceanMain(VertexOutput IN) : COLOR
 	float4 dcol = shallowColor;
 
 	float4 res = saturate(dcol * waterAmount + reflection * reflectionAmount);
-	res.a = 1;
 
-
-	output.Color.xyz = reflection.xyz;
+	output.Color.xyz = res.xyz;
 	output.Color.a = 0.0f;
-	//output.Depth = (IN.DepthVS.x / IN.DepthVS.y);
 	output.Depth = length(IN.DepthVS);
 	output.Normal.rgb = 0.5f * (N + 1.0f);
 	output.Normal.a = 1.0f;
