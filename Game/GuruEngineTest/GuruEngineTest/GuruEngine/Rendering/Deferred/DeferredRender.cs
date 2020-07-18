@@ -58,6 +58,7 @@ namespace GuruEngine.Rendering.Deferred
         Effect windsock;
         Effect blur;
         Effect combinessao;
+        Effect glass;
         #endregion
 
         public RenderTarget2D colorRT;     // Color and Specular Intensity
@@ -166,6 +167,7 @@ namespace GuruEngine.Rendering.Deferred
             AssetManager.AddShaderToQue(@"Shaders\Deferred\Windsock");
             AssetManager.AddShaderToQue(@"Shaders\SimpleBlur");
             AssetManager.AddShaderToQue(@"Shaders\Deferred\CombineSSAO");
+            AssetManager.AddShaderToQue(@"Shaders\Forward\Glass");
 
             String mesh = @"StaticMeshes\sphere";
             AssetManager.AddStaticMeshToQue(mesh);
@@ -216,6 +218,8 @@ namespace GuruEngine.Rendering.Deferred
                 windsock = AssetManager.Shader(@"Shaders\Deferred\Windsock".GetHashCode());
                 blur = AssetManager.Shader(@"Shaders\SimpleBlur".GetHashCode());
                 combinessao = AssetManager.Shader(@"Shaders\Deferred\CombineSSAO".GetHashCode());
+                glass = AssetManager.Shader(@"Shaders\Forward\Glass".GetHashCode());
+
 
                 sphereModel = AssetManager.StaticMesh(GUID);
                 if ((sphereModel == null) ||
@@ -229,6 +233,7 @@ namespace GuruEngine.Rendering.Deferred
                     (textured == null) ||
                     (blur == null) ||
                     (combinessao == null) ||
+                    (glass == null) ||
                     (ocean == null))
                 {
                     SignalRenderingComplete();
@@ -277,7 +282,7 @@ namespace GuruEngine.Rendering.Deferred
                     {
                         switch (pass)
                         {
-#region Sky rendering
+                            #region Sky rendering
                             // there is only one sky object so this is safe
                             case RenderPasses.Sky:
                                 {
@@ -302,15 +307,15 @@ namespace GuruEngine.Rendering.Deferred
 
                                 }
                                 break;
-#endregion
+                            #endregion
 
-#region Moon, Stars, and Planets
+                            #region Moon, Stars, and Planets
                             case RenderPasses.Ephemeris:
                                 {
                                     DrawToSkyBuffer(renderingRenderCommand, state);
                                 }
                                 break;
-#endregion
+                            #endregion
 
                             case RenderPasses.Terrain:
                                 {
@@ -359,7 +364,7 @@ namespace GuruEngine.Rendering.Deferred
                             blur.Parameters["colourMap"]?.SetValue(ssaoRT);
                             blur.Techniques[0].Passes[0].Apply();
                             QRender.Render(Vector2.One * -1, Vector2.One);
-                            
+
                         }
 
                         device.SetRenderTarget(final);
@@ -383,7 +388,7 @@ namespace GuruEngine.Rendering.Deferred
 
                 default:
                     device.SetRenderTarget(final);
-                    
+
                     finalCombineEffect.Parameters["colorMap"].SetValue(colorRT);
                     finalCombineEffect.Parameters["lightMap"].SetValue(lightRT);
                     finalCombineEffect.Parameters["halfPixel"].SetValue(halfPixel);
@@ -402,13 +407,13 @@ namespace GuruEngine.Rendering.Deferred
             restore.Techniques[0].Passes[0].Apply();
             QRender.Render(Vector2.One * -1, Vector2.One);
 
-            //foreach (RenderCommandSet renderingRenderCommand in renderingRenderCommands)
-            //{
-            //    if (renderingRenderCommand.RenderPass == RenderPasses.Transparent)
-            //    {
-            //
-            //    }
-            //}
+            foreach (RenderCommandSet renderingRenderCommand in renderingRenderCommands)
+            {
+                if (renderingRenderCommand.RenderPass == RenderPasses.Transparent)
+                {
+                    DrawToBuffer(renderingRenderCommand, state);
+                }
+            }
 
             SignalRenderingComplete();
             Engine.EndDrawFrame(gt);
@@ -491,6 +496,74 @@ namespace GuruEngine.Rendering.Deferred
 
         }
 
+        private void DrawToBuffer(RenderCommandSet rs, WorldState state)
+        {
+            device.RasterizerState = Renderer.GetRasteriser(rs.RS);
+            device.DepthStencilState = DepthStencilState.Default;
+            if (rs.IsStaticMesh)
+            {
+                device.BlendState = rs.blend;
+                rs.fx.Parameters["World"].SetValue(rs.World);
+                rs.fx.Parameters["View"].SetValue(rs.View);
+                foreach (ModelMesh mesh in rs.mesh.Meshes)
+                {
+                    mesh.Draw();
+                }
+            }
+            else
+            {
+                foreach (RenderCommand r in rs.Commands)
+                {
+                    if (r.OwnerDraw)
+                    {
+                        r.Draw(device);
+                    }
+                    else
+                    {
+
+                        device.SetVertexBuffer(r.vbuffer);
+                        device.Indices = r.ibuffer;
+
+                        Effect fx = ApplyShader(state, r);
+                        if (r.material != null)
+                        {
+                            if (r.material is MeshPartMaterial)
+                                device.RasterizerState = ((MeshPartMaterial)r.material).deferred_rs;
+                            r.material.Apply(fx);
+                        }
+                        device.SamplerStates[0] = Renderer.GetSamplerState(r.SamplerStateID);
+                        device.BlendState = r.blendstate;
+
+                        foreach (EffectPass p in fx.CurrentTechnique.Passes)
+                        {
+                            p.Apply();
+                            switch (r.MType)
+                            {
+                                case MeshType.IndexedPrimitives:
+                                    device.DrawIndexedPrimitives(r.PType, r.StartVertex, r.StartIndex, r.PrimitiveCount);
+                                    break;
+                                case MeshType.Primitives:
+                                    device.DrawPrimitives(r.PType, r.StartVertex, r.PrimitiveCount);
+                                    break;
+                                case MeshType.Instanced:
+                                    device.DrawInstancedPrimitives(r.PType, r.BaseVertex, r.StartVertex, r.PrimitiveCount, r.InstanceCount);
+                                    break;
+                                case MeshType.UserIndexedPrimitives:
+                                    r.Draw(device);
+                                    break;
+                                case MeshType.UserPrimitives:
+                                    r.Draw(device);
+                                    break;
+
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+
         /// <summary>
         /// Environment map creation
         /// </summary>
@@ -562,7 +635,7 @@ namespace GuruEngine.Rendering.Deferred
 
         }
 
-#region Shader management
+        #region Shader management
         /// <summary>
         /// Add a shader 
         /// </summary>
@@ -704,7 +777,7 @@ namespace GuruEngine.Rendering.Deferred
             return null;
         }
 
-#endregion
+        #endregion
 
         public static Renderer GetCurrentRenderer()
         {
@@ -813,7 +886,7 @@ namespace GuruEngine.Rendering.Deferred
             //compute the light world matrix scale according to light radius, and translate it to light position
             Matrix sphereWorldMatrix = Matrix.CreateScale(lightRadius) * Matrix.CreateTranslation(lightPosition);
             pointLightEffect.Parameters["World"].SetValue(sphereWorldMatrix);
-          
+
             //light position
             pointLightEffect.Parameters["lightPosition"].SetValue(lightPosition);
 
@@ -948,6 +1021,6 @@ namespace GuruEngine.Rendering.Deferred
                 }
             }
         }
-    
+
     }
 }

@@ -63,7 +63,10 @@ PixelShaderOutput MainPS(VertexShaderOutput input)
 	PixelShaderOutput output;
 
 	output.Color = tex2D(colorSampler, input.TexCoord);
-	output.Depth = tex2D(depthSampler, input.TexCoord);
+	float d = tex2D(depthSampler, input.TexCoord).r;
+
+	d = log(d + 1) / log(100001.0f) * d;
+	output.Depth = d;
 	return output;
 }
 
