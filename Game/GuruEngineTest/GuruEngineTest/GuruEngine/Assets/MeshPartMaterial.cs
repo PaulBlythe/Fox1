@@ -80,8 +80,9 @@ namespace GuruEngine.Assets
             deferred_rs.CullMode = CullMode.CullClockwiseFace;
             if (tfDoubleSided)
                 deferred_rs.CullMode = CullMode.None;
-            deferred_rs.DepthBias = tfDepthOffset;
-            
+            deferred_rs.DepthBias = -(tfDepthOffset * 0.001f);
+            deferred_rs.DepthClipEnable = true;
+
         }
 
         public override void Apply(Effect fx)

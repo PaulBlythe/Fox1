@@ -90,7 +90,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
 	float4 cs = tex2D(colorSampler,input.TexCoord);
 	float ds = tex2D(depthSampler, input.TexCoord);
-	if (ds > 65000)
+	if (ds >=1)
 	{
 		return tex2D(skySampler, input.TexCoord);
 	}

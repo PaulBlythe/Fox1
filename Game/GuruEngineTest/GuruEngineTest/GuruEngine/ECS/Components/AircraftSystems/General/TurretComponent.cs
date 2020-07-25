@@ -17,6 +17,7 @@ using GuruEngine.DebugHelpers;
 using GuruEngine.AI;
 using GuruEngine.Audio;
 using GuruEngine.Physics.Collision;
+using GuruEngine.Rendering;
 
 //( Class TurretComponent )
 //( Group Aircraft )
@@ -341,6 +342,8 @@ namespace GuruEngine.ECS.Components.AircraftSystems.General
                                         br.IsTracer = (Rounds & 3) == 0;
                                         Rounds--;
                                         BulletManager.Instance.AddBullet(br);
+
+                                        Renderer.AddPointLight(m.Translation, Color.Orange, 5.0f, 2.0f);
 
                                     }
                                     

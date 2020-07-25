@@ -1,6 +1,5 @@
 ﻿#include "../Forward/ShaderVariables.inc"
 
-bool sparkle = true;
 float time = 0.6;
 
 //////////////// TEXTURES /////////////////// 
@@ -50,8 +49,8 @@ struct PixelShaderOutput
 ///////// TWEAKABLE PARAMETERS ////////////////// 
 
 float bumpHeight = 0.1;
-float2 textureScale = float2(18.0, 14.0);
-float2 bumpSpeed = float2(-0.05, 0.0);
+float2 textureScale = float2(0.2, 0.2);
+float2 bumpSpeed = float2(-0.05, 0.2);
 float fresnelBias = 0.1;
 float fresnelPower = 4.0;
 float4 deepColor = float4(0.0f, 0.0f, 0.3f, 1.0f);
@@ -61,7 +60,7 @@ float4 reflectionColor = float4(0.7f, 0.7f, 1.0f, 1.0f);
 float reflectionAmount = 0.8f;
 float waterAmount = 0.2f;
 float waveAmp = 2.2;
-float2 waveFreq = float2(0.0003, -0.0003);
+float2 waveFreq = float2(0.03, -0.03);
 
 float FogStart = 10000;
 float FogEnd = 12000;
@@ -79,7 +78,7 @@ struct VertexOutput {
 	float3 Normal		: TEXCOORD1;
 	float  Fog			: TEXCOORD2;
 	float3 eyeVector	: TEXCOORD3;
-	float3  DepthVS		: TEXCOORD4;
+	float2  DepthVS		: TEXCOORD4;
 	float3 PositionWS	: POSITIONWS;
 };
 
@@ -93,25 +92,20 @@ VertexOutput BumpReflectWaveVS(AppData IN)
 
 	float4 P = mul(IN.Position, World);
 
-	float2 samplepos = textureScale * (P.xz + time * waveFreq);
-	float4 norm = tex2Dlod(normalMapSampler, float4(samplepos, 0, 1));
+	float2 samplepos = textureScale * ((P.xz*100.0) + time * waveFreq);
+	float4 norm = tex2Dlod(normalMapSamplerHALO, float4(samplepos, 0, 1));
 	norm = (2 * norm) - 1;
-
-	P = mul(P, View);
-	OUT.DepthVS = P.xyz;
 
 	P = IN.Position;
 	P.y += norm.y * waveAmp;
 
 	OUT.Position = mul(P, WorldViewProjection);
 	OUT.Normal = norm.xyz;
-	//OUT.DepthVS.x = OUT.Position.z;
-	//OUT.DepthVS.y = OUT.Position.w;
-	
-
+	OUT.DepthVS.x = OUT.Position.z;
+	OUT.DepthVS.y = OUT.Position.w;
 
 	// pass texture coordinates for fetching the normal map 
-	OUT.TexCoord.xy = IN.TexCoord*textureScale;
+	OUT.TexCoord.xy = P.xz * textureScale;
 
 	// compute the eye vector (going from shaded point to eye) in cube space 
 	float4 worldPos = mul(IN.Position, World);
@@ -133,8 +127,13 @@ VertexOutput BumpReflectWaveVS(AppData IN)
 PixelShaderOutput OceanMain(VertexOutput IN) : COLOR
 {
 	PixelShaderOutput output;
+	float4 dcol = shallowColor;
 
-	float3 N = normalize(IN.Normal);
+	float2 samplepos =  (IN.TexCoord + time * waveFreq);
+	float4 norm = tex2D(normalMapSamplerHALO, samplepos);
+	norm = (2 * norm) - 1;
+
+	float3 N = normalize(norm);
 	N = mul(N , WorldInverseTranspose);
 	N = normalize(N);
 
@@ -142,18 +141,17 @@ PixelShaderOutput OceanMain(VertexOutput IN) : COLOR
 
 	// reflection 
 	float3 R = normalize(-reflect(LightDir, N));
-	
 	float4 reflection = texCUBE(envMapSampler,R);
-	float4 dcol = shallowColor;
-
 	float4 res = saturate(dcol * waterAmount + reflection * reflectionAmount);
 
 	output.Color.xyz = res.xyz;
 	output.Color.a = 0.0f;
-	output.Depth = length(IN.DepthVS);
+	output.Depth = IN.DepthVS.x/IN.DepthVS.y;
 	output.Normal.rgb = 0.5f * (N + 1.0f);
 	output.Normal.a = 1.0f;
-	output.Material = float4(0.75f, 0.25f, 1.0f, 1.0f);
+	output.Material = float4(1.00f, 0.15f, 1.0f, 1.0f);
+	output.Material.w = LightMask;
+	output.Material.z = MoonLit;
 
 	return output;
 

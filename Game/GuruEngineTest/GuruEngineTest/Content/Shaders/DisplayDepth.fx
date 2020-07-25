@@ -21,21 +21,21 @@ struct VertexShaderOutput
 	float2 TextureCoordinates : TEXCOORD0;
 };
 
-//float LinearizeDepth(float2 uv)
-//{
-//	float n = 1.0; // camera z near
-//	float f = 100000.0; // camera z far
-//	float z = tex2D(DepthMapSampler, uv).x;
-//	return (2.0 * n) / (f + n - z * (f - n));
-//}
+float LinearizeDepth(float2 uv)
+{
+	float zNear = 1.0;				// camera z near
+	float zFar = 100000.0;			// camera z far
+	float d = tex2D(DepthMapSampler, uv).x;
+	return zNear * zFar / (zFar + d * (zNear - zFar)); return zNear * zFar / (zFar + d * (zNear - zFar));
+}
 
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-	//float d = LinearizeDepth(input.TextureCoordinates);
-	//return float4(d, d, d, 1);
-
-	float z = tex2D(DepthMapSampler, input.TextureCoordinates).x;
+	float z = LinearizeDepth(input.TextureCoordinates);
+	
+	//float z = tex2D(DepthMapSampler, input.TextureCoordinates).x;
+	//return float4(z, z, z, 1);
 	float r = 0;
 	float g = 0;
 	float b = 0;

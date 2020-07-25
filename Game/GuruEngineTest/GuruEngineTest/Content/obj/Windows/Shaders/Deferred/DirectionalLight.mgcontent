@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/DirectionalLight.fx</SourceFile>
-  <SourceTime>2019-09-17T07:34:14.8420812+01:00</SourceTime>
+  <SourceTime>2020-07-19T17:36:43.0707275+01:00</SourceTime>
   <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Shaders/Deferred/DirectionalLight.xnb</DestFile>
-  <DestTime>2020-07-12T09:49:17.5972959+01:00</DestTime>
+  <DestTime>2020-07-21T07:21:56.6432916+01:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>EffectProcessor</Processor>

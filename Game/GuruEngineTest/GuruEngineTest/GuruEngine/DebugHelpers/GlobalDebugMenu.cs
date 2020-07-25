@@ -74,7 +74,7 @@ namespace GuruEngine.DebugHelpers
         }
     }
 
-    public class DebugTexturedisplay: GDMenuItem
+    public class DebugTexturedisplay : GDMenuItem
     {
         public DebugTexturedisplay()
         {
@@ -86,6 +86,8 @@ namespace GuruEngine.DebugHelpers
             buttons.Add(b);
             b = new Rectangle(15, 15 + (3 * 50), 286, 32);
             buttons.Add(b);
+            b = new Rectangle(15, 15 + (4 * 50), 286, 32);
+            buttons.Add(b);
 
             b = new Rectangle(15, 15 + (12 * 50), 286, 32);
             buttons.Add(b);
@@ -94,6 +96,7 @@ namespace GuruEngine.DebugHelpers
             text.Add("Display shadow texture");
             text.Add("Display depth texture");
             text.Add("Display SSAO texture");
+            text.Add("Display light texture");
 
             text.Add("Back");
 
@@ -101,6 +104,7 @@ namespace GuruEngine.DebugHelpers
             textpositions.Add(new Vector2(18, 20 + (1 * 50)));
             textpositions.Add(new Vector2(18, 20 + (2 * 50)));
             textpositions.Add(new Vector2(18, 20 + (3 * 50)));
+            textpositions.Add(new Vector2(18, 20 + (4 * 50)));
 
             textpositions.Add(new Vector2(18, 20 + (12 * 50)));
         }
@@ -121,8 +125,11 @@ namespace GuruEngine.DebugHelpers
                 case 3:
                     DebugRenderSettings.RenderSSAOTexture = !DebugRenderSettings.RenderSSAOTexture;
                     break;
-
                 case 4:
+                    DebugRenderSettings.RenderLightTexture = !DebugRenderSettings.RenderLightTexture;
+                    break;
+
+                case 5:
                     return new RendererTopMenu();
             }
             return this;
@@ -179,10 +186,10 @@ namespace GuruEngine.DebugHelpers
                 case 0:
                     return new RendererTopMenu();
                 case 1:
-                    Renderer.Instance.renderSettings.SSAOSampleRadius -= 0.001f;
+                    Renderer.Instance.renderSettings.SSAOSampleRadius -= 0.00001f;
                     break;
                 case 2:
-                    Renderer.Instance.renderSettings.SSAOSampleRadius += 0.001f;
+                    Renderer.Instance.renderSettings.SSAOSampleRadius += 0.0001f;
                     break;
                 case 3:
                     Renderer.Instance.renderSettings.SSAODistanceScale -= 0.000001f;
@@ -191,10 +198,10 @@ namespace GuruEngine.DebugHelpers
                     Renderer.Instance.renderSettings.SSAODistanceScale += 0.000001f;
                     break;
                 case 5:
-                    Renderer.Instance.renderSettings.SSAOArea -= 0.0001f;
+                    Renderer.Instance.renderSettings.SSAOArea -= 0.00001f;
                     break;
                 case 6:
-                    Renderer.Instance.renderSettings.SSAOArea += 0.0001f;
+                    Renderer.Instance.renderSettings.SSAOArea += 0.00001f;
                     break;
 
                 case 20:
@@ -214,15 +221,14 @@ namespace GuruEngine.DebugHelpers
                 batch.FillRectangle(r, Color.Yellow);
             }
 
-            String s = String.Format("{0:0.000}", Renderer.Instance.renderSettings.SSAOSampleRadius);
+            String s = String.Format("{0:0.00000}", Renderer.Instance.renderSettings.SSAOSampleRadius);
             batch.DrawString(AssetManager.GetDebugFont(), s, new Vector2(180, 170), Color.White);
             s = String.Format("{0:0.000000}", Renderer.Instance.renderSettings.SSAODistanceScale);
             batch.DrawString(AssetManager.GetDebugFont(), s, new Vector2(180, 120), Color.White);
-            s = String.Format("{0:0.0000}", Renderer.Instance.renderSettings.SSAOArea);
+            s = String.Format("{0:0.000000}", Renderer.Instance.renderSettings.SSAOArea);
             batch.DrawString(AssetManager.GetDebugFont(), s, new Vector2(180, 70), Color.White);
         }
     }
-
 
     public class RenderSettings : GDMenuItem
     {
@@ -261,10 +267,10 @@ namespace GuruEngine.DebugHelpers
         }
         public override void DrawExtra(SpriteBatch batch)
         {
-          
+
             String s = String.Format("{0:0.00}", Renderer.Instance.renderSettings.gamma);
             batch.DrawString(AssetManager.GetDebugFont(), s, new Vector2(180, 20), Color.White);
-           
+
         }
     }
 
@@ -492,7 +498,7 @@ namespace GuruEngine.DebugHelpers
         }
         public override void DrawExtra(SpriteBatch batch)
         {
-           
+
         }
     }
 
@@ -513,24 +519,32 @@ namespace GuruEngine.DebugHelpers
         public bool Active
         {
             get { return _active; }
-            set {
+            set
+            {
                 _active = value;
-                current = null ;
+                current = null;
             }
         }
 
         Rectangle Screen = new Rectangle(10, 10, 300, 640);
         KeyboardState olds;
         MouseState oms;
-        
+
         public void Draw(SpriteBatch batch)
         {
             KeyboardState ks = Keyboard.GetState();
-            if ((ks.IsKeyDown(Keys.F12))&&(olds.IsKeyUp(Keys.F12)))
+            if ((ks.IsKeyDown(Keys.F11)) && (olds.IsKeyUp(Keys.F11)))
             {
                 Active = !Active;
                 current = new TopLevelMenu();
-
+                if (Active)
+                {
+                    SceneManagement.SceneManager.Instance.Paused = true;
+                }
+                else
+                {
+                    SceneManagement.SceneManager.Instance.Paused = false;
+                }
             }
 
             if (Active)
@@ -539,15 +553,15 @@ namespace GuruEngine.DebugHelpers
 
                 batch.Begin();
                 batch.Draw(AssetManager.GetWhite(), Screen, Color.FromNonPremultiplied(0, 0, 0, 192));
-                
+
                 foreach (Rectangle r in current.buttons)
                 {
-                    if (r.Contains(ms.X,ms.Y))
+                    if (r.Contains(ms.X, ms.Y))
                         batch.Draw(AssetManager.GetWhite(), r, Color.Black);
                     else
                         batch.Draw(AssetManager.GetWhite(), r, Color.DarkGray);
                 }
-                for (int i=0; i< current.text.Count; i++)
+                for (int i = 0; i < current.text.Count; i++)
                 {
                     batch.DrawString(AssetManager.GetDebugFont(), current.text[i], current.textpositions[i], Color.White);
                 }
@@ -567,24 +581,24 @@ namespace GuruEngine.DebugHelpers
                     {
                         if (oms.LeftButton == ButtonState.Pressed)
                         {
-                            for (int i=0; i< current.buttons.Count; i++)
+                            for (int i = 0; i < current.buttons.Count; i++)
                             {
-                                if (current.buttons[i].Contains(ms.X,ms.Y))
+                                if (current.buttons[i].Contains(ms.X, ms.Y))
                                 {
                                     current = current.HandleEvent(i);
                                     break;
                                 }
                             }
 
-                            for (int i=0; i<current.checkboxes.Count; i++)
+                            for (int i = 0; i < current.checkboxes.Count; i++)
                             {
-                                if (current.checkboxes[i].Contains(ms.X,ms.Y))
+                                if (current.checkboxes[i].Contains(ms.X, ms.Y))
                                 {
                                     current = current.HandleEvent(i + 20);
                                     break;
                                 }
                             }
-                            
+
                         }
                     }
                 }

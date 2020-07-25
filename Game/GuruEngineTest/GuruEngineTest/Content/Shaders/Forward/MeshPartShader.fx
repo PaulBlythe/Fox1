@@ -2,7 +2,7 @@
  
 float Damage = 0;
 bool Blend = false;
-float LightMask = 1.0f;
+
 
 texture ModelTexture;
 sampler2D textureSampler = sampler_state 

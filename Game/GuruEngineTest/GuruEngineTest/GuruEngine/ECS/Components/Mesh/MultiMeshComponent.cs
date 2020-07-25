@@ -289,7 +289,7 @@ namespace GuruEngine.ECS.Components.Mesh
                     SortedSet = new RenderCommandSet();
                     SortedSet.IsStaticMesh = false;
                     SortedSet.RS = RasteriserStates.Normal;
-                    SortedSet.DS = DepthStencilState.DepthRead;
+                    SortedSet.DS = DepthStencilState.Default;
                     SortedSet.RenderPass = RenderPasses.SortedGeometry;
 
                     DoubleSided = new RenderCommandSet();
@@ -300,9 +300,9 @@ namespace GuruEngine.ECS.Components.Mesh
 
                     Transparent = new RenderCommandSet();
                     Transparent.IsStaticMesh = false;
-                    Transparent.RS = RasteriserStates.NormalNoCull;
+                    Transparent.RS = RasteriserStates.CullCounterclockwise;
                     Transparent.DS = DepthStencilState.Default;
-                    Transparent.RenderPass = RenderPasses.Transparent;
+                    Transparent.RenderPass = RenderPasses.Overlays;
 
                     for (int i = 0; i < mesh.facegroups.Length; i++)
                     {

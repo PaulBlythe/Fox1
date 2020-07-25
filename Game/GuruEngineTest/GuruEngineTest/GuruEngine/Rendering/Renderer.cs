@@ -45,7 +45,7 @@ namespace GuruEngine.Rendering
 
 #if DEBUG
         RasterizerState normal_rs;
-        
+
         GlobalDebugMenu gmenu;
         public Dictionary<String, Texture2D> RegisteredTextures = new Dictionary<string, Texture2D>();
         DebugLineDraw dld = new DebugLineDraw();
@@ -111,8 +111,6 @@ namespace GuruEngine.Rendering
                 UniformSpaceVectors[i] = v;
             }
         }
-
-        
 
         public void Initialise()
         {
@@ -303,7 +301,7 @@ namespace GuruEngine.Rendering
 #if DEBUG
             worldstate = state;
 #endif
-            current.Draw(state,gt);
+            current.Draw(state, gt);
 
 #if DEBUG
             device.RasterizerState = Renderer.GetRasteriser(RasteriserStates.Normal);
@@ -335,7 +333,7 @@ namespace GuruEngine.Rendering
             {
                 if (!UsingForwardRenderer)
                 {
-                    spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Opaque,null,null,null,depthDisplay);
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, null, null, null, depthDisplay);
                     spriteBatch.Draw(Deferred.DeferredRender.Instance.depthRT, debugregion, Color.White);
                     spriteBatch.End();
                     debugregion.X += 256;
@@ -367,6 +365,17 @@ namespace GuruEngine.Rendering
                         spriteBatch.Draw(((Deferred.DeferredRender)current).ssaoRT, debugregion, Color.White);
                         spriteBatch.End();
                     }
+                    debugregion.X += 256;
+                }
+            }
+            if (DebugRenderSettings.RenderLightTexture)
+            {
+                if (!UsingForwardRenderer)
+                {
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(((Deferred.DeferredRender)current).lightRT, debugregion, Color.White);
+                    spriteBatch.End();
+
                     debugregion.X += 256;
                 }
             }

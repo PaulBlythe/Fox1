@@ -39,6 +39,9 @@ namespace GuruEngine.Rendering.RenderCommands
             Variables.Add(ShaderVariables.Projection);
             Variables.Add(ShaderVariables.ViewVector);
             Variables.Add(ShaderVariables.SunDirection);
+            Variables.Add(ShaderVariables.MoonDirection);
+            Variables.Add(ShaderVariables.MoonLit);
+            Variables.Add(ShaderVariables.Lit);
             Variables.Add(ShaderVariables.SunColour);
             Variables.Add(ShaderVariables.Texture01);
             Variables.Add(ShaderVariables.EnvironmentMap);

@@ -22,7 +22,7 @@ const float total_strength = 1.0;
 const float base = 0.2;
 const float area = 0.0075;
 const float falloff = 0.000001;
-const float radius = 0.002;
+const float radius = 0.00002;
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Textures

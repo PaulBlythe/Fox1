@@ -131,6 +131,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 	float specularIntensity = materialData.x;
 	//read depth
 	float depthVal = tex2D(depthSampler,texCoord).r;
+	//float nonLinearDepth = (60000.0 + 0.5 - 2.0 * 0.5 * 60000.0 / depthVal) / (60000.0 - 0.5);
 
 	//compute screen-space position
 	float4 position;
@@ -146,15 +147,14 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 	float3 lightVector = lightPosition - position;
 
 	//compute attenuation based on distance - linear attenuation
-	float attenuation =  max(1.0f - (length(lightVector) / lightRadius),0);
-
+	float attenuation = max(1.0f - (length(lightVector) / lightRadius), 0);
 
 	//normalize light vector
 	lightVector = normalize(lightVector);
 
 	//compute diffuse light
 	float NdL = max(0,dot(normal,lightVector));
-	float3 diffuseLight = NdL * Color.rgb;
+	float3 diffuseLight = saturate((NdL + 0.3) * Color.rgb);
 
 	//reflection vector
 	float3 reflectionVector = normalize(reflect(-lightVector, normal));
@@ -164,7 +164,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 	float specularLight = specularIntensity * pow(saturate(dot(reflectionVector, directionToCamera)), specularPower);
 
 	//take into account attenuation and lightIntensity.
-	return attenuation * lightIntensity * float4(diffuseLight.rgb, specularLight);
+	return saturate(attenuation * lightIntensity * float4(diffuseLight.rgb, specularLight));
 
 }
 

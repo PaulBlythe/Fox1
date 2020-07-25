@@ -17,6 +17,8 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Wobble.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/CirrusClouds.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/ClearGBuffer.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/CombineFinal.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/CombineSSAO.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/DirectionalLight.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/DSSAO.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/FFTWater.fx</File>
@@ -27,7 +29,6 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/RestoreDepthBuffer.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/Textured.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/Windsock.fx</File>
-    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/DisplayDepth.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ExtendedMesh.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Glass.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/MeshPartShader.fx</File>
@@ -56,6 +57,7 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Textures/SGG.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

@@ -110,7 +110,7 @@ namespace GuruEngine.Rendering.RenderCommands
 
             spriteBatch.Begin(SpriteSortMode.Immediate, bs, null, DepthStencilState.None, RasterizerState.CullNone, basicEffect);
 
-            Vector3 textPosition = WorldState.GetWorldState().MoonPosition.ToVector3F();
+            Vector3 textPosition = -WorldState.GetWorldState().MoonPosition.ToVector3F();
             textPosition.Normalize();
             textPosition *= 3000.0f;
 

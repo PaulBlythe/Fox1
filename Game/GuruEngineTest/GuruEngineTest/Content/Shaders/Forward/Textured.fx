@@ -9,7 +9,6 @@
 
 #include "ShaderVariables.inc"
 
-float LightMask = 1.0f;
 
 texture Texture1;
 sampler2D textureSampler = sampler_state

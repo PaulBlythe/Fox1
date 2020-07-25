@@ -23,6 +23,7 @@ namespace GuruEngine.World.Items
         Effect fx;
         RenderCommandSet rendercommand;
         bool mapped = false;
+        Color moonlight;
 
         public Moon()
         {
@@ -79,10 +80,13 @@ namespace GuruEngine.World.Items
 
                 mapped = true;
             }
-           
+            float brightness = (float)(Math.Sin(WorldState.GetWorldState().MoonPhaseAngle));
+            Vector4 c = new Vector4(brightness, brightness, brightness, 1);
+            moonlight = Color.FromNonPremultiplied(c);
+
             Vector3 textPosition = WorldState.GetWorldState().MoonPosition.ToVector3F();
-            textPosition.Normalize();
-            Renderer.AddDirectionalLight(-textPosition, Color.Gray, false, true);
+           
+            Renderer.AddDirectionalLight(textPosition, moonlight, false, true);
             Renderer.AddRenderCommand(rendercommand);
         }
     }

@@ -16,6 +16,7 @@ namespace GuruEngine.Rendering
         ViewInverse,
 
         SunDirection,
+        MoonDirection,
         ViewVector,
 
         Texture01,

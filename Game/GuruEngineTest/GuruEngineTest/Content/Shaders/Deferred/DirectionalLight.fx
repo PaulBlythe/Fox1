@@ -98,13 +98,16 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 
 	//read depth
 	float depthVal = tex2D(depthSampler, input.TexCoord).r;
+	float nonLinearDepth = (60000.0 + 0.5 - 2.0 * 0.5 * 60000.0 / depthVal) / (60000.0 - 0.5);
 
 	//compute screen-space position
 	float4 position;
 	position.x = input.TexCoord.x * 2.0f - 1.0f;
 	position.y = -(input.TexCoord.y * 2.0f - 1.0f);
-	position.z = depthVal;
+	position.z = nonLinearDepth;
 	position.w = 1.0f;
+
+
 
 	//transform to world space
 	position = mul(position, InvertViewProjection);

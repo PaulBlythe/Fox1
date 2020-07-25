@@ -10,11 +10,14 @@ namespace GuruEngine.Rendering
     {
         public const int Sky = 0;
         public const int Ephemeris = 1;
+
         public const int Terrain = 2;
         public const int Geometry = 3;
-        public const int SortedGeometry = 4;
-        public const int Particles = 5;
-        public const int Transparent = 6;
-        public const int TotalPasses = 7;
+        public const int Overlays = 4;
+        public const int SortedGeometry = 5;
+
+        public const int Particles = 6;
+        public const int Transparent = 7;
+        public const int TotalPasses = 8;
     }
 }

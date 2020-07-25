@@ -12,6 +12,7 @@ namespace GuruEngine.SceneManagement
         public static SceneManager Instance;
         Scene current = null;
         public ContentManager content;
+        public bool Paused = false;
 
         public SceneManager(ContentManager Content)
         {
@@ -37,6 +38,8 @@ namespace GuruEngine.SceneManagement
         {
             if (current != null)
             {
+                if (Paused)
+                    dt = 0;
                 current.Update(dt);
             }
         }

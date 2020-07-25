@@ -35,6 +35,7 @@ namespace GuruEngine.Rendering.Deferred
 
         Vector4 SunColour;
         Vector4 SunDirection;
+        Vector4 MoonDirection;
         Vector4 AmbientColour;
 
         Vector3 CameraPosition;
@@ -195,6 +196,7 @@ namespace GuruEngine.Rendering.Deferred
                     SunColour = Copy(state.SunColour);
                     SunDirection = Copy(state.SunDirection);
                     AmbientColour = Copy(state.AmbientColour);
+                    MoonDirection = Copy(state.MoonPosition.ToVector4());
 
                     CameraPosition = Copy(state.CameraPosition);
                     CameraForward = Copy(state.CameraForward);
@@ -324,8 +326,11 @@ namespace GuruEngine.Rendering.Deferred
                                 break;
 
                             case RenderPasses.Transparent:
+                                break;
+
+                            case RenderPasses.Overlays:
                                 {
-                                    //DrawToGBuffer(renderingRenderCommand, state);
+                                    DrawToGBuffer(renderingRenderCommand, state);
                                 }
                                 break;
 
@@ -341,6 +346,7 @@ namespace GuruEngine.Rendering.Deferred
             ResolveGBuffer();
 
             DrawLights(View, Projection);
+            device.DepthStencilState = DepthStencilState.Default;
 
             switch (Renderer.Instance.renderSettings.SSAOType)
             {
@@ -404,6 +410,9 @@ namespace GuruEngine.Rendering.Deferred
 
             restore.Parameters["colorMap"].SetValue(final);
             restore.Parameters["depthmap"].SetValue(depthRT);
+            restore.Parameters["zFar"].SetValue(60000.0f);
+            restore.Parameters["zNear"].SetValue(0.5f);
+
             restore.Techniques[0].Passes[0].Apply();
             QRender.Render(Vector2.One * -1, Vector2.One);
 
@@ -413,7 +422,20 @@ namespace GuruEngine.Rendering.Deferred
                 {
                     DrawToBuffer(renderingRenderCommand, state);
                 }
+
             }
+
+            lock (particleSystems)
+            {
+                ParticleSystem[] ps = particleSystems.Values.ToArray();
+
+                for (int i = 0; i < ps.Length; i++)
+                {
+                    ps[i].Update(gt);
+                    ps[i].Draw(gt, View, Projection);
+                }
+            }
+
 
             SignalRenderingComplete();
             Engine.EndDrawFrame(gt);
@@ -422,12 +444,10 @@ namespace GuruEngine.Rendering.Deferred
 
         private void DrawToGBuffer(RenderCommandSet rs, WorldState state)
         {
-
             device.RasterizerState = Renderer.GetRasteriser(rs.RS);
             device.DepthStencilState = rs.DS;
             if (rs.IsStaticMesh)
             {
-                //device.BlendState = rs.blend;
                 rs.fx.Parameters["World"].SetValue(rs.World);
                 rs.fx.Parameters["View"].SetValue(rs.View);
                 foreach (ModelMesh mesh in rs.mesh.Meshes)
@@ -462,7 +482,6 @@ namespace GuruEngine.Rendering.Deferred
                                 r.material.Apply(fx);
                             }
                             device.SamplerStates[0] = Renderer.GetSamplerState(r.SamplerStateID);
-                            //device.BlendState = r.blendstate;
 
                             foreach (EffectPass p in fx.CurrentTechnique.Passes)
                             {
@@ -562,7 +581,6 @@ namespace GuruEngine.Rendering.Deferred
                 }
             }
         }
-
 
         /// <summary>
         /// Environment map creation
@@ -690,6 +708,8 @@ namespace GuruEngine.Rendering.Deferred
                             {
                                 float h1 = MathUtils.HorizonDistance(r.World.Translation.Y);
                                 Vector2 i1, i2;
+                                if (h1 < 1)
+                                    h1 = 1;
                                 MathUtils.FindCircleCircleIntersections(0, 0, 6357000.0f, 0, r.World.Translation.Y + 6357000.0f, h1, out i1, out i2);
                                 Vector3 direction = new Vector3(0, r.World.Translation.Y, 0) - new Vector3(i1.X, i1.Y - 6357000.0f, 0);
                                 direction.Normalize();
@@ -698,13 +718,19 @@ namespace GuruEngine.Rendering.Deferred
                                 float lit = 0;
                                 if (state.SunElevation > da)
                                     lit = 1;
-                                fx.Parameters["SunLit"].SetValue(lit);
+                                fx.Parameters["LightMask"].SetValue(lit);
                             }
                             break;
 
                         case ShaderVariables.MoonLit:
                             {
+                                Vector3 textPosition = -WorldState.GetWorldState().MoonPosition.ToVector3F();
+                                textPosition.Normalize();
+                               
+
                                 float h1 = MathUtils.HorizonDistance(r.World.Translation.Y);
+                                if (h1 < 1)
+                                    h1 = 1;
                                 Vector2 i1, i2;
                                 MathUtils.FindCircleCircleIntersections(0, 0, 6357000.0f, 0, r.World.Translation.Y + 6357000.0f, h1, out i1, out i2);
                                 Vector3 direction = new Vector3(0, r.World.Translation.Y, 0) - new Vector3(i1.X, i1.Y - 6357000.0f, 0);
@@ -712,16 +738,17 @@ namespace GuruEngine.Rendering.Deferred
 
                                 float da = (float)Math.Asin(-direction.Y);
                                 float lit = 0;
-                                float moonelevation = (float)Math.Asin(state.MoonPosition.Y);
-                                if (state.MoonPosition.Y >= 0)
+                                float moonelevation = (float)Math.Asin(textPosition.Y);
+                                if (moonelevation > da)
                                     lit = 1;
                                 fx.Parameters["MoonLit"].SetValue(lit);
                             }
                             break;
-
+                        case ShaderVariables.MoonDirection:
+                                fx.Parameters["MoonDirection"]?.SetValue(MoonDirection);
+                            break;
                         case ShaderVariables.SunColour:
-                            if (fx.Parameters["SunColour"] != null)
-                                fx.Parameters["SunColour"].SetValue(SunColour);
+                                fx.Parameters["SunColour"]?.SetValue(SunColour);
                             break;
                         case ShaderVariables.SunDirection:
                             if (fx.Parameters["SunDirection"] != null)
@@ -851,6 +878,7 @@ namespace GuruEngine.Rendering.Deferred
             device.Clear(Color.Transparent);
             device.BlendState = lightAdditive;
             device.RasterizerState = nbrs;
+            device.DepthStencilState = DepthStencilState.None;
 
             foreach (GuruEngine.Rendering.Lights.DirectionalLight d in activeLightManager.directionLights)
             {
@@ -858,12 +886,9 @@ namespace GuruEngine.Rendering.Deferred
             }
 
             //set the G-Buffer parameters
-            if (pointLightEffect.Parameters["material"] != null)
-                pointLightEffect.Parameters["material"].SetValue(materialRT);
-            if (pointLightEffect.Parameters["normalMap"] != null)
-                pointLightEffect.Parameters["normalMap"].SetValue(normalRT);
-            if (pointLightEffect.Parameters["depthMap"] != null)
-                pointLightEffect.Parameters["depthMap"].SetValue(depthRT);
+            pointLightEffect.Parameters["material"]?.SetValue(materialRT);
+            pointLightEffect.Parameters["normalMap"]?.SetValue(normalRT);
+            pointLightEffect.Parameters["depthMap"]?.SetValue(depthRT);
 
             pointLightEffect.Parameters["View"].SetValue(View);
             pointLightEffect.Parameters["Projection"].SetValue(Projection);

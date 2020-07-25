@@ -375,14 +375,11 @@ namespace GuruEngine.ECS.Components.Mesh
                 r1 = Matrix.CreateRotationX(MathHelper.PiOver4) * Matrix.CreateRotationY(-MathHelper.PiOver2) * Matrix.CreateTranslation(p1) * w;
                 CopyMatrix(ref GeometrySet.Commands[9].World, ref r1);
 
-                Vector3 pos = Vector3.Transform(new Vector3(0.25f, Height + 3, 0), w);
+                Vector3 pos = Vector3.Transform(new Vector3(0.0f, Height + 3, 0), w);
                 Renderer.AddPointLight(pos, Color.White, 15.0f, 5.0f);
-                pos = Vector3.Transform(new Vector3(-0.25f, Height + 3, 0), w);
+                pos = Vector3.Transform(new Vector3(0.0f, 0, 0), w);
                 Renderer.AddPointLight(pos, Color.White, 15.0f, 5.0f);
-                pos = Vector3.Transform(new Vector3(0, Height + 3, 0.25f), w);
-                Renderer.AddPointLight(pos, Color.White, 15.0f, 5.0f);
-                pos = Vector3.Transform(new Vector3(0, Height + 3, -0.25f), w);
-                Renderer.AddPointLight(pos, Color.White, 15.0f, 5.0f);
+               
             }
 
             Renderer.AddRenderCommand(GeometrySet);

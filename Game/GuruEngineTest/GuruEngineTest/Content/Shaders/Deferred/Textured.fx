@@ -36,7 +36,7 @@ struct VertexShaderOutput
 	float4 Position				: POSITION0;
 	float2 TexCoord				: TEXCOORD0;
 	float3 Normal				: TEXCOORD1;
-	float3 Depth				: TEXCOORD2;
+	float2 Depth				: TEXCOORD2;
 };
 
 VertexShaderOutput MainVS(in VertexShaderInput input)
@@ -49,7 +49,8 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 	output.TexCoord = input.TextureCoordinate;
 	output.Normal = mul(float4(input.Normal, 1), WorldInverseTranspose).xyz;
-	output.Depth = viewPosition.xyz;
+	output.Depth.x = viewPosition.z;
+	output.Depth.y = viewPosition.w;
 	return output;
 }
 
@@ -74,7 +75,7 @@ PixelShaderOutput MainPS(VertexShaderOutput input)
 	output.Color.a = 0.0f;
 	output.Normal.rgb = 0.5f * (normalize(input.Normal) + 1.0f);		// transform normal domain
 	output.Normal.a = 1.0f;
-	output.Depth = length(input.Depth);									    // output Depth
+	output.Depth = input.Depth.x/input.Depth.y;							// output Depth
 
 	return output;
 }

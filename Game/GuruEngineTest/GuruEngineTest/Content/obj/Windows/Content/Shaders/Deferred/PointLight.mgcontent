@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/PointLight.fx</SourceFile>
-  <SourceTime>2020-07-07T12:03:42.8525161+01:00</SourceTime>
+  <SourceTime>2020-07-25T07:57:15.3622458+01:00</SourceTime>
   <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Content/Shaders/Deferred/PointLight.xnb</DestFile>
-  <DestTime>2020-07-07T12:03:43.9665955+01:00</DestTime>
+  <DestTime>2020-07-25T08:00:53.4646184+01:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>EffectProcessor</Processor>

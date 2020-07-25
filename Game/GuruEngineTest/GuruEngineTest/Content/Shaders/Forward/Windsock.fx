@@ -10,7 +10,6 @@
 #include "ShaderVariables.inc"
 
 const float PI = 3.1415926535897;
-float LightMask = 1.0f;
 float WindSpeed;
 float time = 0;
 

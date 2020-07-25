@@ -7,6 +7,9 @@
 	#define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
+float zFar;
+float zNear;
+
 texture colorMap;
 texture depthmap;
 
@@ -65,7 +68,10 @@ PixelShaderOutput MainPS(VertexShaderOutput input)
 	output.Color = tex2D(colorSampler, input.TexCoord);
 	float d = tex2D(depthSampler, input.TexCoord).r;
 
-	d = log(d + 1) / log(100001.0f) * d;
+	//float nonLinearDepth = (zFar + zNear - 2.0 * zNear * zFar / d) / (zFar - zNear);
+	//nonLinearDepth = (nonLinearDepth + 1.0) / 2.0;
+
+	
 	output.Depth = d;
 	return output;
 }
