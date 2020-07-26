@@ -23,6 +23,7 @@ using GuruEngine.Maths;
 
 //( Class WindsockComponent )
 //( Type AnimatedMesh )
+//( Group AnimatedMesh )
 //( Connection WorldTransform Transform )
 //( Parameter Float Height )
 //( Parameter Bool Lit )

@@ -86,8 +86,7 @@ namespace GuruEngine.DebugHelpers
             buttons.Add(b);
             b = new Rectangle(15, 15 + (3 * 50), 286, 32);
             buttons.Add(b);
-            b = new Rectangle(15, 15 + (4 * 50), 286, 32);
-            buttons.Add(b);
+
 
             b = new Rectangle(15, 15 + (12 * 50), 286, 32);
             buttons.Add(b);
@@ -95,7 +94,7 @@ namespace GuruEngine.DebugHelpers
             text.Add("Display moon texture");
             text.Add("Display shadow texture");
             text.Add("Display depth texture");
-            text.Add("Display SSAO texture");
+
             text.Add("Display light texture");
 
             text.Add("Back");
@@ -104,7 +103,7 @@ namespace GuruEngine.DebugHelpers
             textpositions.Add(new Vector2(18, 20 + (1 * 50)));
             textpositions.Add(new Vector2(18, 20 + (2 * 50)));
             textpositions.Add(new Vector2(18, 20 + (3 * 50)));
-            textpositions.Add(new Vector2(18, 20 + (4 * 50)));
+
 
             textpositions.Add(new Vector2(18, 20 + (12 * 50)));
         }
@@ -121,15 +120,12 @@ namespace GuruEngine.DebugHelpers
                     break;
                 case 2:
                     DebugRenderSettings.RenderDepthMap = !DebugRenderSettings.RenderDepthMap;
-                    break;
+                    break;              
                 case 3:
-                    DebugRenderSettings.RenderSSAOTexture = !DebugRenderSettings.RenderSSAOTexture;
-                    break;
-                case 4:
                     DebugRenderSettings.RenderLightTexture = !DebugRenderSettings.RenderLightTexture;
                     break;
 
-                case 5:
+                case 4:
                     return new RendererTopMenu();
             }
             return this;
@@ -161,6 +157,12 @@ namespace GuruEngine.DebugHelpers
             b = new Rectangle(290, 25 + (1 * 50), 16, 16);
             buttons.Add(b);
 
+            b = new Rectangle(15, 15 + (4 * 50), 286, 32);
+            buttons.Add(b);
+
+            b = new Rectangle(15, 15 + (5 * 50), 286, 32);
+            buttons.Add(b);
+
             b = new Rectangle(260, 15 + (0 * 50), 32, 32);
             checkboxes.Add(b);
 
@@ -168,6 +170,8 @@ namespace GuruEngine.DebugHelpers
             text.Add("Area");
             text.Add("Falloff");
             text.Add("Radius");
+            text.Add("Display SSAO texture");
+            text.Add("Blur");
 
             text.Add("Back");
 
@@ -175,6 +179,8 @@ namespace GuruEngine.DebugHelpers
             textpositions.Add(new Vector2(18, 20 + (1 * 50)));
             textpositions.Add(new Vector2(18, 20 + (2 * 50)));
             textpositions.Add(new Vector2(18, 20 + (3 * 50)));
+            textpositions.Add(new Vector2(18, 20 + (4 * 50)));
+            textpositions.Add(new Vector2(18, 20 + (5 * 50)));
 
             textpositions.Add(new Vector2(18, 20 + (12 * 50)));
         }
@@ -202,6 +208,12 @@ namespace GuruEngine.DebugHelpers
                     break;
                 case 6:
                     Renderer.Instance.renderSettings.SSAOArea += 0.00001f;
+                    break;
+                case 7:
+                    DebugRenderSettings.RenderSSAOTexture = !DebugRenderSettings.RenderSSAOTexture;
+                    break;
+                case 8:
+                    Renderer.Instance.renderSettings.SSAOBlur = !Renderer.Instance.renderSettings.SSAOBlur;
                     break;
 
                 case 20:

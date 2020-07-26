@@ -106,7 +106,9 @@
                 </MenuItem>
             </MenuItem>
 
-            <MenuItem Header="_Window" />
+            <MenuItem Header="_Window" >
+                <MenuItem Header="Filter components" Click="FilterComponents"/>
+            </MenuItem>
             <MenuItem Header="_Help" />
         </Menu>
 

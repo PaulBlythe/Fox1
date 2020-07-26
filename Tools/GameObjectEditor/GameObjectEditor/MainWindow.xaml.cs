@@ -18,8 +18,7 @@ using GameObjectEditor.GameComponent;
 using GameObjectEditor.WPFRubbish;
 using GameObjectEditor.Layouts;
 using Microsoft.Win32;
-
-
+using System.Windows.Threading;
 
 namespace GameObjectEditor
 {
@@ -55,6 +54,8 @@ namespace GameObjectEditor
             ComponentList.Items.Add(root);
 
             FullDirList(di, "*.cs", root);
+
+
             #endregion
 
             _translateTransform = new TranslateTransform();
@@ -362,6 +363,19 @@ namespace GameObjectEditor
         }
         #endregion
 
+        private void FilterComponents(object sender, RoutedEventArgs args)
+        {
+            // Instantiate the dialog box
+            Window1 dlg = new Window1(componentTypes);
+
+            // Configure the dialog box
+            dlg.Owner = this;
+           
+
+            // Open the dialog box modally
+            dlg.ShowDialog();
+        }
+
         #region Display handling
 
         double zoom = 1;
@@ -489,6 +503,14 @@ namespace GameObjectEditor
         #endregion
 
         #region File IO
+
+        private Action EmptyDelegate = delegate () { };
+
+        public void Refresh(UIElement uiElement)
+        {
+            uiElement.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
+        }
+
         public void OpenGameObject(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -528,6 +550,8 @@ namespace GameObjectEditor
                         y += 5;
                     }
                 }
+                Refresh(Display);
+                Reconnect();
             }
 
            
@@ -543,6 +567,48 @@ namespace GameObjectEditor
                     return gcd;
             }
             return null;
+        }
+
+        public void Reconnect()
+        {
+            foreach (GameComponentDescriptor gcd in activeComponents)
+            {
+                String con1 = gcd.Name;
+
+                foreach (GameComponentConnection gcc in gcd.Connections)
+                {
+                    String pin1 = gcc.Name;
+                    if (pin1 != "Root")
+                    {
+                        String temp = gcc.ConnectedTo;
+                        if (temp != "")
+                        {
+                            string comp, name;
+
+                            if (pin1 == "Collision")
+                            {
+                                comp = temp;
+                                name = "Root";
+                            }
+                            else
+                            {
+                                String[] parts = temp.Split(':');
+                                comp = parts[0];
+                                name = parts[1];
+                            }
+
+                            if (!manager.DoesConnectionExist(con1, pin1, comp, name))
+                            {
+                                Button b1 = gcd.Pins[pin1];
+                                GameComponentDescriptor gcd2 = FindComponentByName(comp);
+                                Button b2 = gcd2.Pins[name];
+                                manager.AddConnection(Display, b1, b2);
+                            }
+                        }
+                    }
+
+                }
+            }
         }
 
         public void Reconnect(object sender, RoutedEventArgs args)

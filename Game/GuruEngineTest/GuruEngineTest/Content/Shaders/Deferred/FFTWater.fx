@@ -86,7 +86,7 @@ PixelShaderOutput MainPS(VertexShaderOutput input)
 
 
 	output.Color.xyz = fragColor.xyz;
-	output.Color.a = 1.0f;
+	output.Color.a = 0.2f;
 	output.Depth = input.Depth.x / input.Depth.y;
 	output.Normal.rgb = 0.5f * (nn + 1.0f);
 	output.Normal.a = 1.0f;

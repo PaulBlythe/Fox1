@@ -84,10 +84,12 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 		return tex2D(skySampler, input.TexCoord);
 	}
 	float3 diffuseColor = cs.rgb;
+	float ambient = cs.a;
+
 	float4 light = tex2D(lightSampler,input.TexCoord);
 	float3 diffuseLight = light.rgb;
 	float specularLight = light.a;
-	float3 diffuse = diffuseColor * diffuseLight;
+	float3 diffuse = diffuseColor * (diffuseLight + ambient);
 	float3 specular = float3(specularLight, specularLight, specularLight);
 	float3 col = saturate(diffuse + specular);
 	float g = 1.0 / gamma;

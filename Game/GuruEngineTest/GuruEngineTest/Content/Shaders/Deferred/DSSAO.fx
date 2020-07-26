@@ -19,7 +19,7 @@ float2 halfPixel;
 ///////////////////////////////////////////////////////////////////////////////////////
 
 const float total_strength = 1.0;
-const float base = 0.2;
+const float base = 0.0;
 const float area = 0.0075;
 const float falloff = 0.000001;
 const float radius = 0.00002;
@@ -142,7 +142,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	occlusion += doTest(float3(0.0352,-0.0631, 0.5460), radius_depth,random,position,normal,depth);
 	occlusion += doTest(float3(-0.4776, 0.2847,-0.0271),radius_depth,random,position,normal,depth);
 
-	float ao = 1.0 - total_strength * occlusion * (1.0 / 16.0f);
+	float ao = total_strength * occlusion * (1.0 / 16.0f);
 	float res = saturate(ao + base);
 	return float4(res, res, res, 1.0);
 

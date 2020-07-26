@@ -28,3 +28,5 @@ C:\GitHub\Fox1\Tools\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEdito
 C:\GitHub\Fox1\Tools\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor.csproj.CoreCompileInputs.cache
 C:\GitHub\Fox1\Tools\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor.exe
 C:\GitHub\Fox1\Tools\GameObjectEditor\GameObjectEditor\obj\Debug\GameObjectEditor.pdb
+C:\GitHub\Fox1\Tools\GameObjectEditor\GameObjectEditor\obj\Debug\Window1.g.cs
+C:\GitHub\Fox1\Tools\GameObjectEditor\GameObjectEditor\obj\Debug\Window1.baml

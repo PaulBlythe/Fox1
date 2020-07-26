@@ -32,10 +32,10 @@ namespace GameObjectEditor.WPFRubbish
         {
             startPoint = Start.TransformToAncestor(Display).Transform(new Point(0, 0));
             endPoint = End.TransformToAncestor(Display).Transform(new Point(0, 0));
-            startPoint.X += 8;
-            startPoint.Y += 8;
-            endPoint.X += 8;
-            endPoint.Y += 8;
+            startPoint.X += 16;
+            startPoint.Y += 16;
+            endPoint.X += 16;
+            endPoint.Y += 16;
             ArcPath = CreateBezierSegment(startPoint, endPoint);
 
             Display.Children.Add(ArcPath);
@@ -59,10 +59,10 @@ namespace GameObjectEditor.WPFRubbish
 
             Point sPoint = Start.TransformToAncestor(Display).Transform(new Point(0, 0));
             Point ePoint = End.TransformToAncestor(Display).Transform(new Point(0, 0));
-            sPoint.X += 8;
-            sPoint.Y += 8;
-            ePoint.X += 8;
-            ePoint.Y += 8;
+            sPoint.X += 10;
+            sPoint.Y += 10;
+            ePoint.X += 10;
+            ePoint.Y += 10;
 
             if ((sPoint == startPoint) && (ePoint == endPoint))
                 return;

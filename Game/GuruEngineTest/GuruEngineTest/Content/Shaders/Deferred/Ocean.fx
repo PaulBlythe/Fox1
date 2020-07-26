@@ -145,7 +145,7 @@ PixelShaderOutput OceanMain(VertexOutput IN) : COLOR
 	float4 res = saturate(dcol * waterAmount + reflection * reflectionAmount);
 
 	output.Color.xyz = res.xyz;
-	output.Color.a = 0.0f;
+	output.Color.a = 0.2f;
 	output.Depth = IN.DepthVS.x/IN.DepthVS.y;
 	output.Normal.rgb = 0.5f * (N + 1.0f);
 	output.Normal.a = 1.0f;

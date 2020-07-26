@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Media;
 
 //( Class MultiMeshComponent )
 //( Type Mesh )
+//( Group Mesh )
 //!!!( Connection LODGroup LODGroup )
 //( Connection CollisionMesh Collision )
 //( Connection HookListComponent Hooks )

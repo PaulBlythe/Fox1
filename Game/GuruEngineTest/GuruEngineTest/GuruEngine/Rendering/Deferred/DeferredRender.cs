@@ -17,6 +17,24 @@ using GuruEngine.Maths;
 using GuruEngine.Rendering.Particles;
 using GuruEngine.World.Weather;
 
+
+/// <summary>
+/// Gbuffer layouts
+/// ==============================================
+/// Colour
+/// ==============================================
+/// xyz Colour
+/// w   Ambient
+/// ==============================================
+/// Material  
+/// ==============================================
+/// x   Specular intensity;
+/// y   Shininess;
+/// z   MoonLit;
+/// w   Sunlit;
+/// ==============================================
+/// /// </summary>
+
 namespace GuruEngine.Rendering.Deferred
 {
     public class DeferredRender : RenderInterface
@@ -389,6 +407,7 @@ namespace GuruEngine.Rendering.Deferred
                         combinessao.Techniques[0].Passes[0].Apply();
                         QRender.Render(Vector2.One * -1, Vector2.One);
                         device.SetRenderTarget(null);
+                        
                     }
                     break;
 
@@ -407,6 +426,8 @@ namespace GuruEngine.Rendering.Deferred
                     device.SetRenderTarget(null);
                     break;
             }
+            device.DepthStencilState = DepthStencilState.Default;
+            device.Clear(ClearOptions.DepthBuffer, Color.Black, 10000, 0);
 
             restore.Parameters["colorMap"].SetValue(final);
             restore.Parameters["depthmap"].SetValue(depthRT);
@@ -415,6 +436,8 @@ namespace GuruEngine.Rendering.Deferred
 
             restore.Techniques[0].Passes[0].Apply();
             QRender.Render(Vector2.One * -1, Vector2.One);
+
+            device.DepthStencilState = DepthStencilState.Default;
 
             foreach (RenderCommandSet renderingRenderCommand in renderingRenderCommands)
             {

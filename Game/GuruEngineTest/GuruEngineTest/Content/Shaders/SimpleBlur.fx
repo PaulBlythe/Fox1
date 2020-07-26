@@ -65,12 +65,13 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 {
 	float4 Color;
 
-	Color =  tex2D(colourSampler, float2(input.UV.x + BlurDistance, input.UV.y + BlurDistance));
+	Color = tex2D(colourSampler, input.UV);
+	Color += tex2D(colourSampler, float2(input.UV.x + BlurDistance, input.UV.y + BlurDistance));
 	Color += tex2D(colourSampler, float2(input.UV.x - BlurDistance, input.UV.y - BlurDistance));
 	Color += tex2D(colourSampler, float2(input.UV.x + BlurDistance, input.UV.y - BlurDistance));
 	Color += tex2D(colourSampler, float2(input.UV.x - BlurDistance, input.UV.y + BlurDistance));
 
-	Color = Color / 4.0f;
+	Color = Color / 5.0f;
 	return Color;
 }
 

@@ -81,7 +81,7 @@ PixelShaderOutput MainPS(VertexShaderOutput input)
 	output.Material.z = MoonLit;
 	output.Material.w = LightMask;
 	output.Color = DiffuseIntensity * colour * MaterialColour;			// output Color
-	output.Color.a = 0.0f;                                
+	output.Color.a = 0.2f;                                
 	output.Normal.rgb = 0.5f * (normalize(input.Normal) + 1.0f);		// transform normal domain
 	output.Normal.a = 1.0f;
 	output.Depth = input.Depth.x / input.Depth.y;
