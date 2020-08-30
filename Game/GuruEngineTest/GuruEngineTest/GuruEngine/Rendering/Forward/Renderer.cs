@@ -363,8 +363,6 @@ namespace GuruEngine
                             ps[i].Update(gt);
                             ps[i].Draw(gt, View, Projection);
                         }
-
-                      
                     }
                 }
                 else
@@ -484,6 +482,11 @@ namespace GuruEngine
                                     }
                                     break;
 
+                                case RenderPasses.Transparent:
+                                    {
+                                        RenderACommand(renderingRenderCommand, state);
+                                    }
+                                    break;
 
                                 default:
                                     {

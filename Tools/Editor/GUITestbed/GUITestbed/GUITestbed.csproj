@@ -108,6 +108,7 @@
     <Compile Include="DataHandlers\IL2\FaceGroup.cs" />
     <Compile Include="DataHandlers\IL2\Lod.cs" />
     <Compile Include="DataHandlers\IL2\Material.cs" />
+    <Compile Include="DataHandlers\IL2\MeshMaterialLibrary.cs" />
     <Compile Include="DataHandlers\IL2\TextMSH.cs" />
     <Compile Include="DataHandlers\Mapping\ColourMapping\ColourMap.cs" />
     <Compile Include="DataHandlers\Mapping\ColourMapping\ColourRecord.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="DataHandlers\Shape\SHP\SHPPointZ.cs" />
     <Compile Include="DataHandlers\Shape\SHP\SHPPolygon.cs" />
     <Compile Include="DataHandlers\Shape\SHP\SHPPolyLine.cs" />
+    <Compile Include="FilePaths.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GUI\Dialogs\MessageBox.cs" />
     <Compile Include="GUI\Dialogs\OpenFileDialog.cs" />
@@ -156,6 +158,7 @@
     <Compile Include="GUI\Widgets\SideBar.cs" />
     <Compile Include="GUI\Widgets\Slider.cs" />
     <Compile Include="GUI\Widgets\SmallButton.cs" />
+    <Compile Include="GUI\Widgets\SmallCheckbox.cs" />
     <Compile Include="GUI\Widgets\StatusBar.cs" />
     <Compile Include="GUI\Widgets\TextBox.cs" />
     <Compile Include="GUI\Widgets\ToolBar.cs" />
@@ -180,6 +183,8 @@
     <Compile Include="SerialisableData\SerialisableObject.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Tools\MapGenerator.cs" />
+    <Compile Include="Tools\MaterialDisplayTool.cs" />
+    <Compile Include="Tools\TextureLoader.cs" />
     <Compile Include="Tools\Tool.cs" />
     <Compile Include="Tools\WorldDisplayTool.cs" />
     <Compile Include="World\BezierVector2D.cs" />
@@ -202,6 +207,7 @@
   <ItemGroup>
     <Content Include="Content\Shaders\Button.fx" />
     <Content Include="Content\Shaders\DiffuseFog.fx" />
+    <Content Include="Content\Shaders\ModelMesh.fx" />
     <Content Include="Content\Shaders\SDFont2.fx" />
     <Content Include="Content\Shaders\Sky\Scatter.fx" />
     <Content Include="Content\Shaders\Sky\SNoise.fx" />
@@ -223,9 +229,10 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
     <None Include="Content\MapFont.spritefont" />
+    <None Include="Content\Models\skySphere.fbx" />
+    <None Include="Content\Models\sphere.fbx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\Models\" />
     <Folder Include="Scenes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -13,8 +13,20 @@ namespace GUITestbed.GUI.Widgets
         public float Value;
         Rectangle Region;
         Rectangle tag;
-        String ID;
+        public String ID;
         bool Grabbed = false;
+        float minvalue = 0;
+        float maxvalue = 1;
+
+        public Slider(Rectangle r, float v, float min, float max, String id)
+        {
+            Region = r;
+            Value = v;
+            UpdateTag();
+            ID = id;
+            minvalue = min;
+            maxvalue = max;
+        }
 
         public Slider(Rectangle r, float v, String id)
         {
@@ -42,8 +54,11 @@ namespace GUITestbed.GUI.Widgets
                 {
                     float dw = Region.Width - 8;
                     Value = (float)(ms.X - Region.X) / dw;
-                    Value = Math.Max(0, Value);
-                    Value = Math.Min(1, Value);
+                    Value *= (maxvalue - minvalue);
+                    Value += minvalue;
+                    Value = Math.Max(minvalue, Value);
+                    Value = Math.Min(maxvalue, Value);
+                   
                 }
                 else
                 {
@@ -57,7 +72,10 @@ namespace GUITestbed.GUI.Widgets
             {
                 String r = ID;
                 if (Parent == null)
+                {
                     GuiManager.Instance.HandleEvent(r);
+                    OnClickEvent(r);
+                }
                 else
                     Parent.Message(r);
             }
@@ -86,11 +104,13 @@ namespace GUITestbed.GUI.Widgets
 
         private void UpdateTag()
         {
-            float c = (Value * Region.Width);
+            float delta = (Value - minvalue) / (maxvalue - minvalue);
+          
+            float c = (delta * Region.Width);
 
             float left = c - 8;
             if (left < 0)
-                left =0;
+                left = 0;
 
             float right = left + 16;
             if (right >= Region.X + Region.Width)

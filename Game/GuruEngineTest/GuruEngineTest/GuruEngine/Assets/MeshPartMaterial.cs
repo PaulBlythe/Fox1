@@ -87,15 +87,17 @@ namespace GuruEngine.Assets
 
         public override void Apply(Effect fx)
         {
+            
             if (Glass)
             {
 
             }
             else
             {
+               
                 fx.Parameters["MaterialColour"].SetValue(new Vector4(Colour[0], Colour[1], Colour[2], Colour[3]));
                 fx.Parameters["DiffuseIntensity"].SetValue(Diffuse);
-                fx.Parameters["SpecularIntensity"].SetValue(Shine);
+                fx.Parameters["SpecularIntensity"].SetValue(Specular);
                 fx.Parameters["Shininess"].SetValue(SpecularPow);
                 if (Renderer.IsForward())
                 {

@@ -68,7 +68,7 @@ namespace GuruEngine.World
         {
             Instance = this;
 
-            camera = new DebugCamera(Renderer.GetAspectRatio());
+            camera = new QuaternionCamera(Renderer.GetAspectRatio());
             GameTime = new DateTime(1940, 9, 2, 12, 0, 0);
             CameraLatitude = 50;
             CameraLongitude = -2;
@@ -79,8 +79,8 @@ namespace GuruEngine.World
         {
             OldCameraPosition = CameraPosition;
             TimeStep = timeStep * GameTimeMultiplier;
-            GameTime = GameTime.AddSeconds(timeStep * GameTimeMultiplier);
-            camera.Update(TimeStep * GameTimeMultiplier);
+            GameTime = GameTime.AddSeconds(TimeStep);
+            GameTime = GameTime.AddMilliseconds(TimeStep * 1000.0f);
             CameraPosition = camera.Position;
             CameraForward = camera.Forward;
             

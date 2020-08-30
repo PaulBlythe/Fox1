@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 using GuruEngine.Simulation.Components.Radar.CrossSections;
+using GuruEngine;
 
 //( Class RadarCrossSectionComponent )
 //( Group Avionics )
@@ -36,7 +37,7 @@ namespace GuruEngine.ECS.Components.AircraftSystems.General
             {
                 case "Definition":
                     {
-                        String path = Settings.GetInstance().GameRootDirectory + @"\RadarCrossSections\" + Value + ".rad";
+                        String path = GuruEngine.Settings.GetInstance().GameRootDirectory + @"\RadarCrossSections\" + Value + ".rad";
                         rcs = RadarCrossSectionDefinition.Load(path);
                     }
                     break;

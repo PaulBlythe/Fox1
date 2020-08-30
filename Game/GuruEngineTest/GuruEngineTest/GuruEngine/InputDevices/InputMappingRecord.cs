@@ -16,6 +16,7 @@ namespace GuruEngine.InputDevices
             Joystick,
             Wheel,
             Knob,
+            Toggle,
             Total
         }
 

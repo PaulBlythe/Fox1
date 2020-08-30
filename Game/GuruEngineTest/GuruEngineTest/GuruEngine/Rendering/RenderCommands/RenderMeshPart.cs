@@ -74,7 +74,9 @@ namespace GuruEngine.Rendering.RenderCommands
                 declaration = VertexPositionNormalTexture.VertexDeclaration;
                 vbuffer = mp.mesh.vbuffer;
                 ibuffer = mp.mesh.ibuffer;
-                blendstate = BlendState.NonPremultiplied;
+                blendstate = BlendState.Opaque;
+                if (mat.Materials[f.Material].tfBlend)
+                    blendstate = BlendState.NonPremultiplied;
                 if (mat.Materials[f.Material].tfBlendAdd)
                     blendstate = BlendState.Additive;
 
@@ -91,9 +93,17 @@ namespace GuruEngine.Rendering.RenderCommands
                 Variables.Add(ShaderVariables.Lit);
                 Variables.Add(ShaderVariables.MoonLit);
             }
+            bool isNight = mat.Materials[f.Material].tname.Contains("night");
+            if (isNight)
+                return 999;
+
             int set = 2;
             if (mat.Materials[f.Material].Sort)
+            {
                 set = 1;
+                if (Renderer.IsForward())
+                    return set;
+            }
             if (mat.Materials[f.Material].tfDoubleSided)
                 set = 3;
             if (mat.Materials[f.Material].tfBlend)

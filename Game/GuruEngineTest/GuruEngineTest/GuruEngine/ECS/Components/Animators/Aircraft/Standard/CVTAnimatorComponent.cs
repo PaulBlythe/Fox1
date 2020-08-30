@@ -21,6 +21,7 @@ using GuruEngine.ECS.Components.World;
 //( Parameter Float Maximum )
 //( Parameter Float Start )
 //( Parameter Float Finish )
+//( Parameter Int Flags )
 
 namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
 {
@@ -33,6 +34,7 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
         public float Maximum;
         public float Start;
         public float Finish;
+        public int Flags = 0;
 
         public String TargetMesh;
         public String ControlValue;
@@ -48,7 +50,7 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
             other.Finish = Finish;
             other.TargetMesh = TargetMesh;
             other.ControlValue = ControlValue;
-
+            other.Flags = Flags;
             return other;
         }
 
@@ -104,7 +106,6 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
 
         public override void Load(ContentManager content)
         {
-            
             Host = (MultiMeshComponent)Parent.FindGameComponentByName(TargetMesh);
             State = (AircraftStateComponent)Parent.FindGameComponentByName("AircraftStateComponent_1");
         }
@@ -118,6 +119,7 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
             otherTank.Finish = Finish;
             otherTank.TargetMesh = TargetMesh;
             otherTank.ControlValue = ControlValue;
+            otherTank.Flags = Flags;
         }
 
         public override void RenderOffscreenRenderTargets()
@@ -142,6 +144,10 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
             {
                 Finish = float.Parse(Value);
             }
+            if (Name == "Flags")
+            {
+                Flags = int.Parse(Value);
+            }
             if (Name == "TargetMesh")
             {
                 TargetMesh = Value;
@@ -157,8 +163,27 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
             double Vator = State.GetVar(ControlValue, 0);
             Vator = Maths.MathUtils.Cvt((float)Vator, Minimum, Maximum, Start, Finish);
 
-            Matrix m = Matrix.CreateRotationY(MathHelper.ToRadians((float)Vator));
-            Host.MatrixAnimate(m);
+            switch (Flags)
+            {
+                case 1:             
+                    {
+                        Matrix m = Matrix.CreateRotationX(MathHelper.ToRadians((float)-Vator));
+                        Host.MatrixAnimate(m);
+                    }
+                    break;
+                case 2:
+                    {
+                        Matrix m = Matrix.CreateRotationX(MathHelper.ToRadians((float)Vator));
+                        Host.MatrixAnimate(m);
+                    }
+                    break;
+                default:
+                    {
+                        Matrix m = Matrix.CreateRotationY(MathHelper.ToRadians((float)Vator));
+                        Host.MatrixAnimate(m);
+                    }
+                    break;
+            }
         }
         #endregion
 

@@ -14,6 +14,7 @@ using GuruEngine.Physics.Collision;
 using GuruEngine.ECS.Components.World;
 using GuruEngine.AI.Scripting;
 using GuruEngine.World;
+using GuruEngine.Maths;
 
 //( Class AircraftStateComponent )
 //( Group Flight )
@@ -43,6 +44,8 @@ namespace GuruEngine.ECS.Components
 
         public String ScriptName = "";
         public Script script = null;
+
+        WorldTransform Transform;
 
         public AircraftStateComponent()
         {
@@ -120,6 +123,11 @@ namespace GuruEngine.ECS.Components
             DoubleVariables.Add("RadiatorPosition", 0);
             DoubleVariables.Add("BombBayPosition", 0);
             DoubleVariables.Add("Altitude", 0);
+            DoubleVariables.Add("Yaw", 0);
+            DoubleVariables.Add("Pitch", 0);
+            DoubleVariables.Add("Roll", 0);
+
+            Transform = (WorldTransform) Parent.FindSingleComponentByType<WorldTransform>();
 
             if (ScriptName !="")
             {
@@ -151,7 +159,7 @@ namespace GuruEngine.ECS.Components
 
         public override void Update(float dt)
         {
-            time += 0.016667f;
+            time += dt;
 
             #region Debug only code
 
@@ -178,9 +186,19 @@ namespace GuruEngine.ECS.Components
             //    DoubleVariables["RadiatorPosition"] = 0;
             //
             //}
-
+            DoubleVariables["Yaw"] += 0.25f;
             #endregion
-           
+
+            Quaternion q = Transform.GetOrientation();
+            Vector3 e = MathUtils.QuaternionToEuler(q);
+
+            DoubleVariables["Pitch"] = e.X;
+            //DoubleVariables["Yaw"] = e.Y;
+            DoubleVariables["Roll"] = e.Z;
+
+
+            float altitude = Transform.GetLocalPosition().Y;
+            DoubleVariables["Altitude"] = altitude;
             Atmosphere =  GuruEngine.World.World.GetAtmos().Update(DoubleVariables["Altitude"]);
             if (script != null)
             {

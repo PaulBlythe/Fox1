@@ -200,6 +200,7 @@ namespace GuruEngine.InputDevices
         public Dictionary<string, int> GenericInts = new Dictionary<string, int>();
         public Dictionary<String, float> GenericFloats = new Dictionary<string, float>();
         public Dictionary<string, DebouncedButton> DebouncedButtons = new Dictionary<string, DebouncedButton>();
+        public Dictionary<String, InputDescriptor> RegisteredInputs = new Dictionary<string, InputDescriptor>();
 
         bool Locked = false;
         public void Lock()
@@ -215,6 +216,15 @@ namespace GuruEngine.InputDevices
         public bool IsLocked()
         {
             return Locked;
+        }
+
+        public InputDescriptorType GetTypeOfControl(String id)
+        {
+            if (RegisteredInputs.ContainsKey(id))
+            {
+                return RegisteredInputs[id].Type;
+            }
+            return InputDescriptorType.None;
         }
     }
 }

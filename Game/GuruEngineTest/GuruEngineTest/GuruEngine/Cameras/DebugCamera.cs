@@ -85,7 +85,7 @@ namespace GuruEngine.Cameras
         }
 
 
-        public void Yaw(float radians)
+        public override void Yaw(float radians)
         {
             Forward.Normalize();
             Forward = Vector3.Transform(Forward, Matrix.CreateFromAxisAngle(Up, radians));
@@ -111,7 +111,7 @@ namespace GuruEngine.Cameras
             Up = Vector3.Transform(Up, Matrix.CreateFromAxisAngle(Forward, radians));
         }
 
-        public static void SetPosition(Vector3 pos)
+        public override void SetPosition(Vector3 pos)
         {
             Instance.Position = pos;
         }
@@ -119,6 +119,11 @@ namespace GuruEngine.Cameras
         public static void SetForward(Vector3 dir)
         {
             Instance.Forward = dir;
+        }
+
+        public override Matrix GetWorld()
+        {
+            return Matrix.CreateTranslation(Position);
         }
     }
 }

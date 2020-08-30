@@ -26,6 +26,7 @@ namespace GuruEngine.Physics.Aircraft
         public void Load(String [] parts)
         {
             Name = parts[0];
+            Transform = Matrix.Identity;
             Transform.M11 = float.Parse(parts[1]);
             Transform.M12 = float.Parse(parts[2]);
             Transform.M13 = float.Parse(parts[3]);

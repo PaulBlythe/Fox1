@@ -55,8 +55,8 @@ namespace GuruEngineTest.Scenes.Developer
             worldState = new WorldState();
             gameWorld = new World(@"WindTunnel");
 
-            DebugCamera.SetPosition(new Vector3(20, 5, 0));
-            DebugCamera.Instance.Yaw(MathHelper.ToRadians(90));
+            worldState.camera.SetPosition(new Vector3(20, 5, 0));
+            worldState.camera.Yaw(MathHelper.ToRadians(90));
             switch (Renderer.GetSkyType())
             {
                 case Skies.Traced:
@@ -81,8 +81,8 @@ namespace GuruEngineTest.Scenes.Developer
             WorldItem Moon = new Moon();
             worldState.AddWorldItem(Moon);
 
-            WindTunnel tunnel = new WindTunnel();
-            worldState.AddWorldItem(tunnel);
+            GroundPlane gp = new GroundPlane();
+            worldState.AddWorldItem(gp);
 
             sub = new LoadAircraft();
 

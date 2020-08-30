@@ -43,18 +43,18 @@ samplerCUBE envMapSampler = sampler_state
 ///////// TWEAKABLE PARAMETERS ////////////////// 
 
 float bumpHeight = 0.1;
-float2 textureScale = float2( 18.0, 14.0 );
+float2 textureScale = float2(0.2, 0.2);
 float2 bumpSpeed = float2(-0.05, 0.0);
 float fresnelBias = 0.1;
 float fresnelPower = 4.0;
 float4 deepColor = float4( 0.0f, 0.0f, 0.3f, 1.0f );
-float4 shallowColor = float4( 0.0f, 0.1f, 0.8f, 1.0f );
+float4 shallowColor = float4( 0.2f, 0.2f, 0.6f, 1.0f );
 float4 reflectionColor = float4(1.0f, 1.0f, 1.0f, 1.0f );
 
-float reflectionAmount = 0.35f;
-float waterAmount = 0.65f;
+float reflectionAmount = 0.45f;
+float waterAmount = 0.55f;
 float waveAmp  = 2.2;
-float2 waveFreq = float2(0.0003,-0.0003);
+float2 waveFreq = float2(0.3,-0.3);
 
 float FogStart = 10000;
 float FogEnd =  12000;
@@ -95,11 +95,10 @@ VertexOutput BumpReflectWaveVS(AppData IN)
 
 	float4 P = mul(IN.Position, World);
 
-	float2 samplepos = textureScale * (P.xz + time * waveFreq);
+	//float2 samplepos = textureScale * (P.xz + time * waveFreq);
+	float2 samplepos = textureScale * ((P.xz*100.0) + time * waveFreq);
 	float4 norm = tex2Dlod(normalMapSampler, float4(samplepos,0,1));
 	norm = (2 * norm) - 1;
-
-	
 
 	P = IN.Position;
 	P.y += norm.y * waveAmp;
@@ -108,7 +107,6 @@ VertexOutput BumpReflectWaveVS(AppData IN)
 	OUT.Normal = norm.xyz;
 	OUT.DepthVS = OUT.Position.w;
 	
-
 	// pass texture coordinates for fetching the normal map 
 	OUT.TexCoord.xy = IN.TexCoord*textureScale;
 
@@ -131,21 +129,23 @@ VertexOutput BumpReflectWaveVS(AppData IN)
 
 float4 OceanMain(PS_input IN) : COLOR
 {
-	float3 N = normalize(IN.Normal);
-	N = mul(N , WorldInverseTranspose);
+	float2 samplepos = textureScale * ((IN.TexCoord * 100.0) + time * waveFreq);
+	float4 norm = tex2D(normalMapSampler, samplepos);
+	norm = (2 * norm) - 1;
+	float3 N = mul(norm.xyz , WorldInverseTranspose);
 	N = normalize(N);
 
-	float3 LightDir = -normalize(SunDirection.xyz);
+	float3 LightDir = -normalize(SunDirection);
 	float3 ViewDir = normalize(IN.eyeVector);
 	float3 Ia = AmbientColour * 0.25f;
-	float3 Id = saturate(dot(LightDir,N));
+	float3 Id = saturate(dot(LightDir,N.xyz));
 
 	
 	// reflection 
 	float3 R = normalize(-reflect(LightDir, N));	
 	R.y = clamp(R.y, 0, 1);
 	float4 reflection = texCUBE(envMapSampler,R);
-	float4 dcol = deepColor;
+	float4 dcol = shallowColor;
 
 	float4 waterColor = float4(saturate((Id * dcol)),1);
 
@@ -159,10 +159,10 @@ float4 OceanMain(PS_input IN) : COLOR
 	}
 	uint2 screenPos = uint2(IN.Position.xy);
 	
+	float4 res = saturate(( reflection) + (Is * reflection));
 
-	float4 res = saturate(waterColor * waterAmount + reflection * reflectionAmount + Is * reflection);
+	//float4 res = saturate(waterColor * waterAmount + reflection * reflectionAmount + Is * reflection);
 	res.a = 1;
-
 	return res;
  
 }

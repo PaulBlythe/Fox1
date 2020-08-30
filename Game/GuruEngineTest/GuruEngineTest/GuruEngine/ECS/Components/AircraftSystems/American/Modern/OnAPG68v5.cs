@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-using GuruEngine.ECS;
+using GuruEngine;
 using GuruEngine.ECS.Components;
 using GuruEngine.ECS.Components.World;
 using GuruEngine.ECS.Components.AircraftSystems.General;
@@ -208,7 +208,7 @@ namespace GuruEngine.ECS.Components.AircraftSystems.American.Modern
                     float dot = Vector3.Dot(beamDirection, direction);
                     if (dot<cosArc)
                     {
-                        if (Settings.GetInstance().Difficulty < 5)
+                        if (GuruEngine.Settings.GetInstance().Difficulty < 5)
                         {
                             AddTarget(wt, go, direction, noseDirection);
                         }else

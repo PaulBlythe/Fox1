@@ -18,6 +18,9 @@ namespace GuruEngine.Cameras
         public float FarClip;
 
         public abstract void Update(float gt);
+        public abstract Matrix GetWorld();
+        public abstract void Yaw(float angle);
+        public abstract void SetPosition(Vector3 location);
 
     }
 }

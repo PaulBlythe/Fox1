@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GUITestbed.GUI
 {
+   
+
     public abstract class Widget
     {
         public Widget Parent = null;
@@ -14,5 +16,12 @@ namespace GUITestbed.GUI
         public abstract void Draw(GuiFont b);
         public abstract void Draw(SpriteBatch b);
         public abstract void Message(String s);
+
+        public event EventHandler<String> ClickEvent;
+
+        protected virtual void OnClickEvent(String s)
+        {
+            ClickEvent?.Invoke(this, s);
+        }
     }
 }

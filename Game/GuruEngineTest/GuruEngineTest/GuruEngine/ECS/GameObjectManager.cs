@@ -28,6 +28,8 @@ using GuruEngine.ECS.Components.Debug;
 using GuruEngine.ECS.Components.AircraftSystems.Aero;
 using GuruEngine.ECS.Components.Physics;
 using GuruEngine.ECS.Components.AircraftSystems.Thrusters;
+using GuruEngine.ECS.Components.Settings;
+using GuruEngine.ECS.Components.Cockpit;
 
 namespace GuruEngine.ECS
 {
@@ -303,6 +305,13 @@ namespace GuruEngine.ECS
                         newobj = new WindsockComponent();
                         break;
 
+                    case "AircraftSettingsComponent":
+                        newobj = new AircraftSettingsComponent();
+                        break;
+
+                    case "NightMaterialListComponent":
+                        newobj = new NightMaterialListComponent();
+                        break;
 
                     default:
                         throw new Exception("Game component " + gor.Type + " Not added to the game object manager");

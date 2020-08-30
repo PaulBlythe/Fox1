@@ -37,6 +37,13 @@ namespace GUITestbed.DataHandlers.IL2
         public int NormalTex;
         public String tname = "";
 
+        public Texture2D Texture;
+
+        public Material()
+        {
+
+        }
+
         public Material(String name)
         {
             tfDoubleSided = false;
@@ -193,7 +200,7 @@ namespace GUITestbed.DataHandlers.IL2
                     }
                 }
                 reader.Close();
-                
+
             }
         }
 
@@ -457,7 +464,6 @@ namespace GUITestbed.DataHandlers.IL2
             }
         }
 
-  
         public void AdjustLighting()
         {
             if (Name.Contains("Propellor"))
@@ -484,6 +490,116 @@ namespace GUITestbed.DataHandlers.IL2
                 tfNoWriteZ = true;
             }
         }
+
+        public Material(BinaryReader bw)
+        {
+            Name = bw.ReadString();
+
+            tfDoubleSided = bw.ReadBoolean();
+            Sort = bw.ReadBoolean();
+            Glass = bw.ReadBoolean();
+            Ambient = bw.ReadSingle();                  //  Ambient Instensity
+            Diffuse = bw.ReadSingle();                  //  Diffuse Intensity
+            Specular = bw.ReadSingle();                 //  Not used
+            SpecularPow = bw.ReadSingle();              //  Specular Power
+            Shine = bw.ReadSingle();                    //  Specular Intensity
+            tfWrapX = bw.ReadBoolean();
+            tfWrapY = bw.ReadBoolean();
+            tfMinLinear = bw.ReadBoolean();
+            tfMagLinear = bw.ReadBoolean();
+            tfBlend = bw.ReadBoolean();
+            tfBlendAdd = bw.ReadBoolean();
+            tfNoTexture = bw.ReadBoolean();
+            tfDepthOffset = bw.ReadSingle();
+            tfNoWriteZ = bw.ReadBoolean();
+            AlphaTestVal = bw.ReadSingle();             //  Alpha cut off value
+            tfTranspBorder = bw.ReadBoolean();
+            tfTestA = bw.ReadBoolean();                 //  Test alpha bool           
+            tfTestZ = bw.ReadBoolean();
+            tname = bw.ReadString();                    //  Texture name
+            Colour[0] = bw.ReadSingle();                //  Diffuse colour
+            Colour[1] = bw.ReadSingle();                //  Diffuse colour
+            Colour[2] = bw.ReadSingle();                //  Diffuse colour
+            Colour[3] = bw.ReadSingle();                //  Diffuse colour
+
+        }
+
+        public void Apply(Effect fx)
+        {
+            if (Glass)
+            {
+
+            }
+            else
+            {
+                if (tfBlend)
+                {
+                    fx.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                }
+                else
+                {
+                    fx.GraphicsDevice.BlendState = BlendState.Opaque;
+                }
+                if (tfBlendAdd)
+                {
+                    fx.GraphicsDevice.BlendState = BlendState.Additive;
+                }
+                fx.Parameters["MaterialColour"].SetValue(new Vector4(Colour[0], Colour[1], Colour[2], Colour[3]));
+                fx.Parameters["DiffuseIntensity"].SetValue(Diffuse);
+                fx.Parameters["SpecularIntensity"].SetValue(Shine);
+                fx.Parameters["Shininess"].SetValue(SpecularPow);
+                fx.Parameters["AmbientIntensity"].SetValue(Ambient);
+                Color s = Color.FromNonPremultiplied((int)(255 * Specular), (int)(255 * Specular), (int)(Specular * 255), 255);
+                fx.Parameters["SpecularColor"].SetValue(s.ToVector4());
+                fx.Parameters["Damage"].SetValue(0.0f);
+                fx.Parameters["Blend"].SetValue(tfBlend);
+                fx.Parameters["AlphaCut"].SetValue(AlphaTestVal);
+                fx.Parameters["TestAlpha"].SetValue(tfTestA);
+                fx.Parameters["ModelTexture"].SetValue(Texture);
+            }
+
+        }
+
+        public void SaveToFox1(BinaryWriter bw)
+        {
+            bw.Write(Name);
+            
+            bw.Write(tfDoubleSided);
+            bw.Write(Sort);
+            bw.Write(Glass);
+            bw.Write(Ambient);
+            bw.Write(Diffuse);
+            bw.Write(Specular);
+            bw.Write(SpecularPow);
+            bw.Write(Shine);
+            bw.Write(tfWrapX);
+            bw.Write(tfWrapY);
+            bw.Write(tfMinLinear);
+            bw.Write(tfMagLinear);
+            bw.Write(tfBlend);
+            bw.Write(tfBlendAdd);
+            bw.Write(tfNoTexture);
+            bw.Write(tfDepthOffset);
+            bw.Write(tfNoWriteZ);
+            bw.Write(AlphaTestVal);
+            bw.Write(tfTranspBorder);
+            bw.Write(tfTestA);
+            bw.Write(tfTestZ);
+            String tex = Path.GetFileNameWithoutExtension(tname);
+
+            if (tname.StartsWith(".."))
+            {
+                tex = "$" + Path.GetFileNameWithoutExtension(tname);
+            }
+
+            bw.Write(tex);
+            bw.Write(Colour[0]);
+            bw.Write(Colour[1]);
+            bw.Write(Colour[2]);
+            bw.Write(Colour[3]);
+
+        }
+
 
     }
 }

@@ -54,6 +54,7 @@ namespace GuruEngine.ECS.Components.Mesh
         RenderCommandSet SortedSet = null;
         RenderCommandSet DoubleSided = null;
         RenderCommandSet Transparent = null;
+        RenderCommandSet Night = null;
 
         public Matrix world;
         public Matrix Animation;
@@ -68,6 +69,7 @@ namespace GuruEngine.ECS.Components.Mesh
             other.hooks = hooks;
             other.lib = lib;
             other.aircraft = aircraft;
+            other.Hidden = Hidden;
             return (ECSGameComponent)other;
         }
 
@@ -297,13 +299,21 @@ namespace GuruEngine.ECS.Components.Mesh
                     DoubleSided.IsStaticMesh = false;
                     DoubleSided.RS = RasteriserStates.NormalNoCull;
                     DoubleSided.DS = DepthStencilState.Default;
-                    DoubleSided.RenderPass = RenderPasses.SortedGeometry;
+                    DoubleSided.RenderPass = RenderPasses.Geometry;
 
                     Transparent = new RenderCommandSet();
                     Transparent.IsStaticMesh = false;
                     Transparent.RS = RasteriserStates.CullCounterclockwise;
                     Transparent.DS = DepthStencilState.Default;
-                    Transparent.RenderPass = RenderPasses.Overlays;
+                    Transparent.RenderPass = RenderPasses.Transparent;
+                    Transparent.blend = BlendState.NonPremultiplied;
+
+                    Night = new RenderCommandSet();
+                    Night.IsStaticMesh = false;
+                    Night.RS = RasteriserStates.CullCounterclockwise;
+                    Night.DS = DepthStencilState.Default;
+                    Night.RenderPass = RenderPasses.Transparent;
+                    Night.blend = BlendState.NonPremultiplied;
 
                     for (int i = 0; i < mesh.facegroups.Length; i++)
                     {
@@ -324,6 +334,9 @@ namespace GuruEngine.ECS.Components.Mesh
                                 break;
                             case 4:
                                 Transparent.Commands.Add(r);
+                                break;
+                            case 999:
+                                Night.Commands.Add(r);
                                 break;
                         }
                     }
@@ -348,11 +361,21 @@ namespace GuruEngine.ECS.Components.Mesh
                 {
                     CopyMatrix(ref r.World, ref world);
                 }
+                foreach (RenderCommand r in Night.Commands)
+                {
+                    CopyMatrix(ref r.World, ref world);
+                }
                 Renderer.AddRenderCommand(GeometrySet);
-                Renderer.AddRenderCommand(GlassSet);
-                Renderer.AddRenderCommand(SortedSet);
-                Renderer.AddRenderCommand(DoubleSided);
-                Renderer.AddRenderCommand(Transparent);
+                if (GlassSet.Commands.Count > 0)
+                    Renderer.AddRenderCommand(GlassSet);
+                if (SortedSet.Commands.Count > 0)
+                    Renderer.AddRenderCommand(SortedSet);
+                if (DoubleSided.Commands.Count > 0)
+                    Renderer.AddRenderCommand(DoubleSided);
+                if (Transparent.Commands.Count > 0)
+                    Renderer.AddRenderCommand(Transparent);
+                //if (Night.Commands.Count > 0)
+                //    Renderer.AddRenderCommand(Night);
 
                 if (coll != null)
                     coll.SetMatrix(world);
@@ -391,11 +414,13 @@ namespace GuruEngine.ECS.Components.Mesh
             {
                 Animate(mod);
 
-                Draw();
+
                 foreach (MultiMeshComponent m in children)
                 {
                     m.UpdateMatrices(world);
                 }
+
+                Draw();
             }
         }
         public void MatrixAnimate(Matrix m)

@@ -20,21 +20,20 @@ using GuruEngine.InputDevices;
 //( Parameter String Button )
 //( Parameter String Event )
 //( Parameter String Type )
-//( Connection InputEventComponent Target )
-//( Comment "OnUp    Sends the event when the button is released" )
-//( Comment "OnDown  Sends the event when the button is depressed" )
-//( Comment "OneShot Sends the event when the button state changes" )
-
+//( Parameter String Modifier )
+//( Parameter Float Min )
+//( Parameter Float Max )
 
 namespace GuruEngine.ECS.Components.Input
 {
-    public class InputEventComponent:ECSGameComponent
+    public class InputEventComponent : ECSGameComponent
     {
-        public String Device = "Keyboard";
         public String Button;
         public String Event;
         public String Type;
-        public ECSGameComponent Target = null;
+        public String Modifier;
+        public float Minimum;
+        public float Maximum;
 
         private bool state = false;
 
@@ -46,6 +45,9 @@ namespace GuruEngine.ECS.Components.Input
                 case "Event": Event = Value; break;
                 case "Button": Button = Value; break;
                 case "Type": Type = Value; break;
+                case "Modifier": Modifier = Value; break;
+                case "Min": Minimum = float.Parse(Value); break;
+                case "Max": Maximum = float.Parse(Value); break;
             }
         }
 
@@ -56,11 +58,12 @@ namespace GuruEngine.ECS.Components.Input
         public override ECSGameComponent Clone()
         {
             InputEventComponent res = new InputEventComponent();
-            res.Device = Device;
             res.Button = Button;
             res.Event = Event;
-            res.Target = Target;
+            res.Modifier = Modifier;
             res.Type = Type;
+            res.Minimum = Minimum;
+            res.Maximum = Maximum;
             return res;
         }
 
@@ -75,7 +78,7 @@ namespace GuruEngine.ECS.Components.Input
             string[] parts = components.Split('#');
             if (isList)
             {
-                
+
             }
             else
             {
@@ -87,11 +90,7 @@ namespace GuruEngine.ECS.Components.Input
                             Parent = GameObjectManager.Instance.FindGameObjectByName(objects[0]);
                         }
                         break;
-                    case "Target":
-                        {
-                            Target = Parent.FindGameComponentByName(objects[0]);
-                        }
-                        break;
+
 
                     default:
                         throw new Exception("GameComponent::InputEventComponent:: Unknown direct connection request to " + parts[0]);
@@ -102,14 +101,8 @@ namespace GuruEngine.ECS.Components.Input
 
         public override void DisConnect()
         {
-            Target = null;
         }
 
-        /// <summary>
-        /// The only contained object is the radar cross srction
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
         public override object GetContainedObject(string type)
         {
             return null;
@@ -126,16 +119,18 @@ namespace GuruEngine.ECS.Components.Input
 
         public override void Load(ContentManager content)
         {
+            PlayerInputMap.RegisterInput(Event, Button, Type, Modifier);
         }
 
         public override void ReConnect(GameObject other)
         {
             InputEventComponent otherI = (InputEventComponent)other.FindGameComponentByName(Name);
-            otherI.Device = Device;
             otherI.Event = Event;
             otherI.Button = Button;
-            otherI.Target = other.FindGameComponentByName(Target.Name);
+            otherI.Modifier = Modifier;
             otherI.Type = Type;
+            otherI.Minimum = Minimum;
+            otherI.Maximum = Maximum;
         }
 
         public override void RenderOffscreenRenderTargets()
@@ -144,38 +139,7 @@ namespace GuruEngine.ECS.Components.Input
 
         public override void Update(float dt)
         {
-            bool pressed = false;
-            if (Device == "Keyboard")
-                pressed = InputDeviceManager.WasKeyPressedByName(Button[0]);
-            else
-                pressed = InputDeviceManager.GetButtonByName(Device, Button);
 
-            if (pressed == state)
-                return;
-            state = pressed;
-            switch (Type)
-            {
-
-                case "OnUp":
-                    {
-                        if (!pressed)
-                            Target.HandleEvent(Event);
-                    }
-                    break;
-
-                case "OnDown":
-                    {
-                        if (pressed)
-                            Target.HandleEvent(Event);
-                    }
-                    break;
-
-                case "OneShot":
-                    {
-                        Target.HandleEvent(Event);
-                    }
-                    break;
-            }
         }
         #endregion
     }

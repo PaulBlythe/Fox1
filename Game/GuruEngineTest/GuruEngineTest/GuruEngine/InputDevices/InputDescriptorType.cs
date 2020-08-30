@@ -12,6 +12,7 @@ namespace GuruEngine.InputDevices
         Button,
         HiHat,
         Stick,
-        Dial
+        Dial,
+        BouncedButton,
     }
 }

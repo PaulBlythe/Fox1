@@ -18,19 +18,20 @@ namespace GuruEngine.InputDevices
 {
     public class InputDeviceManager
     {
-
         public static InputDeviceManager Instance;
-
+        public PlayerInputMap playerMap;
         public Dictionary<String, InputDevice> Devices = new Dictionary<string, InputDevice>();
+        public Dictionary<String, String> ControlToDevice = new Dictionary<string, string>();
+
         KeyboardState lastState;
         KeyboardState currentState;
-        public PlayerInputMap playerMap;
-
 
         public InputDeviceManager()
         {
             Instance = this;
             playerMap = new PlayerInputMap();
+            KeyboardInputDevice kid = new KeyboardInputDevice();
+            Devices.Add("Keyboard", kid);
         }
 
         /// <summary>
@@ -217,46 +218,43 @@ namespace GuruEngine.InputDevices
         #endregion
 
         #region Player input mapping
-        public static Vector2 GetPlayerAxes(PlayerInputValue control)
+        public static Vector2 GetPlayerAxes(String control)
         {
-            switch (control)
+            if (Instance.ControlToDevice.ContainsKey(control))
             {
-                case PlayerInputValue.MFDMasterInput:
-                    {
-                        if (Instance.playerMap.MFDMasterInput.Device != "")
-                        {
-                            return GetAxesByName(Instance.playerMap.MFDMasterInput.Device, Instance.playerMap.MFDMasterInput.Input);
-                        }
-                    }
-                    break;
+                String device = Instance.ControlToDevice[control];
+                return GetAxesByName(device, control);
             }
             return Vector2.Zero;
         }
 
-        public static HiHat GetPlayerHiHat(PlayerInputValue control)
+        public static HiHat GetPlayerHiHat(String control)
         {
-            switch (control)
+            if (Instance.ControlToDevice.ContainsKey(control))
             {
-                case PlayerInputValue.MFDMasterSelectDown:
-                    return GetHiHatByName(Instance.playerMap.MFDMasterSelectDown.Device, Instance.playerMap.MFDMasterSelectDown.Input);
-                case PlayerInputValue.MFDMasterSelectUp:
-                    return GetHiHatByName(Instance.playerMap.MFDMasterSelectUp.Device, Instance.playerMap.MFDMasterSelectUp.Input);
-                case PlayerInputValue.MFDSlaveSelectUp:
-                    return GetHiHatByName(Instance.playerMap.MFDSlaveSelectUp.Device, Instance.playerMap.MFDSlaveSelectUp.Input);
-                case PlayerInputValue.MFDSlaveSelectDown:
-                    return GetHiHatByName(Instance.playerMap.MFDSlaveSelectDown.Device, Instance.playerMap.MFDSlaveSelectDown.Input);
+                String device = Instance.ControlToDevice[control];
+                return GetHiHatByName(device, control);
             }
+
             return null;
         }
 
-        public static bool GetPlayerBouncedButton(PlayerInputValue control, string name)
+        public static bool GetPlayerBouncedButton(String control, string name)
         {
-            switch (control)
+            if (Instance.ControlToDevice.ContainsKey(control))
             {
-                case PlayerInputValue.MFDMasterInput:
-                    return Instance.GetBouncedButton(Instance.playerMap.MFDMasterInput.Device, name);
-                case PlayerInputValue.MFDSlaveInput:
-                    return Instance.GetBouncedButton(Instance.playerMap.MFDSlaveInput.Device, name);
+                String device = Instance.ControlToDevice[control];
+                return GetBouncedButtonByName(device, name);
+            }
+            return false;
+        }
+
+        public static bool GetPlayerButton(String control)
+        {
+            if (Instance.ControlToDevice.ContainsKey(control))
+            {
+                String device = Instance.ControlToDevice[control];
+                return GetButtonByName(device, control);
             }
             return false;
         }
@@ -266,36 +264,10 @@ namespace GuruEngine.InputDevices
         /// </summary>
         /// <param name="control"></param>
         /// <returns></returns>
-        public static bool HasMappedInput(PlayerInputValue control)
+        public static bool HasMappedInput(String control)
         {
-           switch (control)
-            {
-                case PlayerInputValue.MFDMasterInput:
-                    {
-                        return (Instance.playerMap.MFDMasterInput.Device != "");
-                    }
-                case PlayerInputValue.MFDMasterSelectDown:
-                    {
-                        return (Instance.playerMap.MFDMasterSelectDown.Device != "");
-                    }
-                case PlayerInputValue.MFDMasterSelectUp:
-                    {
-                        return (Instance.playerMap.MFDMasterSelectUp.Device != "");
-                    }
-                case PlayerInputValue.MFDSlaveInput:
-                    {
-                        return (Instance.playerMap.MFDSlaveInput.Device != "");
-                    }
-                case PlayerInputValue.MFDSlaveSelectDown:
-                    {
-                        return (Instance.playerMap.MFDSlaveSelectDown.Device != "");
-                    }
-                case PlayerInputValue.MFDSlaveSelectUp:
-                    {
-                        return (Instance.playerMap.MFDSlaveSelectUp.Device != "");
-                    }
-            }
-            return false;
+            return (Instance.ControlToDevice.ContainsKey(control));
+
         }
 
         /// <summary>
@@ -303,24 +275,30 @@ namespace GuruEngine.InputDevices
         /// </summary>
         /// <param name="control"></param>
         /// <returns></returns>
-        public static InputDescriptorType GetPlayerInputType(PlayerInputValue control)
+        public static InputDescriptorType GetPlayerInputType(String control)
         {
-            switch (control)
+            if (Instance.ControlToDevice.ContainsKey(control))
             {
-                case PlayerInputValue.MFDMasterInput:
-                    return Instance.playerMap.MFDMasterInput.Type;
-                case PlayerInputValue.MFDMasterSelectDown:
-                    return Instance.playerMap.MFDMasterSelectDown.Type;
-                case PlayerInputValue.MFDMasterSelectUp:
-                    return Instance.playerMap.MFDMasterSelectUp.Type;
-                case PlayerInputValue.MFDSlaveInput:
-                    return Instance.playerMap.MFDSlaveInput.Type;
-                case PlayerInputValue.MFDSlaveSelectDown:
-                    return Instance.playerMap.MFDSlaveSelectDown.Type;
-                case PlayerInputValue.MFDSlaveSelectUp:
-                    return Instance.playerMap.MFDSlaveSelectUp.Type;
+                String d = Instance.ControlToDevice[control];
+                return Instance.Devices[d].GetTypeOfControl(control);
             }
+            
             return InputDescriptorType.None;
+        }
+
+        /// <summary>
+        /// This is only used for the keyboard device
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="name"></param>
+        /// <param name="Type"></param>
+        /// <param name="key"></param>
+        /// <param name="modifiers"></param>
+        public static void RegisterInput(String device, String name, InputDescriptorType Type, Keys key, List<Keys> modifiers)
+        {
+            KeyboardInputDevice kb = (KeyboardInputDevice)Instance.Devices[device];
+            kb.AddKeyHandler(key, modifiers, name, Type);
+            Instance.ControlToDevice.Add(name, device);
         }
         #endregion
     }

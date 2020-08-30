@@ -10,11 +10,13 @@ using GUITestbed.SerialisableData;
 using GUITestbed.GUI.Dialogs;
 using GUITestbed.DataHandlers.Fox1.Objects;
 using GUITestbed.DataHandlers.FG;
+using GUITestbed.DataHandlers.IL2;
 
 namespace GUITestbed.GUI.Items
 {
     public class MainMenu : GuiItem
     {
+        public static MainMenu Instance;
         List<Widget> ActiveWidgets = new List<Widget>();
 
         MapGeneratorData mapgen = null;
@@ -24,9 +26,11 @@ namespace GUITestbed.GUI.Items
 
         GUITestbed.DataHandlers.Fox1.Objects.Airport currentAirport;
         AirportDatabase currentDatabase = null;
+        Button save_material;
 
         public MainMenu()
         {
+            Instance = this;
             SetupWorldView();
         }
 
@@ -34,6 +38,7 @@ namespace GUITestbed.GUI.Items
         {
             switch (s)
             {
+                #region Toolbar
                 case "Toolbar:X":
                     Game1.Instance.Exit();
                     break;
@@ -52,6 +57,23 @@ namespace GUITestbed.GUI.Items
 
                 case "Toolbar:Object":
                     SetupObjectView();
+                    break;
+
+                case "Toolbar:Materials":
+                    SetupMaterialView();
+                    break;
+                #endregion
+
+                case "Button:Save material":
+                    {
+                        MaterialDisplayTool.SaveLibrary();
+                    }
+                    break;
+                case "Button:Edit material":
+                    {
+                        loader = new OpenFileDialog(@"c:\Data\Fox1", "Load Material", ".materials", new Rectangle((1920 - 800) / 2, 100, 800, 700), LoadMaterial);
+                        GuiManager.Instance.Add(loader);
+                    }
                     break;
 
                 case "Button:Map editor":
@@ -316,6 +338,7 @@ namespace GUITestbed.GUI.Items
             }
             return true;
         }
+
         public bool SearchAPTForName(String f)
         {
             GuiManager.Instance.RemoveTopLevelDialog();
@@ -495,6 +518,21 @@ namespace GUITestbed.GUI.Items
             return true;
         }
 
+        public bool LoadMaterial(String f)
+        {
+            MaterialDisplayTool mt = new MaterialDisplayTool(f);
+            Game1.Instance.current = mt;
+            ListView l = FindFirstListView();
+            l.ClickEvent += MaterialDisplayTool.SelectionChanged;
+            foreach (Material m in mt.lib.Materials)
+            {
+                l.AddItem(m.Name);
+            }
+            save_material.Active = true;
+
+            return false;
+        }
+
         public bool LoadObjectPack(String f)
         {
             if (WorldDisplayTool.Instance == null)
@@ -553,6 +591,7 @@ namespace GUITestbed.GUI.Items
             top.AddButton("Scene", 128);
             top.AddButton("Object", 128);
             top.AddButton("Airports", 128);
+            top.AddButton("Materials", 128);
             top.AddButton("Settings", 128);
             top.AddCloseButton();
             top.Finalise();
@@ -643,6 +682,171 @@ namespace GUITestbed.GUI.Items
                 b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 315, 200, 30), "Find name");
                 b.Active = false;
                 Widgets.Add(b);
+            }
+        }
+
+        void SetupMaterialView()
+        {
+            lock (Widgets)
+            {
+                Widgets.Clear();
+
+                AddToolbar();
+
+                Panel p = new Panel(new Microsoft.Xna.Framework.Rectangle(0, 31, 256, 940));
+                Widgets.Add(p);
+
+                Button b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 50, 200, 30), "Edit material");
+                Widgets.Add(b);
+
+                save_material = new Button(new Microsoft.Xna.Framework.Rectangle(28, 90, 200, 30), "Save material");
+                save_material.Active = false;
+                Widgets.Add(save_material);
+
+                Rectangle r2 = new Rectangle(1920 - 320, 30, 320, 940);
+                SideBar sb = new SideBar("Material editor", r2);
+                Widgets.Add(sb);
+
+                Rectangle r3 = new Rectangle(1638, 100, 235, 200);
+                ListView lv = new ListView(r3);
+                Widgets.Add(lv);
+
+                Label l = new Label(new Vector2(1610, 320), "Double sided");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 340), "Sort");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 360), "Glass");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 380), "Ambient");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 400), "Diffuse");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 420), "Specular");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 440), "Specular power");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 460), "Shine");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 480), "Wrap X");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 500), "Wrap Y");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 520), "Min linear");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 540), "Mag linear");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 560), "Blend");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 580), "Blend Add");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 600), "No Texture");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 620), "Depth offset");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 640), "No write z");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 660), "Test value");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 680), "Transparent border");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 700), "Test A");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 720), "Test Z");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 740), "Texture");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 760), "Red");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 780), "Green");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 800), "Blue");
+                Widgets.Add(l);
+                l = new Label(new Vector2(1610, 820), "Alpha");
+                Widgets.Add(l);
+
+                SmallCheckbox c = new SmallCheckbox(new Vector2(1850, 305), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 325), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 345), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 465), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 485), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 505), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 525), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 545), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 565), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 585), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 625), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 665), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 685), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+                c = new SmallCheckbox(new Vector2(1850, 705), true);
+                c.ClickEvent += MaterialDisplayTool.CheckboxStateChanged;
+                Widgets.Add(c);
+
+                Slider sl = new Slider(new Rectangle(1770, 365, 120, 18), 1, "Ambient");
+                sl.ClickEvent+= MaterialDisplayTool.SliderValueChanged;
+                Widgets.Add(sl);
+                sl = new Slider(new Rectangle(1770, 385, 120, 18), 1, "Diffuse");
+                sl.ClickEvent += MaterialDisplayTool.SliderValueChanged;
+                Widgets.Add(sl);
+                sl = new Slider(new Rectangle(1770, 405, 120, 18), 1, "Specular");
+                sl.ClickEvent += MaterialDisplayTool.SliderValueChanged;
+                Widgets.Add(sl);
+                sl = new Slider(new Rectangle(1770, 425, 120, 18), 256, "SpecularPow");
+                sl.ClickEvent += MaterialDisplayTool.SliderValueChanged;
+                Widgets.Add(sl);
+                sl = new Slider(new Rectangle(1770, 445, 120, 18), 1, "Shine");
+                sl.ClickEvent += MaterialDisplayTool.SliderValueChanged;
+                Widgets.Add(sl);
+                sl = new Slider(new Rectangle(1770, 605, 120, 18), 0,-16,16, "Depth offset");
+                sl.ClickEvent += MaterialDisplayTool.SliderValueChanged;
+                Widgets.Add(sl);
+                sl = new Slider(new Rectangle(1770, 645, 120, 18), 1, "Test value");
+                sl.ClickEvent += MaterialDisplayTool.SliderValueChanged;
+                Widgets.Add(sl);
+                sl = new Slider(new Rectangle(1770, 745, 120, 18), 1, "Red");
+                sl.ClickEvent += MaterialDisplayTool.SliderValueChanged;
+                Widgets.Add(sl);
+                sl = new Slider(new Rectangle(1770, 765, 120, 18), 1, "Green");
+                sl.ClickEvent += MaterialDisplayTool.SliderValueChanged;
+                Widgets.Add(sl);
+                sl = new Slider(new Rectangle(1770, 785, 120, 18), 1, "Blue");
+                sl.ClickEvent += MaterialDisplayTool.SliderValueChanged;
+                Widgets.Add(sl);
+                sl = new Slider(new Rectangle(1770, 805, 120, 18), 1, "Alpha");
+                sl.ClickEvent += MaterialDisplayTool.SliderValueChanged;
+                Widgets.Add(sl);
+
+                TextBox t = new TextBox(new Rectangle(1700, 725, 210, 18), "");
+                Widgets.Add(t);
+
+                StatusBar s = new StatusBar();
+                s.mode = "Material mode";
+                Widgets.Add(s);
             }
         }
 
@@ -746,5 +950,63 @@ namespace GUITestbed.GUI.Items
 
         #endregion
 
+        #region Helpers
+        public Slider FindSlider(String id)
+        {
+            foreach(Widget w in Widgets)
+            {
+                if (w is Slider)
+                {
+                    Slider sl = (Slider)w;
+                    if (sl.ID == id)
+                        return sl;
+                }
+            }
+            return null;
+        }
+
+        public TextBox FindTextbox(int n)
+        {
+            foreach (Widget w in Widgets)
+            {
+                if (w is TextBox)
+                {
+                    TextBox sl = (TextBox)w;
+                    n--;
+                    if (n < 0)
+                        return sl;
+                }
+            }
+            return null;
+        }
+        public CheckBox FindCheckbox(int n)
+        {
+            foreach (Widget w in Widgets)
+            {
+                if (w is CheckBox)
+                {
+                    CheckBox sl = (CheckBox)w;
+                    n--;
+                    if (n < 0)
+                        return sl;
+                }
+            }
+            return null;
+        }
+        public SmallCheckbox FindSmallCheckbox(int n)
+        {
+            foreach (Widget w in Widgets)
+            {
+                if (w is SmallCheckbox)
+                {
+                    SmallCheckbox sl = (SmallCheckbox)w;
+                    n--;
+                    if (n < 0)
+                        return sl;
+                }
+            }
+            return null;
+        }
+        #endregion
     }
 }

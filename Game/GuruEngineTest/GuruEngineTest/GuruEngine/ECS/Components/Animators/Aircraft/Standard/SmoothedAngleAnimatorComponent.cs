@@ -18,7 +18,7 @@ using GuruEngine.ECS.Components.World;
 //( Parameter String Control )
 //( Parameter Float Scale )
 //( Parameter Float Smoothing )
-//( Paramter Int Plane )
+//( Parameter Int Plane )
 
 
 namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
@@ -148,6 +148,8 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
             Angle = (float)((1 - Smoothing) * Angle + (Smoothing * Vator));
             if (Angle > 1)
                 Angle = 1;
+            if (Angle < -1)
+                Angle = -1;
 
             Vator = Angle * Scale;
 

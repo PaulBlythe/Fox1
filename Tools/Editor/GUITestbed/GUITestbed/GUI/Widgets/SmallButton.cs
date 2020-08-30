@@ -12,6 +12,7 @@ namespace GUITestbed.GUI.Widgets
         String Text;
         public Rectangle Region;
         MouseState oldms;
+        Vector2 m_offset = new Vector2(0, 0);
 
         public SmallButton(Rectangle r, String text)
         {
@@ -22,7 +23,9 @@ namespace GUITestbed.GUI.Widgets
         public override void Update(float dt)
         {
             MouseState ms = Mouse.GetState();
-            if (Region.Contains(ms.X, ms.Y))
+            Rectangle t = new Rectangle((int)(Region.X + m_offset.X), (int)(Region.Y + m_offset.Y), Region.Width, Region.Height);
+
+            if (t.Contains(ms.X, ms.Y))
             {
                 if ((ms.LeftButton == ButtonState.Released) && (oldms.LeftButton == ButtonState.Pressed))
                 {
@@ -90,6 +93,7 @@ namespace GUITestbed.GUI.Widgets
             Rectangle t = Region;
             t.X += (int)offset.X;
             t.Y += (int)offset.Y;
+            m_offset = offset;
 
             Vector2 w = b.MeasureString(Text, 0.75f);
             if (w.X >= Region.Width)

@@ -92,9 +92,11 @@ namespace GUITestbed.GUI.Widgets
             Vector2 w = b.MeasureString(Text);
             float width = w.X;
 
-            w.X *= -0.5f;
             w.X = (Region.X + 4);
-            w.Y = (Region.Y + (Region.Height - (w.Y / 2)));
+            float d = Region.Height - w.Y;
+            d *= 0.5f;
+
+            w.Y = (Region.Y + Region.Height - d);
             b.DrawString(Text, w, GuiManager.Instance.Theme.AlternateFontColour);
 
             if (HasFocus)

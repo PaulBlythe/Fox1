@@ -133,9 +133,19 @@ namespace GuruEngine.ECS.Components.World
         {
             
         }
+
+
         #endregion
 
+        public void SetOrientation(Quaternion inq)
+        {
+            Orientation = inq;
+        }
 
+        public void SetPosition(Vector3 inpos)
+        {
+            LocalPosition = inpos;
+        }
 
     }
 }

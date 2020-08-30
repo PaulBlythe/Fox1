@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using GuruEngine.Rendering;
 using GuruEngine.World.Items;
 using GuruEngine.SceneManagement;
+using GuruEngine.ECS.Components.Game;
 
 namespace GuruEngineTest.Scenes.Gebug
 {
@@ -19,12 +20,13 @@ namespace GuruEngineTest.Scenes.Gebug
     {
         WorldState worldState;
         World gameWorld;
+        LocalPlayerComponent player;
 
         public override void Init()
         {
             worldState = new WorldState();
             gameWorld = new World(@"Debug/CarrierTest.txt");
-
+           
         }
 
         public override void Update(float dt)
@@ -32,8 +34,11 @@ namespace GuruEngineTest.Scenes.Gebug
             if (worldState == null)
                 return;
 
+            player.Update(dt);
+
             worldState.Update(dt);
             gameWorld.Update(dt);
+           
         }
 
         public override void Load(ContentManager Content)
@@ -63,6 +68,10 @@ namespace GuruEngineTest.Scenes.Gebug
 
             WorldItem Moon = new Moon();
             worldState.AddWorldItem(Moon);
+
+            player = new LocalPlayerComponent();
+            player.AddMesh("SpitfireMkIXcc");
+            player.LoadContent(Content);
         }
 
 

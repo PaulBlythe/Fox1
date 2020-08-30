@@ -30,6 +30,7 @@ namespace GameObjectEditor
         String gamepath = @"C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\GuruEngine\ECS";
         String InitialDirectory = @"C:\Data\Fox1";
         Dictionary<String, GameComponentDescriptor> componentTypes = new Dictionary<string, GameComponentDescriptor>();
+        Dictionary<String, bool> flags;
         private ScaleTransform _scaleTransform;
         private TransformGroup _transformGroup;
         private TranslateTransform _translateTransform;
@@ -370,10 +371,16 @@ namespace GameObjectEditor
 
             // Configure the dialog box
             dlg.Owner = this;
-           
 
             // Open the dialog box modally
             dlg.ShowDialog();
+
+            if (dlg.Valid)
+            {
+                flags = dlg.flags;
+
+            }
+
         }
 
         #region Display handling

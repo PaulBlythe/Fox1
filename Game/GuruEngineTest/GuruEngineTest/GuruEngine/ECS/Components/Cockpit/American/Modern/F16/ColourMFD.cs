@@ -619,20 +619,20 @@ namespace GuruEngine.ECS.Components.Cockpit.American.Modern.F16
 
             if (IsMaster)
             {
-                if (InputDeviceManager.HasMappedInput(PlayerInputValue.MFDMasterInput))
+                if (InputDeviceManager.HasMappedInput("MFDMasterInput"))
                 {
-                    Vector2 ip = InputDeviceManager.GetPlayerAxes(PlayerInputValue.MFDMasterInput);
-                    thumb_stick = InputDeviceManager.GetPlayerBouncedButton(PlayerInputValue.MFDMasterInput, "THUMBSTICK");
+                    Vector2 ip = InputDeviceManager.GetPlayerAxes("MFDMasterInput");
+                    thumb_stick = InputDeviceManager.GetPlayerBouncedButton("MFDMasterInput", "THUMBSTICK");
                     UpdatePickle(ip);
 
                 }
-                if (InputDeviceManager.HasMappedInput(PlayerInputValue.MFDMasterSelectUp))     
+                if (InputDeviceManager.HasMappedInput("MFDMasterSelectUp"))     
                 {
-                    switch (InputDeviceManager.GetPlayerInputType(PlayerInputValue.MFDMasterSelectUp))
+                    switch (InputDeviceManager.GetPlayerInputType("MFDMasterSelectUp"))
                     {
                         case InputDescriptorType.HiHat:
                             {
-                                HiHat hat = InputDeviceManager.GetPlayerHiHat(PlayerInputValue.MFDMasterSelectUp);
+                                HiHat hat = InputDeviceManager.GetPlayerHiHat("MFDMasterSelectUp");
                                 if (hat.BouncedUp)
                                 {
                                     SendEvent(CMFDMappableEvents.RangeUp);
@@ -641,13 +641,13 @@ namespace GuruEngine.ECS.Components.Cockpit.American.Modern.F16
                             break;
                     }
                 }
-                if (InputDeviceManager.HasMappedInput(PlayerInputValue.MFDMasterSelectDown))
+                if (InputDeviceManager.HasMappedInput("MFDMasterSelectDown"))
                 {
-                    switch (InputDeviceManager.GetPlayerInputType(PlayerInputValue.MFDMasterSelectDown))
+                    switch (InputDeviceManager.GetPlayerInputType("MFDMasterSelectDown"))
                     {
                         case InputDescriptorType.HiHat:
                             {
-                                HiHat hat = InputDeviceManager.GetPlayerHiHat(PlayerInputValue.MFDMasterSelectDown);
+                                HiHat hat = InputDeviceManager.GetPlayerHiHat("MFDMasterSelectDown");
                                 if (hat.BouncedDown)
                                 {
                                     SendEvent(CMFDMappableEvents.RangeDown);
@@ -659,21 +659,21 @@ namespace GuruEngine.ECS.Components.Cockpit.American.Modern.F16
             }
             else
             {
-                if (InputDeviceManager.HasMappedInput(PlayerInputValue.MFDSlaveInput))
+                if (InputDeviceManager.HasMappedInput("MFDSlaveInput"))
                 {
-                    Vector2 ip = InputDeviceManager.GetPlayerAxes(PlayerInputValue.MFDSlaveInput);
-                    thumb_stick = InputDeviceManager.GetPlayerBouncedButton(PlayerInputValue.MFDSlaveInput, "THUMBSTICK");
+                    Vector2 ip = InputDeviceManager.GetPlayerAxes("MFDSlaveInput");
+                    thumb_stick = InputDeviceManager.GetPlayerBouncedButton("MFDSlaveInput", "THUMBSTICK");
                     UpdatePickle(ip);
 
                 }
 
-                if (InputDeviceManager.HasMappedInput(PlayerInputValue.MFDSlaveSelectUp))
+                if (InputDeviceManager.HasMappedInput("MFDSlaveSelectUp"))
                 {
-                    switch (InputDeviceManager.GetPlayerInputType(PlayerInputValue.MFDSlaveSelectUp))
+                    switch (InputDeviceManager.GetPlayerInputType("MFDSlaveSelectUp"))
                     {
                         case InputDescriptorType.HiHat:
                             {
-                                HiHat hat = InputDeviceManager.GetPlayerHiHat(PlayerInputValue.MFDSlaveSelectUp);
+                                HiHat hat = InputDeviceManager.GetPlayerHiHat("MFDSlaveSelectUp");
                                 if (hat.BouncedUp)
                                 {
                                     SendEvent(CMFDMappableEvents.RangeUp);
@@ -682,13 +682,13 @@ namespace GuruEngine.ECS.Components.Cockpit.American.Modern.F16
                             break;
                     }
                 }
-                if (InputDeviceManager.HasMappedInput(PlayerInputValue.MFDSlaveSelectDown))
+                if (InputDeviceManager.HasMappedInput("MFDSlaveSelectDown"))
                 {
-                    switch (InputDeviceManager.GetPlayerInputType(PlayerInputValue.MFDSlaveSelectDown))
+                    switch (InputDeviceManager.GetPlayerInputType("MFDSlaveSelectDown"))
                     {
                         case InputDescriptorType.HiHat:
                             {
-                                HiHat hat = InputDeviceManager.GetPlayerHiHat(PlayerInputValue.MFDSlaveSelectDown);
+                                HiHat hat = InputDeviceManager.GetPlayerHiHat("MFDSlaveSelectDown");
                                 if (hat.BouncedDown)
                                 {
                                     SendEvent(CMFDMappableEvents.RangeDown);

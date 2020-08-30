@@ -35,6 +35,11 @@ namespace GuruEngine.Physics.Collision
         /// <param name="filename"></param>
         public void Load(String filename)
         {
+            if (!File.Exists(filename))
+            {
+                nCollections = 0;
+                return;
+            }
             using (BinaryReader b = new BinaryReader(File.Open(filename, FileMode.Open)))
             {
                 nCollections = b.ReadInt32();

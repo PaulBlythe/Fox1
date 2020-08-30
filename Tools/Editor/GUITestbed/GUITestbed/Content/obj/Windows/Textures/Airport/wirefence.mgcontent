@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Research/Monogame/GUITestbed/GUITestbed/Content/Textures/Airport/wirefence.png</SourceFile>
+  <SourceFile>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Textures/Airport/wirefence.png</SourceFile>
   <SourceTime>2020-06-01T18:05:44.3216515+01:00</SourceTime>
-  <DestFile>C:/Research/Monogame/GUITestbed/GUITestbed/Content/bin/Windows/Textures/Airport/wirefence.xnb</DestFile>
-  <DestTime>2020-06-01T18:10:08.3265794+01:00</DestTime>
+  <DestFile>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/bin/Windows/Textures/Airport/wirefence.xnb</DestFile>
+  <DestTime>2020-08-19T16:29:15.0782418+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

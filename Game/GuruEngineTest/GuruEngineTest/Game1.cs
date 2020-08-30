@@ -63,7 +63,7 @@ namespace GuruEngineTest
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            engine.Initialise(GraphicsDevice, Content, Services, false);
+            engine.Initialise(GraphicsDevice, Content, Services, true);
             //engine.SetScene(new Scenes.MainMenu());
             //engine.SetScene(new Scenes.LoadingScene());
             engine.SetScene(new Scenes.Gebug.CarrierTest());

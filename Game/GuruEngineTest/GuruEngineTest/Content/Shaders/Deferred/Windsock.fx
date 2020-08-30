@@ -13,7 +13,7 @@ float4x4 Projection;
 float4x3 WorldInverseTranspose;
 
 float MoonLit;
-float SunLit;
+float LightMask;
 float Shininess;
 float SpecularIntensity;
 float  DiffuseIntensity;
@@ -84,7 +84,7 @@ PixelShaderOutput MainPS(VertexShaderOutput input)
 	output.Material.x = SpecularIntensity;
 	output.Material.y = Shininess;
 	output.Material.z = MoonLit;
-	output.Material.w = SunLit;
+	output.Material.w = LightMask;
 	output.Color = colour;			// output Color
 	output.Color.a = 0.2f;
 	output.Normal.rgb = 0.5f * (normalize(input.Normal) + 1.0f);		// transform normal domain

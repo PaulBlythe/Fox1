@@ -64,7 +64,7 @@ namespace GUITestbed.GUI.Widgets
                     int dx = ms.ScrollWheelValue - oldmouseState.ScrollWheelValue;
                     if (Math.Abs(dx) > 10)
                     {
-                        skip += Math.Sign(dx) * 3;
+                        skip -= Math.Sign(dx);
                         skip = Math.Max(skip, 0);
                     }
                 }
@@ -78,11 +78,11 @@ namespace GUITestbed.GUI.Widgets
             foreach (Widget w in Children)
                 w.Draw(b);
 
-            int i = skip;
+            int i = skip * 3;
             int limit = Region.Y + Region.Height - 20;
             int y = Region.Y + 5;
 
-            Vector2 v = new Vector2(0, (skip * -25));
+            Vector2 v = new Vector2(0, -25 * skip);
 
             while ((i<ItemList.Count)&&(y<limit))
             {
@@ -93,7 +93,7 @@ namespace GUITestbed.GUI.Widgets
 
                 if ((dl.Y < limit)&&(dl.Y > Region.Y))
                     sb.Draw(b,v);
-                y = sb.Region.Y;
+                y = (int)dl.Y;
                 i++;
             }
 
@@ -106,7 +106,7 @@ namespace GUITestbed.GUI.Widgets
                 w.Draw(b);
 
             Vector2 v = new Vector2(0, (skip * -25));
-            int i = skip;
+            int i = skip * 3;
             int limit = Region.Y + Region.Height - 20;
             int y = Region.Y + 5;
             while ((i < ItemList.Count) && (y < limit))
@@ -117,14 +117,19 @@ namespace GUITestbed.GUI.Widgets
 
                 if ((dl.Y < limit) && (dl.Y > Region.Y))
                     sb.Draw(b,v);
-                y = sb.Region.Y;
+                y = (int)dl.Y;
                 i++;
             }
         }
 
         public override void Message(string s)
         {
-            Parent.Message(s);
+            if (Parent != null)
+                Parent.Message(s);
+            else
+            {
+                OnClickEvent(s);
+            }
         }
 
         public void Clear()

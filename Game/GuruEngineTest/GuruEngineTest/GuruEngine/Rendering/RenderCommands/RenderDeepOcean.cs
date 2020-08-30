@@ -29,7 +29,7 @@ namespace GuruEngine.Rendering.RenderCommands
             PrimitiveCount = (Width - 1) * (Height - 1) * 2;
             InstanceCount = 0;
             declaration = VertexPositionNormalTexture.VertexDeclaration;
-            blendstate = BlendState.AlphaBlend;
+            blendstate = BlendState.NonPremultiplied;
             SamplerStateID = Renderer.MapBoolsToSamplerState(true, true, false);
             
 

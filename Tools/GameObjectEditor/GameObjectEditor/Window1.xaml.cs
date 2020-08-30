@@ -22,7 +22,7 @@ namespace GameObjectEditor
     public partial class Window1 : Window
     {
         public bool Valid = false;
-        Dictionary<String, bool> flags = new Dictionary<string, bool>();
+        public Dictionary<String, bool> flags = new Dictionary<string, bool>();
         List<CheckBox> boxes = new List<CheckBox>();
 
         public Window1(Dictionary<String, GameComponentDescriptor> componentTypes)

@@ -84,7 +84,7 @@ namespace GuruEngineTest.Scenes.Debug
             WindTunnel tunnel = new WindTunnel();
             worldState.AddWorldItem(tunnel);
 
-            DebugCamera.SetPosition(new Vector3(0,0,10));
+            worldState.camera.SetPosition(new Vector3(0,0,10));
         }
 
         public override void Update(float dt)
