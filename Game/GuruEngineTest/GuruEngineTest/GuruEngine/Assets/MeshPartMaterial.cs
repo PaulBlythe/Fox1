@@ -105,6 +105,7 @@ namespace GuruEngine.Assets
                     fx.Parameters["SpecularColor"].SetValue(Color.White.ToVector4());
                     fx.Parameters["Damage"].SetValue(0.0f);
                     fx.Parameters["Blend"].SetValue(tfBlend);
+                    fx.Parameters["Additive"].SetValue(tfBlendAdd);
                 }
                 
                 fx.Parameters["AlphaCut"].SetValue(AlphaTestVal);

@@ -143,9 +143,12 @@
     <Compile Include="GuruEngine\ECS\Components\AircraftSystems\General\RadarCrossSectionComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Thrusters\PropellerComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\AileronsAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\CurveCvtAnimatorComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\CVTAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\CvtTranslateAnimatorComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\ElevatorAnimatorComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\FlapAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\MeshConditionalVisibilityComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\PropellorAnimator.cs" />
     <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\RudderAnimatorComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\SmoothedAngleAnimatorComponent.cs" />

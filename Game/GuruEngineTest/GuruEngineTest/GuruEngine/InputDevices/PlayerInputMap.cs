@@ -68,6 +68,9 @@ namespace GuruEngine.InputDevices
                 case "BouncedButton":
                     t = InputDescriptorType.BouncedButton;
                     break;
+                case "Toggle":
+                    t = InputDescriptorType.Toggle;
+                    break;
             }
 
             InputDeviceManager.RegisterInput("Keyboard", ID, t, key, modifiers);

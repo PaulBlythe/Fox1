@@ -15,6 +15,7 @@ using GuruEngine.ECS.Components.World;
 using GuruEngine.AI.Scripting;
 using GuruEngine.World;
 using GuruEngine.Maths;
+using GuruEngine.Rendering;
 
 //( Class AircraftStateComponent )
 //( Group Flight )
@@ -126,6 +127,17 @@ namespace GuruEngine.ECS.Components
             DoubleVariables.Add("Yaw", 0);
             DoubleVariables.Add("Pitch", 0);
             DoubleVariables.Add("Roll", 0);
+            DoubleVariables.Add("ManifoldPressure", 0.5173668);
+            DoubleVariables.Add("Engine0Rpm", 0);
+            DoubleVariables.Add("Engine0Oil", 0);
+            DoubleVariables.Add("Engine0Compressor", 0);
+            DoubleVariables.Add("TotalFuel", 0);
+            DoubleVariables.Add("OilTemp", 0);
+            DoubleVariables.Add("RadiatorTemp", 0);
+            DoubleVariables.Add("VerticleVelocity", 0);
+            DoubleVariables.Add("BallAccel", 0);
+            DoubleVariables.Add("PilotDownForce", 0);
+            DoubleVariables.Add("IAS", 0);
 
             Transform = (WorldTransform) Parent.FindSingleComponentByType<WorldTransform>();
 
@@ -162,14 +174,33 @@ namespace GuruEngine.ECS.Components
             time += dt;
 
             #region Debug only code
+            double ep = Math.Sin(time*0.25f);
+            DoubleVariables["ManifoldPressure"] = (Math.Abs(ep) * (2.72369 - 0.5173668)) + 0.5173668;
+            DoubleVariables["Engine0Rpm"] = Math.Abs(ep) * 5000;
+            DoubleVariables["TotalFuel"] = Math.Abs(ep) * 400;
+            DoubleVariables["OilTemp"] = Math.Abs(ep) * 100;
+            DoubleVariables["RadiatorTemp"] = Math.Abs(ep) * 140;
+            DoubleVariables["FlapPosition"] = Math.Abs(ep);
+            DoubleVariables["Mixture"] = Math.Abs(ep);
+            DoubleVariables["Engine0Oil"] = Math.Abs(ep) * 10;
+            DoubleVariables["VerticleVelocity"] = ep * 30;
+            DoubleVariables["BallAccel"] = ep * 20;
+            DoubleVariables["PilotDownForce"] = ep * 0.23562f;
+            DoubleVariables["IAS"] = Math.Abs(ep) * 223.52003;
+            DoubleVariables["Engine0Compressor"] = Math.Max(ep, 0);
 
-            //double ep = Math.Sin(time);
+            //float gp = (float)(3 * Math.Abs(ep)) - 1;
+            //gp = Math.Max(0, gp);
+            //gp = Math.Min(1, gp);
+            //DoubleVariables["GearPosition"] = gp;
+
+            //
             //DoubleVariables["ElevatorPosition"] = ep;
             //DoubleVariables["AileronPosition"] = ep;
             //
             //ep = Math.Cos(time);
             //DoubleVariables["RudderPosition"] = ep;
-            //DoubleVariables["FlapPosition"] = Math.Abs(ep);
+            //
             //DoubleVariables["CockpitPosition"] = Math.Abs(ep);
             //
             //
@@ -186,16 +217,17 @@ namespace GuruEngine.ECS.Components
             //    DoubleVariables["RadiatorPosition"] = 0;
             //
             //}
-            DoubleVariables["Yaw"] += 0.25f;
+
             #endregion
 
             Quaternion q = Transform.GetOrientation();
             Vector3 e = MathUtils.QuaternionToEuler(q);
 
-            DoubleVariables["Pitch"] = e.X;
-            //DoubleVariables["Yaw"] = e.Y;
-            DoubleVariables["Roll"] = e.Z;
+            DoubleVariables["Pitch"] = MathHelper.ToDegrees(e.X);
+            DoubleVariables["Yaw"] = MathHelper.ToDegrees(e.Y);
+            DoubleVariables["Roll"] = MathHelper.ToDegrees(e.Z);
 
+            //Rendering.Renderer.GetCurrentRenderer().DebugStrings.Add(String.Format("Roll    {0}", e.Z));
 
             float altitude = Transform.GetLocalPosition().Y;
             DoubleVariables["Altitude"] = altitude;

@@ -13,6 +13,7 @@ namespace GUITestbed.GUI.Widgets
         List<Widget> Children = new List<Widget>();
         List<Widget> ItemList = new List<Widget>();
         int skip = 0;
+        int step = 0;
         MouseState oldmouseState;
 
         public ListView(Rectangle r)
@@ -22,7 +23,8 @@ namespace GUITestbed.GUI.Widgets
             InvertedPanel ip = new InvertedPanel(r);
             Children.Add(ip);
 
-            
+            int useable_width = r.Width - 5;
+            step = (useable_width / 230);
         }
 
         public override void Update(float dt)
@@ -40,7 +42,7 @@ namespace GUITestbed.GUI.Widgets
 
             lock (ItemList)
             {
-                int y = Region.Y + 10;
+                int y = (Region.Y + 10) - (skip * 25); 
                 int x = Region.X + 5;
                 int limit = Region.X + Region.Width - 230;
                 foreach (Widget w in ItemList)
@@ -78,26 +80,24 @@ namespace GUITestbed.GUI.Widgets
             foreach (Widget w in Children)
                 w.Draw(b);
 
-            int i = skip * 3;
+            int i = skip * step;
             int limit = Region.Y + Region.Height - 20;
             int y = Region.Y + 5;
-
-            Vector2 v = new Vector2(0, -25 * skip);
+            int x = Region.X + 5;
+            int xlimit = Region.X + Region.Width - 230;
 
             while ((i<ItemList.Count)&&(y<limit))
             {
                 SmallButton sb = (SmallButton)ItemList[i];
-
-                Vector2 dl = new Vector2(sb.Region.X, sb.Region.Y);
-                dl += v;
-
-                if ((dl.Y < limit)&&(dl.Y > Region.Y))
-                    sb.Draw(b,v);
-                y = (int)dl.Y;
+                sb.Draw(b);
+                x += 230;
+                if (x >= xlimit)
+                {
+                    x = Region.X + 5;
+                    y += 25;
+                }
                 i++;
             }
-
-                
         }
 
         public override void Draw(GuiFont b)
@@ -105,19 +105,22 @@ namespace GUITestbed.GUI.Widgets
             foreach (Widget w in Children)
                 w.Draw(b);
 
-            Vector2 v = new Vector2(0, (skip * -25));
-            int i = skip * 3;
+            int i = skip * step;
             int limit = Region.Y + Region.Height - 20;
             int y = Region.Y + 5;
+            int x = Region.X + 5;
+            int xlimit = Region.X + Region.Width - 230;
+
             while ((i < ItemList.Count) && (y < limit))
             {
                 SmallButton sb = (SmallButton)ItemList[i];
-                Vector2 dl = new Vector2(sb.Region.X, sb.Region.Y);
-                dl += v;
-
-                if ((dl.Y < limit) && (dl.Y > Region.Y))
-                    sb.Draw(b,v);
-                y = (int)dl.Y;
+                sb.Draw(b);
+                x += 230;
+                if (x >= xlimit)
+                {
+                    x = Region.X + 5;
+                    y += 25;
+                }
                 i++;
             }
         }

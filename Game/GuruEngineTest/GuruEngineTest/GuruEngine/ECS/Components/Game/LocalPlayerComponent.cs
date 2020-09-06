@@ -20,12 +20,16 @@ namespace GuruEngine.ECS.Components.Game
     public class LocalPlayerComponent
     {
         public static LocalPlayerComponent Instance;
+        public bool CockpitLights = false;
         GameObject Mesh = null;
-        Vector3 CockpitOffset = new Vector3(-1.75f, 0.0f, 0.44f);
+        Vector3 CockpitOffset = new Vector3(-1.65f, 0.0f, 0.427482f);
         Vector3 LeanForwardDelta = new Vector3(0.5f, 0.0f, -0.25f);
         WorldTransform transform;
         AircraftStateComponent hoststate;
         AircraftSettingsComponent hostsettings;
+        float gear_direction = 0;
+        float cock_direction = 0;
+
 
         bool lf = false;
         bool lb = false;
@@ -46,25 +50,17 @@ namespace GuruEngine.ECS.Components.Game
                 if (transform!=null)
                 {
                     Quaternion q1 = camera.GetOrientation();
-                    Vector3 euler = GuruEngine.Maths.MathUtils.QuaternionToEuler(q1);
-                    if (hoststate!=null)
-                    {
-                        //hoststate.SetVar("Yaw", MathHelper.ToDegrees(euler.Y));
-                        hoststate.SetVar("Pitch", MathHelper.ToDegrees(euler.X));
-                        hoststate.SetVar("Roll", MathHelper.ToDegrees(euler.Z));
-                        
-                    }
-
                     transform.SetOrientation(q1);
 
                     Matrix lw = Matrix.CreateFromYawPitchRoll(0, MathHelper.ToRadians(-90), MathHelper.ToRadians(90)) * Matrix.CreateFromQuaternion(q1);
 
-                    MultiMeshComponent body = Mesh.FindHookOwner("_CAMERA_<BASE>");
-                    Matrix m = body.GetOriginalHookMatrix("_CAMERA_<BASE>");
-                    if (m.Forward != Vector3.Zero)
-                    {
-
-                    }
+                    //MultiMeshComponent body = Mesh.FindHookOwner("_CAMERA_<BASE>");
+                    //Matrix m = body.GetOriginalHookMatrix("_CAMERA_<BASE>");
+                    //if (m.Forward != Vector3.Zero)
+                    //{
+                    //    Vector3 test = Vector3.Transform(m.Translation, lw);
+                    //    System.Console.WriteLine(test.ToString());
+                    //}
                     Vector3 dp = CockpitOffset + (lft * LeanForwardDelta);
                     Vector3 temp = Vector3.Transform(dp, lw);
 
@@ -169,6 +165,26 @@ namespace GuruEngine.ECS.Components.Game
                     }
                     #endregion
 
+                    #region Propeller pitch
+                    etrimup = InputDeviceManager.GetPlayerButton("Prop0PitchUp");
+                    etrimdown = InputDeviceManager.GetPlayerButton("Prop0PitchDown");
+                    etrim = hoststate.GetVar("Prop0Pitch", 0.0);
+                    if ((etrimdown) || (etrimup))
+                    {
+                        double min = 0;
+                        double max = 1;
+
+                        double delta = (max - min) / 100.0;
+                        if (etrimdown)
+                            etrim -= delta;
+                        if (etrimup)
+                            etrim += delta;
+                        etrim = Math.Min(max, etrim);
+                        etrim = Math.Max(min, etrim);
+                        hoststate.SetVar("Prop0Pitch", etrim);
+                    }
+                    #endregion
+
                     #region Elevator
                     bool eup = InputDeviceManager.GetPlayerButton("ElevatorUp");
                     bool edown = InputDeviceManager.GetPlayerButton("ElevatorDown");
@@ -261,6 +277,82 @@ namespace GuruEngine.ECS.Components.Game
                     }
                     #endregion
 
+                    #region Cockpit lights
+                    bool cp = InputDeviceManager.GetPlayerButton("CockpitLightToggle");
+                    if (cp)
+                    {
+                        CockpitLights = !CockpitLights;
+                    }
+                    #endregion
+
+                    #region Gear
+                    bool pressed = InputDeviceManager.GetPlayerButton("GearToggle");
+                    double gp = hoststate.GetVar("GearPosition", 0.0);
+                    if (pressed)
+                    {
+                       
+                        if ((gear_direction == 0)&&(gp == 0))
+                        {
+                            gear_direction = 1;
+                        }
+                        else
+                        {
+                            if ((gear_direction == 1)&&(gp == 1))
+                            {
+                                gear_direction = -1;
+                            }
+                        }
+                    }
+                    if (gear_direction !=0)
+                    {
+                        double t = gp + gear_direction * dt;
+                        if (t<=0)
+                        {
+                            t = 0;
+                            gear_direction = 0;
+                        }
+                        if (t>=1)
+                        {
+                            t = 1;
+                            gear_direction = 1;
+                        }
+                        hoststate.SetVar("GearPosition", t);
+                    }
+                    #endregion
+
+                    #region Cockpit door
+                    bool cppressed = InputDeviceManager.GetPlayerButton("CockpitToggle");
+                    double cgp = hoststate.GetVar("CockpitPosition", 0.0);
+                    if (pressed)
+                    {
+                        if ((cock_direction == 0) && (cgp == 0))
+                        {
+                            cock_direction = 1;
+                        }
+                        else
+                        {
+                            if ((cock_direction == 1) && (cgp == 1))
+                            {
+                                cock_direction = -1;
+                            }
+                        }
+                    }
+                    if (cock_direction != 0)
+                    {
+                        double t = cgp + cock_direction * dt;
+                        if (t <= 0)
+                        {
+                            t = 0;
+                            cock_direction = 0;
+                        }
+                        if (t >= 1)
+                        {
+                            t = 1;
+                            cock_direction = 1;
+                        }
+                        hoststate.SetVar("CockpitPosition", t);
+                    }
+                    #endregion
 
                 }
 

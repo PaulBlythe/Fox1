@@ -96,6 +96,26 @@ namespace GuruEngine.Maths
             return Value;
         }
 
+        public static float TableInterpolate(float key, List<float> values)
+        {
+            int count = values.Count;
+
+            if (key >= count-1)
+            {
+                return values[count - 1];
+            }
+            if (key <= 0)
+            {
+                return values[0];
+            }
+
+            int top = Math.Min(count - 1, (int)(key + 1.0f));
+            int bot = Math.Max(0, top - 1);
+            float t = key - ((int)key);
+
+            return MathHelper.Lerp(values[bot], values[top], t);
+        }
+
         /// <summary>
         /// Converts from degrees Rankine to degrees Kelvin.
         /// </summary>
@@ -185,36 +205,68 @@ namespace GuruEngine.Maths
             return (float)Math.Sqrt((2 * elevation * er) + (elevation * elevation));
         }
 
-        public static Vector3 QuaternionToEuler(Quaternion q)
+        public static Vector3 QuaternionToEuler(Quaternion q1)
         {
-            Vector3 euler;
+            Vector3 v = new Vector3();
 
-            // if the input quaternion is normalized, this is exactly one. Otherwise, this acts as a correction factor for the quaternion's not-normalizedness
-            float unit = (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z) + (q.W * q.W);
+            float sqw = q1.W * q1.W;
+            float sqx = q1.X * q1.X;
+            float sqy = q1.Y * q1.Y;
+            float sqz = q1.Z * q1.Z;
+            float unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
+            float test = q1.X * q1.W - q1.Y * q1.Z;
 
-            // this will have a magnitude of 0.5 or greater if and only if this is a singularity case
-            float test = q.X * q.W - q.Y * q.Z;
-
-            if (test > 0.4995f * unit) // singularity at north pole
-            {
-                euler.X = (float)Math.PI / 2;
-                euler.Y = 2.0f * (float)Math.Atan2(q.Y, q.X);
-                euler.Z = 0;
+            if (test > 0.4995f * unit)
+            { 
+                // singularity at north pole
+                v.Y = 2.0f * (float)Math.Atan2(q1.Y, q1.X);
+                v.X = (float)Math.PI / 2;
+                v.Z = 0;
+                return v;
             }
-            else if (test < -0.4995f * unit) // singularity at south pole
-            {
-                euler.X = -(float)Math.PI / 2;
-                euler.Y = -2.0f * (float)Math.Atan2(q.Y, q.X);
-                euler.Z = 0;
+            if (test < -0.4995f * unit)
+            { 
+                // singularity at south pole
+                v.Y = -2.0f * (float)Math.Atan2(q1.Y, q1.X);
+                v.X = (float)-Math.PI / 2;
+                v.Z = 0;
+                return v;
             }
-            else // no singularity - this is the majority of cases
-            {
-                euler.X = (float)Math.Asin(2f * (q.W * q.X - q.Y * q.Z));
-                euler.Y = (float)Math.Atan2(2f * q.W * q.Y + 2f * q.Z * q.X, 1 - 2f * (q.X * q.X + q.Y * q.Y));
-                euler.Z = (float)Math.Atan2(2f * q.W * q.Z + 2f * q.X * q.Y, 1 - 2f * (q.Z * q.Z + q.X * q.X));
-            }
+            Quaternion q = new Quaternion(q1.W, q1.Z, q1.X, q1.Y);
+            v.Y = (float)Math.Atan2(2f * q.X * q.W + 2.0f * q.Y * q.Z, 1 - 2f * (q.Z * q.Z + q.W * q.W));       // Yaw
+            v.X = (float)Math.Asin(2f * (q.X * q.Z - q.W * q.Y));                                               // Pitch
+            v.Z = (float)Math.Atan2(2f * q.X * q.Y + 2f * q.Z * q.W, 1 - 2.0f * (q.Y * q.Y + q.Z * q.Z));       // Roll
+            return v;
 
-            return euler;
+
+            //
+            //
+            //
+            //// if the input quaternion is normalized, this is exactly one. Otherwise, this acts as a correction factor for the quaternion's not-normalizedness
+            //float unit = (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z) + (q.W * q.W);
+            //
+            //// this will have a magnitude of 0.5 or greater if and only if this is a singularity case
+            //float test = q.X * q.W - q.Y * q.Z;
+            //
+            //if (test > 0.4995f * unit) // singularity at north pole
+            //{
+            //    euler.X = (float)Math.PI / 2;
+            //    euler.Y = 2.0f * (float)Math.Atan2(q.Y, q.X);
+            //    euler.Z = 0;
+            //}
+            //else if (test < -0.4995f * unit) // singularity at south pole
+            //{
+            //    euler.X = -(float)Math.PI / 2;
+            //    euler.Y = -2.0f * (float)Math.Atan2(q.Y, q.X);
+            //    euler.Z = 0;
+            //}
+            //else // no singularity - this is the majority of cases
+            //{
+            //    euler.X = (float)Math.Asin(2f * (q.W * q.X - q.Y * q.Z));
+            //    euler.Y = (float)Math.Atan2(2f * q.W * q.Y + 2f * q.Z * q.X, 1 - 2f * (q.X * q.X + q.Y * q.Y));
+            //    euler.Z = (float)Math.Atan2(2f * q.W * q.Z + 2f * q.X * q.Y, 1 - 2f * (q.Z * q.Z + q.X * q.X));
+            //}
+            //
         }
 
 

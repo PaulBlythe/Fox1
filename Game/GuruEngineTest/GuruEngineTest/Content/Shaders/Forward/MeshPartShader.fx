@@ -2,7 +2,7 @@
  
 float Damage = 0;
 bool Blend = false;
-
+bool Additive = false;
 
 texture ModelTexture;
 sampler2D textureSampler = sampler_state 
@@ -61,7 +61,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 			discard;
 	}
 
-	if (Blend)
+	if ((Blend)||(Additive))
 	{
 	}
 	else {
@@ -79,6 +79,10 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 	float3 Id = LightMask * DiffuseIntensity * saturate(dot(Normal, LightDir));
 	float3 Is = LightMask * SpecularIntensity * pow(saturate(dot(Normal, H)), Shininess * 256);
 
+	if (Additive)
+	{
+		Id = 1.0f;
+	}
 	result.xyz = saturate( (saturate(Id+Ia) * textureColor.xyz) + (Is * SpecularColor.xyz));
 	result.a = textureColor.a;
 

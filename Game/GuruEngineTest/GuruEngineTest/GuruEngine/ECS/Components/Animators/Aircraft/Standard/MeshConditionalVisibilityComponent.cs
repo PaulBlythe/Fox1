@@ -12,30 +12,24 @@ using GuruEngine.ECS;
 using GuruEngine.ECS.Components.Mesh;
 using GuruEngine.ECS.Components.World;
 
-//( Class CVTAnimatorComponent )
+//( Class MeshConditionalVisibilityComponent )
 //( Group Animation )
-//( Type CVTAnimatorComponent )
+//( Type MeshConditionalVisibilityComponent )
 //( Parameter String Mesh )
 //( Parameter String Control )
-//( Parameter Float Minimum )
-//( Parameter Float Maximum )
-//( Parameter Float Start )
-//( Parameter Float Finish )
-//( Parameter Int Flags )
+//( Parameter Float Value )
+//( Parameter String Compare )
+
 
 namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
 {
-    public class CVTAnimatorComponent : ECSGameComponent
+    public class MeshConditionalVisibilityComponent : ECSGameComponent
     {
         MultiMeshComponent Host;
         AircraftStateComponent State;
 
-        public float Minimum;
-        public float Maximum;
-        public float Start;
-        public float Finish;
-        public int Flags = 0;
-
+        public float Value;
+        public String Cmp;
         public String TargetMesh;
         public String ControlValue;
 
@@ -43,14 +37,12 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
         #region ECS Game component methods
         public override ECSGameComponent Clone()
         {
-            CVTAnimatorComponent other = new CVTAnimatorComponent();
-            other.Maximum = Maximum;
-            other.Minimum = Minimum;
-            other.Start = Start;
-            other.Finish = Finish;
+            MeshConditionalVisibilityComponent other = new MeshConditionalVisibilityComponent();
+            other.Value = Value;
+            other.Cmp = Cmp;
             other.TargetMesh = TargetMesh;
             other.ControlValue = ControlValue;
-            other.Flags = Flags;
+
             return other;
         }
 
@@ -112,79 +104,66 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
 
         public override void ReConnect(GameObject other)
         {
-            CVTAnimatorComponent otherTank = (CVTAnimatorComponent)other.FindGameComponentByName(Name);
-            otherTank.Maximum = Maximum;
-            otherTank.Minimum = Minimum;
-            otherTank.Start = Start;
-            otherTank.Finish = Finish;
-            otherTank.TargetMesh = TargetMesh;
+            MeshConditionalVisibilityComponent otherTank = (MeshConditionalVisibilityComponent)other.FindGameComponentByName(Name);
+            otherTank.Value = Value;
             otherTank.ControlValue = ControlValue;
-            otherTank.Flags = Flags;
+            otherTank.Cmp = Cmp;
+            otherTank.TargetMesh = TargetMesh;
+            
         }
 
         public override void RenderOffscreenRenderTargets()
         {
         }
 
-        public override void SetParameter(string Name, string Value)
+        public override void SetParameter(string Name, string inValue)
         {
-            if (Name == "Maximum")
+            if (Name == "Value")
             {
-                Maximum = float.Parse(Value);
+                Value = float.Parse(inValue);
             }
-            if (Name == "Minimum")
+            if (Name == "Compare")
             {
-                Minimum = float.Parse(Value);
+                Cmp = inValue;
             }
-            if (Name == "Start")
+            if (Name == "Mesh")
             {
-                Start = float.Parse(Value);
-            }
-            if (Name == "Finish")
-            {
-                Finish = float.Parse(Value);
-            }
-            if (Name == "Flags")
-            {
-                Flags = int.Parse(Value);
-            }
-            if (Name == "TargetMesh")
-            {
-                TargetMesh = Value;
+                TargetMesh = inValue;
             }
             if (Name == "ControlValue")
             {
-                ControlValue = Value;
+                ControlValue = inValue;
             }
+            
         }
 
         public override void Update(float dt)
         {
             double Vator = State.GetVar(ControlValue, 0);
-            
-            Vator = Maths.MathUtils.Cvt((float)Vator, Minimum, Maximum, Start, Finish);
-
-            switch (Flags)
+            bool Hidden = false;
+            switch (Cmp)
             {
-                case 1:             
-                    {
-                        Matrix m = Matrix.CreateRotationX(MathHelper.ToRadians((float)-Vator));
-                        Host.MatrixAnimate(m);
-                    }
+                case "<":
+                    Hidden = (Vator < Value);
                     break;
-                case 2:
-                    {
-                        Matrix m = Matrix.CreateRotationZ(MathHelper.ToRadians((float)Vator));
-                        Host.MatrixAnimate(m);
-                    }
+                case ">":
+                    Hidden = (Vator > Value);
                     break;
-                default:
-                    {
-                        Matrix m = Matrix.CreateRotationY(MathHelper.ToRadians((float)Vator));
-                        Host.MatrixAnimate(m);
-                    }
+                case "<=":
+                    Hidden = (Vator <= Value);
+                    break;
+                case ">=":
+                    Hidden = (Vator >= Value);
+                    break;
+                case "==":
+                    Hidden = (Vator == Value);
+                    break;
+                case "!=":
+                    Hidden = (Vator != Value);
                     break;
             }
+            Host.Hidden = Hidden;
+            
         }
         #endregion
 

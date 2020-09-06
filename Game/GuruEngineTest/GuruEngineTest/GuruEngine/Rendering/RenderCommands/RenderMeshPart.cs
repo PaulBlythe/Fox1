@@ -96,7 +96,8 @@ namespace GuruEngine.Rendering.RenderCommands
             bool isNight = mat.Materials[f.Material].tname.Contains("night");
             if (isNight)
                 return 999;
-
+            if (mat.Materials[f.Material].tfBlendAdd)
+                return 998;
             int set = 2;
             if (mat.Materials[f.Material].Sort)
             {
@@ -107,8 +108,6 @@ namespace GuruEngine.Rendering.RenderCommands
             if (mat.Materials[f.Material].tfDoubleSided)
                 set = 3;
             if (mat.Materials[f.Material].tfBlend)
-                set = 4;
-            if (mat.Materials[f.Material].tfBlendAdd)
                 set = 4;
             return set;
         }

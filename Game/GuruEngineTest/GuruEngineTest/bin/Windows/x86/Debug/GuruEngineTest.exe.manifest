@@ -31,14 +31,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GuruEngineTest.exe" size="1339360">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GuruEngineTest.exe" size="1346528">
       <assemblyIdentity name="GuruEngineTest" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>yUszpZsgDBphG/CQkLUAGOVnsprqMYoQQpU9qmHYHtc=</dsig:DigestValue>
+        <dsig:DigestValue>grQrahcIgLWoU6UC/GHcu/+ofZJkWuG2ASFWtgBlnHE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -627,40 +627,40 @@
       <dsig:DigestValue>bYYOITvOzuwZ020z7MEJaAxz2wy1F5iCwPGR9EOFeKA=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Shaders\Forward\Glass.fx" size="2065">
+  <file name="Content\Shaders\Forward\Glass.fx" size="2129">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>QuTCBtG34FVr4hDokWqO26/YLB+Lc+Ca4qmNJiAqwKI=</dsig:DigestValue>
+      <dsig:DigestValue>yI7rpc1yqMT4YhQkAno+VlzjAOLfKTcq5bVgJMXlftc=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Shaders\Forward\Glass.xnb" size="5304">
+  <file name="Content\Shaders\Forward\Glass.xnb" size="5258">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>3ELzqUHRiv89hYtvato/Ti9SZ7Vcxyof3PE/1Yufyds=</dsig:DigestValue>
+      <dsig:DigestValue>lD39RNUgnxmjsaysy9nhMi/2u7vpbVpIgU0p+CtMNFU=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Shaders\Forward\MeshPartShader.fx" size="2191">
+  <file name="Content\Shaders\Forward\MeshPartShader.fx" size="2265">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>89eGXtu/4dhu3+XNKUcFQaIXYfvVT82qxHcwpFXjCLU=</dsig:DigestValue>
+      <dsig:DigestValue>JhSSEmrgC0ofQ2fxop1+F9ojcm2+LBylP8dtcbVlrWQ=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Shaders\Forward\MeshPartShader.xnb" size="5443">
+  <file name="Content\Shaders\Forward\MeshPartShader.xnb" size="5575">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>G48wvmvYNmj0clwY0/YsaxG6JouJkGmb7tYMvibpj8k=</dsig:DigestValue>
+      <dsig:DigestValue>4d0585nymRtHs+EMRiojsQfqfzqcWUPUZWltTmFl0VI=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Shaders\Forward\Moon.fx" size="1475">

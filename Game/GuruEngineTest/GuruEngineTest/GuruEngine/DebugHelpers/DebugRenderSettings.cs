@@ -19,6 +19,7 @@ namespace GuruEngine.DebugHelpers
         public static bool RenderTurrets = false;
         public static bool RenderAimPoints = false;
         public static bool RenderBullets = false;
+        public static bool RaytraceObjects = false;
 
         #region Physics debugging 
         public static bool DrawFuelTanks = false;

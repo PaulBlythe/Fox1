@@ -14,5 +14,6 @@ namespace GuruEngine.InputDevices
         Stick,
         Dial,
         BouncedButton,
+        Toggle,
     }
 }

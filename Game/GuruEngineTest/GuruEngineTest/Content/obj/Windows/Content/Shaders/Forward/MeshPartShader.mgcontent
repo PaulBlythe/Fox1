@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/MeshPartShader.fx</SourceFile>
-  <SourceTime>2020-08-27T07:59:13.4715961+01:00</SourceTime>
+  <SourceTime>2020-09-06T16:41:21.0421832+01:00</SourceTime>
   <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Content/Shaders/Forward/MeshPartShader.xnb</DestFile>
-  <DestTime>2020-08-27T07:59:14.6231832+01:00</DestTime>
+  <DestTime>2020-09-06T16:42:24.0393731+01:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>EffectProcessor</Processor>

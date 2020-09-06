@@ -312,6 +312,15 @@ namespace GuruEngine.ECS
                     case "NightMaterialListComponent":
                         newobj = new NightMaterialListComponent();
                         break;
+                    case "CurveCvtAnimatorComponent":
+                        newobj = new CurveCvtAnimatorComponent();
+                        break;
+                    case "MeshConditionalVisibilityComponent":
+                        newobj = new MeshConditionalVisibilityComponent();
+                        break;
+                    case "CvtTranslateAnimatorComponent":
+                        newobj = new CvtTranslateAnimatorComponent();
+                        break;
 
                     default:
                         throw new Exception("Game component " + gor.Type + " Not added to the game object manager");

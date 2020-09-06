@@ -23,10 +23,12 @@ namespace GUITestbed.GUI.Items
         SaveFileDialog saver = null;
         OpenFileDialog loader = null;
         TextEntryDialog textentry = null;
+        StatusBar MaterialStatusBar = null;
 
         GUITestbed.DataHandlers.Fox1.Objects.Airport currentAirport;
         AirportDatabase currentDatabase = null;
         Button save_material;
+        String basedirectory = @"c:\Data\Fox1";
 
         public MainMenu()
         {
@@ -71,7 +73,7 @@ namespace GUITestbed.GUI.Items
                     break;
                 case "Button:Edit material":
                     {
-                        loader = new OpenFileDialog(@"c:\Data\Fox1", "Load Material", ".materials", new Rectangle((1920 - 800) / 2, 100, 800, 700), LoadMaterial);
+                        loader = new OpenFileDialog(basedirectory, "Load Material", ".materials", new Rectangle((1920 - 800) / 2, 100, 800, 700), LoadMaterial);
                         GuiManager.Instance.Add(loader);
                     }
                     break;
@@ -520,16 +522,18 @@ namespace GUITestbed.GUI.Items
 
         public bool LoadMaterial(String f)
         {
+            basedirectory = Path.GetDirectoryName(f);
             MaterialDisplayTool mt = new MaterialDisplayTool(f);
             Game1.Instance.current = mt;
             ListView l = FindFirstListView();
+            l.Clear();
             l.ClickEvent += MaterialDisplayTool.SelectionChanged;
             foreach (Material m in mt.lib.Materials)
             {
                 l.AddItem(m.Name);
             }
             save_material.Active = true;
-
+            MaterialStatusBar.mode = "Material mode " + Path.GetFileNameWithoutExtension(f);
             return false;
         }
 
@@ -844,9 +848,9 @@ namespace GUITestbed.GUI.Items
                 TextBox t = new TextBox(new Rectangle(1700, 725, 210, 18), "");
                 Widgets.Add(t);
 
-                StatusBar s = new StatusBar();
-                s.mode = "Material mode";
-                Widgets.Add(s);
+                MaterialStatusBar = new StatusBar();
+                MaterialStatusBar.mode = "Material mode";
+                Widgets.Add(MaterialStatusBar);
             }
         }
 

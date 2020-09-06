@@ -144,13 +144,11 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
 
         public override void Update(float dt)
         {
+            
             double Vator = State.GetVar(Control, 0);
-            Angle = (float)((1 - Smoothing) * Angle + (Smoothing * Vator));
-            if (Angle > 1)
-                Angle = 1;
-            if (Angle < -1)
-                Angle = -1;
 
+            Angle = (float)((1 - Smoothing) * Angle + (Smoothing * Vator));
+            
             Vator = Angle * Scale;
 
             Matrix m = Matrix.Identity;
@@ -177,6 +175,11 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
                     break;
                 case 7:
                     m = Matrix.CreateFromYawPitchRoll(MathHelper.ToRadians((float)Vator), MathHelper.ToRadians((float)Vator), MathHelper.ToRadians((float)Vator));
+                    break;
+
+
+                case 14:
+                    m = Matrix.CreateRotationZ(MathHelper.ToRadians((float)Vator));
                     break;
             }
 

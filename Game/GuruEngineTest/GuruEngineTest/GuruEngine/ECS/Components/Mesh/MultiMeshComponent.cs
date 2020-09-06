@@ -30,6 +30,7 @@ using GuruEngine.Rendering;
 using GuruEngine.DebugHelpers;
 using GuruEngine.Physics.Aircraft;
 using GuruEngine.Rendering.RenderCommands;
+using GuruEngine.ECS.Components.Game;
 
 
 namespace GuruEngine.ECS.Components.Mesh
@@ -259,7 +260,7 @@ namespace GuruEngine.ECS.Components.Mesh
             if (mesh == null)
             {
                 mesh = AssetManager.MeshPart(meshGUID);
-                if (mesh!=null)
+                if (mesh != null)
                 {
                     world = mesh.startworld;
                     Animation = Matrix.Identity;
@@ -303,17 +304,18 @@ namespace GuruEngine.ECS.Components.Mesh
 
                     Transparent = new RenderCommandSet();
                     Transparent.IsStaticMesh = false;
-                    Transparent.RS = RasteriserStates.CullCounterclockwise;
+                    Transparent.RS = RasteriserStates.NormalNoCull;
                     Transparent.DS = DepthStencilState.Default;
                     Transparent.RenderPass = RenderPasses.Transparent;
                     Transparent.blend = BlendState.NonPremultiplied;
 
                     Night = new RenderCommandSet();
                     Night.IsStaticMesh = false;
-                    Night.RS = RasteriserStates.CullCounterclockwise;
+                    Night.RS = RasteriserStates.NormalNoCull;
                     Night.DS = DepthStencilState.Default;
                     Night.RenderPass = RenderPasses.Transparent;
                     Night.blend = BlendState.NonPremultiplied;
+
 
                     for (int i = 0; i < mesh.facegroups.Length; i++)
                     {
@@ -335,6 +337,11 @@ namespace GuruEngine.ECS.Components.Mesh
                             case 4:
                                 Transparent.Commands.Add(r);
                                 break;
+
+                            case 998:
+                                Transparent.Commands.Add(r);
+                                break;
+
                             case 999:
                                 Night.Commands.Add(r);
                                 break;
@@ -365,6 +372,7 @@ namespace GuruEngine.ECS.Components.Mesh
                 {
                     CopyMatrix(ref r.World, ref world);
                 }
+
                 Renderer.AddRenderCommand(GeometrySet);
                 if (GlassSet.Commands.Count > 0)
                     Renderer.AddRenderCommand(GlassSet);
@@ -374,8 +382,9 @@ namespace GuruEngine.ECS.Components.Mesh
                     Renderer.AddRenderCommand(DoubleSided);
                 if (Transparent.Commands.Count > 0)
                     Renderer.AddRenderCommand(Transparent);
-                //if (Night.Commands.Count > 0)
-                //    Renderer.AddRenderCommand(Night);
+
+                if ((Night.Commands.Count > 0) && (LocalPlayerComponent.Instance.CockpitLights))
+                    Renderer.AddRenderCommand(Night);
 
                 if (coll != null)
                     coll.SetMatrix(world);

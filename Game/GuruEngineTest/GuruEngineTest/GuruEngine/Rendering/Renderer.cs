@@ -53,6 +53,7 @@ namespace GuruEngine.Rendering
         SpriteBatch spriteBatch;
         WorldState worldstate = null;
         Effect depthDisplay;
+        public List<String> DebugStrings = new List<string>();
 #endif
 
         public Renderer(GraphicsDevice dev, bool Forward)
@@ -387,6 +388,18 @@ namespace GuruEngine.Rendering
                 spriteBatch.End();
             }
 
+            if (DebugStrings.Count>0)
+            {
+                spriteBatch.Begin();
+                Vector2 pos = new Vector2(100, 10);
+                foreach(String s in DebugStrings)
+                {
+                    spriteBatch.DrawString(AssetManager.GetDebugFont(), s, pos, Color.Red);
+                    pos.Y += 15;
+                }
+                spriteBatch.End();
+                DebugStrings.Clear();
+            }
 #endif
 
         }

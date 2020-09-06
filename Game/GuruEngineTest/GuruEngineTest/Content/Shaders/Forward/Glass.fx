@@ -5,12 +5,6 @@ float4 tint = half4(0.25,0.25,0.5,0.125);
 
 float3 etas = { 0.80, 0.82, 0.84 };
 
-// wavelength colors
-const float4 colors[3] = {
-	{ 1, 0, 0, 1 },
-	{ 0, 1, 0, 1 },
-	{ 0, 0, 1, 1 },
-};
 
 struct VS_IN
 {
@@ -74,13 +68,15 @@ VS_OUT VS_Glass(VS_IN input)
 PS_OUT PS_Glass(VS_OUT input)
 {
 	PS_OUT output = (PS_OUT)0;
-	
 	float4 refract = float4(0,0,0,0);
-	for(int c=0;c<3;c++)
-		refract += CubeMapLookup(input.RefractRGB[c]) * colors[c];
+	
+	refract += CubeMapLookup(input.RefractRGB[0]) * float4(1, 0, 0, 1);
+	refract += CubeMapLookup(input.RefractRGB[1]) * float4(0, 1, 0, 1);
+	refract += CubeMapLookup(input.RefractRGB[2]) * float4(0, 0, 1, 1);
 
 	output.Color = lerp(refract,CubeMapLookup(normalize(input.Reflect)),0.5);
 	output.Color = saturate(output.Color + (float4(1, 1, 1, 1)*input.Specular));
+	output.Color.a = max(input.Specular, 0.25f);
 	return output;
 }
 

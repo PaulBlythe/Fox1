@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,9 +13,9 @@ using GuruEngine.ECS;
 using GuruEngine.ECS.Components.Mesh;
 using GuruEngine.ECS.Components.World;
 
-//( Class CVTAnimatorComponent )
+//( Class CvtTranslateAnimatorComponent )
 //( Group Animation )
-//( Type CVTAnimatorComponent )
+//( Type CvtTranslateAnimatorComponent )
 //( Parameter String Mesh )
 //( Parameter String Control )
 //( Parameter Float Minimum )
@@ -25,7 +26,7 @@ using GuruEngine.ECS.Components.World;
 
 namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
 {
-    public class CVTAnimatorComponent : ECSGameComponent
+    public class CvtTranslateAnimatorComponent : ECSGameComponent
     {
         MultiMeshComponent Host;
         AircraftStateComponent State;
@@ -43,7 +44,7 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
         #region ECS Game component methods
         public override ECSGameComponent Clone()
         {
-            CVTAnimatorComponent other = new CVTAnimatorComponent();
+            CvtTranslateAnimatorComponent other = new CvtTranslateAnimatorComponent();
             other.Maximum = Maximum;
             other.Minimum = Minimum;
             other.Start = Start;
@@ -66,17 +67,11 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
                 string[] objects = parts[2].Split(':');
                 switch (parts[0])
                 {
-
-
                     case "Root":
                         {
                             Parent = GameObjectManager.Instance.FindGameObjectByName(objects[0]);
                         }
                         break;
-
-
-
-
                 }
             }
         }
@@ -112,7 +107,7 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
 
         public override void ReConnect(GameObject other)
         {
-            CVTAnimatorComponent otherTank = (CVTAnimatorComponent)other.FindGameComponentByName(Name);
+            CvtTranslateAnimatorComponent otherTank = (CvtTranslateAnimatorComponent)other.FindGameComponentByName(Name);
             otherTank.Maximum = Maximum;
             otherTank.Minimum = Minimum;
             otherTank.Start = Start;
@@ -161,30 +156,30 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
         public override void Update(float dt)
         {
             double Vator = State.GetVar(ControlValue, 0);
-            
+
             Vator = Maths.MathUtils.Cvt((float)Vator, Minimum, Maximum, Start, Finish);
 
+            Matrix m = Matrix.Identity;
             switch (Flags)
             {
-                case 1:             
+                case 1:
                     {
-                        Matrix m = Matrix.CreateRotationX(MathHelper.ToRadians((float)-Vator));
-                        Host.MatrixAnimate(m);
+                        m = Matrix.CreateTranslation((float)Vator, 0, 0);
+                        
                     }
                     break;
                 case 2:
                     {
-                        Matrix m = Matrix.CreateRotationZ(MathHelper.ToRadians((float)Vator));
-                        Host.MatrixAnimate(m);
+                        m = Matrix.CreateTranslation(0, (float)Vator, 0);
                     }
                     break;
                 default:
                     {
-                        Matrix m = Matrix.CreateRotationY(MathHelper.ToRadians((float)Vator));
-                        Host.MatrixAnimate(m);
+                        m = Matrix.CreateTranslation(0, 0, (float)Vator);
                     }
                     break;
             }
+            Host.MatrixAnimate(m);
         }
         #endregion
 
