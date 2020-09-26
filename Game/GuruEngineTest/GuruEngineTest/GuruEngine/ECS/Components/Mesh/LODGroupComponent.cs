@@ -118,6 +118,10 @@ namespace GuruEngine.ECS.Components.Mesh
         {
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void SetParameter(string Name, string Value)
         {
             if (Name == "Filename")

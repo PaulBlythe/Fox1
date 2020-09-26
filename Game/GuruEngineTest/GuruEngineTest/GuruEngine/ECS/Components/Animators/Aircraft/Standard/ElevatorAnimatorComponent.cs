@@ -96,6 +96,14 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
 
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+            if (old is AircraftStateComponent)
+            {
+                State = (AircraftStateComponent)replacement;
+            }
+        }
+
         public override void Load(ContentManager content)
         {
             ElevatorPositionVar = "ElevatorPosition";

@@ -104,6 +104,14 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
             State = (AircraftStateComponent)Parent.FindGameComponentByName("AircraftStateComponent_1");
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+            if (old is AircraftStateComponent)
+            {
+                State = (AircraftStateComponent)replacement;
+            }
+        }
+
         public override void ReConnect(GameObject other)
         {
             SmoothedAngleAnimatorComponent otherTank = (SmoothedAngleAnimatorComponent)other.FindGameComponentByName(Name);

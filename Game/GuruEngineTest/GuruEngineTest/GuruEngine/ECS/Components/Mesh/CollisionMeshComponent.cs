@@ -104,6 +104,10 @@ namespace GuruEngine.ECS.Components.Mesh
             }
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void Update(float dt)
         {
 #if DEBUG

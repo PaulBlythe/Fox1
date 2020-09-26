@@ -13,7 +13,11 @@ using GuruEngine.ECS.Components.Mesh;
 using GuruEngine.ECS.Components.Settings;
 using GuruEngine.InputDevices;
 using GuruEngine.Player;
-using GuruEngine.World;
+using GuruEngine.ECS.Components.AircraftSystems.General;
+
+using GuruEngine.Player.HumanFactors;
+using GuruEngine.Rendering.EffectPasses;
+using GuruEngine.Rendering;
 
 namespace GuruEngine.ECS.Components.Game
 {
@@ -22,18 +26,39 @@ namespace GuruEngine.ECS.Components.Game
         public static LocalPlayerComponent Instance;
         public bool CockpitLights = false;
         GameObject Mesh = null;
-        Vector3 CockpitOffset = new Vector3(-1.65f, 0.0f, 0.427482f);
-        Vector3 LeanForwardDelta = new Vector3(0.5f, 0.0f, -0.25f);
+        GameObject Fuselage = null;
+        Vector3 CockpitOffset = new Vector3(-1.350f, 0.0f, 0.600482f);
+       
         WorldTransform transform;
+        WorldTransform transform2;
         AircraftStateComponent hoststate;
         AircraftSettingsComponent hostsettings;
+        OxygenSupplyComponent osc = null;
         float gear_direction = 0;
         float cock_direction = 0;
 
+        #region Player world factors
+        Hypoxia hypoxia = new Hypoxia();
+        RedOutEffectPass redout = new RedOutEffectPass();
+        BlackoutEffectPass blackout = new BlackoutEffectPass();
+        #endregion
 
-        bool lf = false;
-        bool lb = false;
+        #region Head position animation
+        
+        Vector3 head_position_delta = new Vector3(0, 0, 0);
+        Vector3 head_position_target = new Vector3(0, 0, 0);
+        Vector3 head_position_current = new Vector3(0, 0, 0);
+
+        Quaternion target_quat = new Quaternion(0, 0, 0, 1);
+        Quaternion current_quat = new Quaternion(0, 0, 0, 1);
+        Quaternion delta_quat = new Quaternion(0, 0, 0, 1);
         float lft = 0;
+
+        int head_rotation = 3;
+        int head_pitch = 3;
+        float[] head_rot_angles = new float[] { -120, -90, -45 , 0.0f, 45.0f, 90.0f, 120.0f };
+        float[] head_pitch_angles = new float[] { -45, -33, -11, 0.0f, 11.0f, 33.0f, 45.0f };
+        #endregion
 
         public LocalPlayerComponent()
         {
@@ -42,15 +67,17 @@ namespace GuruEngine.ECS.Components.Game
 
         public void Update(float dt)
         {
-            QuaternionCamera camera = (QuaternionCamera) WorldState.GetWorldState().camera;
+            QuaternionCamera camera = (QuaternionCamera)WorldState.GetWorldState().camera;
             if (camera != null)
             {
+                camera.ViewAdjust = current_quat;
                 camera.Update(dt);
-
-                if (transform!=null)
+                
+                if (transform != null)
                 {
                     Quaternion q1 = camera.GetOrientation();
                     transform.SetOrientation(q1);
+                    transform2.SetOrientation(q1);
 
                     Matrix lw = Matrix.CreateFromYawPitchRoll(0, MathHelper.ToRadians(-90), MathHelper.ToRadians(90)) * Matrix.CreateFromQuaternion(q1);
 
@@ -61,66 +88,75 @@ namespace GuruEngine.ECS.Components.Game
                     //    Vector3 test = Vector3.Transform(m.Translation, lw);
                     //    System.Console.WriteLine(test.ToString());
                     //}
-                    Vector3 dp = CockpitOffset + (lft * LeanForwardDelta);
+                    Vector3 dp = CockpitOffset + head_position_current;
                     Vector3 temp = Vector3.Transform(dp, lw);
 
-                    transform.SetPosition(camera.GetLocalPosition() - temp );
+                    transform.SetPosition(camera.GetLocalPosition() - temp);
                     transform.Update(dt);
 
-                    #region Lean forward animation
-                    bool leanf = InputDeviceManager.GetPlayerButton("LeanForward");
-                    if (leanf)
-                    {
-                        lb = false;
-                        if (lf)
-                        {
+                    transform2.SetPosition(camera.GetLocalPosition() - temp);
+                    transform2.Update(dt);
 
-                        }
-                        else if (lft < 1)
+                    #region Lean animation
+                    if (lft == 1)
+                    {
+                        int old_h = head_rotation;
+                        int old_p = head_pitch;
+
+                        bool leanf = InputDeviceManager.GetPlayerButton("LeanForward");
+                        bool leanb = InputDeviceManager.GetPlayerButton("LeanBack");
+                        bool leanl = InputDeviceManager.GetPlayerButton("LeanLeft");
+                        bool leanr = InputDeviceManager.GetPlayerButton("LeanRight");
+
+                        if (leanl)
+                            head_rotation++;
+                        if (leanr)
+                            head_rotation--;
+
+                        if (head_rotation < 0)
+                            head_rotation = 0;
+
+                        if (head_rotation > 6)
+                            head_rotation = 6;
+
+                        if (leanf)
+                            head_pitch--;
+                        if (leanb)
+                            head_pitch++;
+
+                        if (head_pitch > 6)
+                            head_pitch = 6;
+                        if (head_pitch < 0)
+                            head_pitch = 0;
+
+                        if ((old_h != head_rotation)||(old_p != head_pitch))
                         {
-                            lf = true;
+                            float yaw = head_rot_angles[head_rotation];
+                            float pitch = head_pitch_angles[head_pitch];
+
+                            head_position_delta = head_position_current;
+                            target_quat = Quaternion.CreateFromYawPitchRoll(MathHelper.ToRadians(yaw), MathHelper.ToRadians(pitch), 0);
+                            delta_quat = current_quat;
                             lft = 0;
                         }
                     }
-                    if (lf)
+                    
+                    if (lft < 1)
                     {
-                        if (lft < 1)
-                        {
-                            lft += PlayerSettings.CockpitPositionAnimationRate * dt;
-                            lft = Math.Min(1, lft);
-                        }
-
+                        lft += PlayerSettings.CockpitPositionAnimationRate * dt;
+                        lft = Math.Min(1, lft);
+                        
+                        head_position_current = Vector3.Lerp(head_position_delta, head_position_target, lft);
+                        current_quat = Quaternion.Slerp(delta_quat, target_quat, lft);
                     }
-                    #endregion
 
-                    #region Lean back animation
-                    bool leanb = InputDeviceManager.GetPlayerButton("LeanBack");
-                    if (leanb)
-                    {
-                        lf = false;
-                        if (lb)
-                        {
-
-                        }
-                        else if (lft > 0)
-                        {
-                            lb = true;
-                        }
-                    }
-                    if (lb)
-                    {
-                        if (lft > 0)
-                        {
-                            lft -= PlayerSettings.CockpitPositionAnimationRate * dt;
-                            lft = Math.Max(0, lft);
-                        }
-
-                    }
                     #endregion
 
                 }
             }
 
+
+            #region Update cockpit
             if (Mesh != null)
             {
                 if ((hoststate != null) && (hostsettings != null))
@@ -129,7 +165,7 @@ namespace GuruEngine.ECS.Components.Game
                     bool etrimup = InputDeviceManager.GetPlayerButton("ElevatorTrimUp");
                     bool etrimdown = InputDeviceManager.GetPlayerButton("ElevatorTrimDown");
                     double etrim = hoststate.GetVar("ElevatorTrim", 0.0);
-                    if ((etrimdown)||(etrimup))
+                    if ((etrimdown) || (etrimup))
                     {
                         double min = hostsettings.Variables["ElevatorTrimMin"];
                         double max = hostsettings.Variables["ElevatorTrimMax"];
@@ -208,7 +244,7 @@ namespace GuruEngine.ECS.Components.Game
                     #region Aileron
                     bool aup = InputDeviceManager.GetPlayerButton("AileronLeft");
                     bool adown = InputDeviceManager.GetPlayerButton("AileronRight");
-                    double a = hoststate.GetVar("AileronControl", 0.0);
+                    double a = hoststate.GetVar("AileronPosition", 0.0);
                     if ((adown) || (aup))
                     {
                         double min = -1;
@@ -221,7 +257,7 @@ namespace GuruEngine.ECS.Components.Game
                             a += delta;
                         a = Math.Min(max, a);
                         a = Math.Max(min, a);
-                        hoststate.SetVar("AileronControl", a);
+                        hoststate.SetVar("AileronPosition", a);
                     }
                     #endregion
 
@@ -290,28 +326,28 @@ namespace GuruEngine.ECS.Components.Game
                     double gp = hoststate.GetVar("GearPosition", 0.0);
                     if (pressed)
                     {
-                       
-                        if ((gear_direction == 0)&&(gp == 0))
+
+                        if ((gear_direction == 0) && (gp == 0))
                         {
                             gear_direction = 1;
                         }
                         else
                         {
-                            if ((gear_direction == 1)&&(gp == 1))
+                            if ((gear_direction == 1) && (gp == 1))
                             {
                                 gear_direction = -1;
                             }
                         }
                     }
-                    if (gear_direction !=0)
+                    if (gear_direction != 0)
                     {
                         double t = gp + gear_direction * dt;
-                        if (t<=0)
+                        if (t <= 0)
                         {
                             t = 0;
                             gear_direction = 0;
                         }
-                        if (t>=1)
+                        if (t >= 1)
                         {
                             t = 1;
                             gear_direction = 1;
@@ -354,6 +390,48 @@ namespace GuruEngine.ECS.Components.Game
                     }
                     #endregion
 
+                    #region Update human factors
+                    if (osc == null)
+                    {
+                        osc = (OxygenSupplyComponent)Mesh.FindSingleComponentByType<OxygenSupplyComponent>();
+                    }
+                    if (osc != null)
+                    {
+                        if (osc.Contents == 0)
+                        {
+                            hypoxia.Update((float)hoststate.GetVar("Altitude", 0), dt);
+                        }
+                    }
+                    else
+                    {
+                        hypoxia.Update((float)hoststate.GetVar("Altitude", 0), dt);
+                    }
+
+
+                    float pg = (float)hoststate.GetVar("PilotG", 1);
+                    float pga = (float)Math.Abs(pg);
+                    float limit = 6;
+                    if (hostsettings.Variables["GSuit"] > 0)
+                        limit = 9;
+                    if (pga > limit)
+                    {
+                        float amount = (pga - limit) / 3.0f;
+                        amount = Math.Min(1, amount);
+                        if (pg < 0)
+                        {
+                            redout.Value = amount;
+                            Renderer.AddEffectPass(redout);
+                        }
+                        else
+                        {
+
+                            blackout.Value = amount;
+                            Renderer.AddEffectPass(blackout);
+                        }
+                    }
+
+
+                    #endregion
                 }
 
                 for (int i = 0; i < 5; i++)
@@ -361,7 +439,15 @@ namespace GuruEngine.ECS.Components.Game
                     Mesh.Update(i, dt);
                 }
             }
+            #endregion
 
+            if (Fuselage!=null)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    Fuselage.Update(i, dt);
+                }
+            }
         }
 
         public void LoadContent(ContentManager content)
@@ -370,11 +456,19 @@ namespace GuruEngine.ECS.Components.Game
             {
                 Mesh.LoadContent(content);
             }
+            if (Fuselage != null)
+            {
+                Fuselage.LoadContent(content);
+
+                AircraftStateComponent real = (AircraftStateComponent)Mesh.FindSingleComponentByType<AircraftStateComponent>();
+                AircraftStateComponent old = (AircraftStateComponent)Fuselage.FindSingleComponentByType<AircraftStateComponent>();
+                Fuselage.ReplaceComponent(old, real);
+            }
         }
 
         public void RenderOffscreenRenderTargets()
         {
-            if (Mesh!=null)
+            if (Mesh != null)
             {
                 Mesh.RenderOffscreenRenderTargets();
             }
@@ -386,6 +480,10 @@ namespace GuruEngine.ECS.Components.Game
             {
                 Mesh.UpdatePhysicsState();
             }
+            if (Fuselage != null)
+            {
+                Fuselage.UpdatePhysicsState();
+            }
         }
 
         public void AddMesh(String file)
@@ -396,6 +494,25 @@ namespace GuruEngine.ECS.Components.Game
             hostsettings = (AircraftSettingsComponent)Mesh.FindSingleComponentByType<AircraftSettingsComponent>();
         }
 
-        
+        public void AddFuselage(String file)
+        {
+            Fuselage = GameObjectManager.Instance.CreateInstance(file);
+            transform2 = (WorldTransform)Fuselage.FindSingleComponentByType<WorldTransform>();
+
+            MultiMeshComponent Host = (MultiMeshComponent)Fuselage.FindGameComponentByName("Head1_D0");
+            Host.Hidden = true;
+
+            Host = (MultiMeshComponent)Fuselage.FindGameComponentByName("CF_D0");
+            Host.Hidden = true;
+
+            Host = (MultiMeshComponent)Fuselage.FindGameComponentByName("Blister1_D0");
+            Host.Hidden = true;
+
+            Host = (MultiMeshComponent)Fuselage.FindGameComponentByName("Pilot1_D0");
+            Host.Hidden = true;
+
+           
+        }
+
     }
 }

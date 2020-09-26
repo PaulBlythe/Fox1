@@ -138,6 +138,9 @@ namespace GuruEngine.ECS.Components
             DoubleVariables.Add("BallAccel", 0);
             DoubleVariables.Add("PilotDownForce", 0);
             DoubleVariables.Add("IAS", 0);
+            DoubleVariables.Add("O2level", 0);
+            DoubleVariables.Add("O2Altitude", 0);
+            DoubleVariables.Add("PilotG", 1);
 
             Transform = (WorldTransform) Parent.FindSingleComponentByType<WorldTransform>();
 
@@ -169,6 +172,10 @@ namespace GuruEngine.ECS.Components
             }
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void Update(float dt)
         {
             time += dt;
@@ -188,6 +195,9 @@ namespace GuruEngine.ECS.Components
             DoubleVariables["PilotDownForce"] = ep * 0.23562f;
             DoubleVariables["IAS"] = Math.Abs(ep) * 223.52003;
             DoubleVariables["Engine0Compressor"] = Math.Max(ep, 0);
+
+            //ep = Math.Sin(time * 0.025f);
+            //DoubleVariables["PilotG"] = ep * 9.0;
 
             //float gp = (float)(3 * Math.Abs(ep)) - 1;
             //gp = Math.Max(0, gp);

@@ -29,14 +29,25 @@ namespace GuruEngine.InputDevices
             lastState = newState;
             newState = Keyboard.GetState();
 
+            bool modifier_active = (newState.IsKeyDown(Keys.LeftControl)) ||
+                                   (newState.IsKeyDown(Keys.LeftAlt)) ||
+                                   (newState.IsKeyDown(Keys.LeftShift)) ||
+                                   (newState.IsKeyDown(Keys.RightShift)) ||
+                                   (newState.IsKeyDown(Keys.RightAlt)) ||
+                                   (newState.IsKeyDown(Keys.RightShift));
+
             foreach (KeyboardButton kb in activeButtons)
             {
                 bool pressed = true;
+               
                 foreach (Keys k in kb.keys)
                 {
                     if (newState.IsKeyUp(k))
                         pressed = false;
                 }
+                if ((!kb.HasModifiers) && (modifier_active))
+                    pressed = false;
+
                 Buttons[kb.ID] = pressed;
             }
             foreach (KeyboardButton kb in activeToggles)
@@ -48,6 +59,9 @@ namespace GuruEngine.InputDevices
                     if (lastState.IsKeyUp(k))
                         pressed = false;
                 }
+                if ((!kb.HasModifiers) && (modifier_active))
+                    pressed = false;
+
                 if (pressed)     // all the keys where down last frame   
                 {
                    
@@ -76,6 +90,7 @@ namespace GuruEngine.InputDevices
                         kb.keys.Add(key);
                         foreach (Keys k in modifiers)
                             kb.keys.Add(k);
+                        kb.HasModifiers = (modifiers.Count > 0);
                         activeButtons.Add(kb);
                     }
                     break;
@@ -89,6 +104,7 @@ namespace GuruEngine.InputDevices
                         kb.keys.Add(key);
                         foreach (Keys k in modifiers)
                             kb.keys.Add(k);
+                        kb.HasModifiers = (modifiers.Count > 0);
                         activeToggles.Add(kb);
                     }
                     break;

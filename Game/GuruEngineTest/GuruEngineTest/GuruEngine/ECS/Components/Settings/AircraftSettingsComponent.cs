@@ -79,6 +79,10 @@ namespace GuruEngine.ECS.Components.Settings
            
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void ReConnect(GameObject otherObject)
         {
             AircraftSettingsComponent other = (AircraftSettingsComponent)otherObject.FindGameComponentByName(Name);

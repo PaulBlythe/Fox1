@@ -147,3 +147,6 @@ C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\bin\Windows\x86\Debug\GuruEngi
 C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\bin\Windows\x86\Debug\GuruEngineTest.application
 C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\obj\x86\Debug\GuruEngineTest.exe.manifest
 C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\obj\x86\Debug\GuruEngineTest.application
+C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\bin\Windows\x86\Debug\Content\Shaders\2D\RadialBlur.xnb
+C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\bin\Windows\x86\Debug\Content\Shaders\Forward\Mirror.xnb
+C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\bin\Windows\x86\Debug\Content\Shaders\Deferred\Mirror.xnb

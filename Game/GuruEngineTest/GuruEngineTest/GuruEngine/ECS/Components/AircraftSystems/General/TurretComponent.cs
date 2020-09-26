@@ -18,6 +18,7 @@ using GuruEngine.AI;
 using GuruEngine.Audio;
 using GuruEngine.Physics.Collision;
 using GuruEngine.Rendering;
+using GuruEngine.Assets;
 
 //( Class TurretComponent )
 //( Group Aircraft )
@@ -150,6 +151,10 @@ namespace GuruEngine.ECS.Components.AircraftSystems.General
             return null;
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void HandleEvent(string evt)
         {
         }
@@ -242,6 +247,10 @@ namespace GuruEngine.ECS.Components.AircraftSystems.General
                 Matrix l = Matrix.CreateLookAt(p1, p2, Vector3.Up);
                 viewFrustrum = new BoundingFrustum(l * p);
             }
+
+            if (AssetManager.ISLoading())
+                return;
+
             firetime -= dt;
 
             switch (state)

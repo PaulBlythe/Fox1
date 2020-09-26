@@ -322,6 +322,11 @@ namespace GuruEngine.ECS
                         newobj = new CvtTranslateAnimatorComponent();
                         break;
 
+
+                    case "OxygenSupplyComponent":
+                        newobj = new OxygenSupplyComponent();
+                        break;
+
                     default:
                         throw new Exception("Game component " + gor.Type + " Not added to the game object manager");
                 }

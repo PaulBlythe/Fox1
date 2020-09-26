@@ -124,6 +124,10 @@ namespace GuruEngine.ECS.Components.Ships
             }
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void DisConnect()
         {
             host = null;

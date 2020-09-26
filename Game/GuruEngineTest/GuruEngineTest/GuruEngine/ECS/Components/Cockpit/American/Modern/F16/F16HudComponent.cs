@@ -137,6 +137,11 @@ namespace GuruEngine.ECS.Components.Cockpit.American.Modern.F16
 
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+
+        }
+
         /// <summary>
         /// Textures
         ///  symbols ==  the symbols file

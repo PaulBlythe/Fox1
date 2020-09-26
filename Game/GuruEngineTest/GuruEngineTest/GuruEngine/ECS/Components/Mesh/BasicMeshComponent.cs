@@ -90,6 +90,10 @@ namespace GuruEngine.ECS.Components.Mesh
             //mesh = ot.mesh;
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void RenderOffscreenRenderTargets()
         {
         }

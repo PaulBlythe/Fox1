@@ -82,6 +82,11 @@ namespace GuruEngine.ECS.Components.Physics
         {
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+
+        }
+
         public override void Load(ContentManager content)
         {
             body = new RigidBody();

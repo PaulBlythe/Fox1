@@ -71,6 +71,7 @@ namespace GuruEngineTest.Scenes.Gebug
 
             player = new LocalPlayerComponent();
             player.AddMesh("SpitfireMkIXcc");
+            player.AddFuselage("SpitfireMkIXc(Gb)");
             player.LoadContent(Content);
         }
 

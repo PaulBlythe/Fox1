@@ -125,6 +125,10 @@ namespace GuruEngine.ECS.Components.World
         {
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void SetParameter(string Name, string Value)
         {
 

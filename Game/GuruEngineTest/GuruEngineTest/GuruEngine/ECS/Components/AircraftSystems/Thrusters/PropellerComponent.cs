@@ -126,6 +126,10 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Thrusters
             return null;
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void HandleEvent(string evt)
         {
             

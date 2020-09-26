@@ -92,6 +92,10 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Aero
 
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void ReConnect(GameObject tother)
         {
             StallComponent other = (StallComponent)tother.FindGameComponentByName(Name);

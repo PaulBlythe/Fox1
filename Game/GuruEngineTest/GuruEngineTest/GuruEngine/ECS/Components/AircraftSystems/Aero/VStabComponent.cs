@@ -123,6 +123,10 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Aero
 
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override object GetContainedObject(string type)
         {
             return null;

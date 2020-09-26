@@ -137,6 +137,9 @@ namespace GuruEngine.ECS.Components.Input
         {
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
         public override void Update(float dt)
         {
 

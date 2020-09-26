@@ -244,6 +244,10 @@ namespace GuruEngine.ECS.Components.AircraftSystems.American.Modern
             
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         private void AddTarget(WorldTransform wt, GameObject go, Vector3 direction, Vector3 noseDirection)
         {
             // we have painted a target

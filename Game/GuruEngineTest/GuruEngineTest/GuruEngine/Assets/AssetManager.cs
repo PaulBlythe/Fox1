@@ -622,6 +622,7 @@ namespace GuruEngine.Assets
         {
             return AssetManager.Instance.loadedAssets.ContainsKey(id);
         }
+
         public static ParticleSettings GetParticleSettings(int id)
         {
             return AssetManager.Instance.GetPSettings(id);
@@ -738,7 +739,10 @@ namespace GuruEngine.Assets
         {
             AssetManager.Instance.RemoveNoise(ID);
         }
-
+        public static bool ISLoading()
+        {
+            return (AssetManager.Instance.loadItemsQueue.Count > 0);
+        }
         #endregion
     }
 }

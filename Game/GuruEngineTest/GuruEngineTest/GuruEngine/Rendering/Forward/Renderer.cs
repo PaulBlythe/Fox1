@@ -18,6 +18,7 @@ using GuruEngine.Assets;
 using GuruEngine.Maths;
 using GuruEngine.Rendering.Particles;
 using GuruEngine.World.Weather;
+using GuruEngine.Rendering.EffectPasses;
 
 namespace GuruEngine
 {
@@ -29,8 +30,9 @@ namespace GuruEngine
         private RenderTargetCube rtc;
         private RenderTargetCube rtc2;
         public RenderTarget2D shadows;
+        public RenderTarget2D backbuffer;
+        public RenderTarget2D staging_texture;
 
-       
         private Dictionary<String, Effect> loadedShaders = new Dictionary<string, Effect>();
 
         private float[] cascadeSplits;
@@ -100,14 +102,18 @@ namespace GuruEngine
             AssetManager.AddShaderToQue(@"Shaders\Forward\MeshPartShader");
             AssetManager.AddShaderToQue(@"Shaders\Forward\Glass");
             AssetManager.AddShaderToQue(@"Shaders\Forward\Ocean");
+            AssetManager.AddShaderToQue(@"Shaders\Forward\Mirror");
             AssetManager.AddShaderToQue(@"Shaders\Forward\ShadowMap");
             AssetManager.AddShaderToQue(@"Shaders\2D\ParticleEffect");
             AssetManager.AddShaderToQue(@"Shaders\Forward\Textured");
+            AssetManager.AddShaderToQue(@"Shaders\2D\RadialBlur");
             #endregion
 
             rtc = new RenderTargetCube(device, 256, false, SurfaceFormat.Color, DepthFormat.None);
             rtc2 = new RenderTargetCube(device, 256, false, SurfaceFormat.Color, DepthFormat.None);
 
+            backbuffer = new RenderTarget2D(device, device.Viewport.Width, device.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            staging_texture = new RenderTarget2D(device, device.Viewport.Width, device.Viewport.Height);
             spriteBatch = new SpriteBatch(device);
 
             
@@ -151,6 +157,8 @@ namespace GuruEngine
 
             time += gt.ElapsedGameTime.Milliseconds / 1000.0f;
 
+
+            device.DepthStencilState = DepthStencilState.Default;
             device.RasterizerState = Renderer.GetRasteriser(RasteriserStates.Normal);
             device.SamplerStates[0] = Renderer.GetSamplerState(Renderer.MapBoolsToSamplerState(true, true, true));
             device.BlendState = BlendState.Opaque;
@@ -349,7 +357,6 @@ namespace GuruEngine
 
             #endregion
 
-
             for (int pass = 0; pass < RenderPasses.TotalPasses; pass++)
             {
                 if (pass == RenderPasses.Particles)
@@ -430,14 +437,15 @@ namespace GuruEngine
                                                 }
                                                 device.SetRenderTarget(rtc, face);
                                                 device.Clear(Color.SkyBlue);
-
+                                                device.DepthStencilState = DepthStencilState.None;
                                                 RenderSkyCommand(renderingRenderCommand, state, viewMatrix);
                                                 device.Flush();
                                             }
 
                                             device.SetRenderTarget(null);
                                             AssetManager.Instance.environment = rtc;
-                                            //done = !done;
+
+                                            
                                         }
 
                                         // Clean up after above
@@ -457,12 +465,16 @@ namespace GuruEngine
                                             effect.Parameters["Projection"].SetValue(Projection);
                                             effect.Parameters["World"].SetValue(World);
                                         }
-                                        device.Clear(Color.Black);
+                                        if (Renderer.Instance.effectpasses.Count > 0)
+                                        {
+                                            device.SetRenderTarget(backbuffer);
+                                            device.DepthStencilState = DepthStencilState.None;
+                                        }
+                                        device.Clear(Color.SkyBlue);
                                         // Draw the sky into the scene
                                         renderingRenderCommand.World = World;
                                         renderingRenderCommand.View = View;
                                         RenderACommand(renderingRenderCommand, state);
-                                        //RenderSkyCommand(renderingRenderCommand, state, View);
 
                                     }
                                     break;
@@ -498,6 +510,104 @@ namespace GuruEngine
                     }
                 }
             }
+            lock (particleSystems)
+            {
+                ParticleSystem[] ps = particleSystems.Values.ToArray();
+
+                for (int i = 0; i < ps.Length; i++)
+                {
+                    ps[i].Update(gt);
+                    ps[i].Draw(gt, View, Projection);
+                }
+            }
+            /// Fullscreen effect passes
+            if (Renderer.Instance.effectpasses.Count > 0)
+            {
+                device.SetRenderTarget(null);
+                Rectangle src = new Rectangle(0, 0, backbuffer.Width, backbuffer.Height);
+                foreach (RenderEffectPass pass in Renderer.Instance.effectpasses)
+                {
+                    switch(pass.Type)
+                    {
+                        case EffectPassType.BlackOut:
+                            {
+                                BlackoutEffectPass roep = (BlackoutEffectPass)pass;
+                                Vector4 drawcolour = new Vector4(0, 0, 0, roep.Value);
+
+                                device.DepthStencilState = DepthStencilState.None;
+                                device.SetRenderTarget(staging_texture);
+                                device.Clear(Color.White);
+
+                                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+                                spriteBatch.Draw(backbuffer, src, Color.White);
+                                spriteBatch.FillRectangle(src, Color.FromNonPremultiplied(drawcolour));
+                                spriteBatch.End();
+
+                                device.SetRenderTarget(backbuffer);
+                                device.Clear(Color.Black);
+                                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+                                spriteBatch.Draw(staging_texture, src, Color.White);
+                                spriteBatch.End();
+                                device.SetRenderTarget(null);
+                            }
+                            break;
+                        case EffectPassType.RedOut:
+                            {
+                                RedOutEffectPass roep = (RedOutEffectPass)pass;
+                                Vector4 drawcolour = new Vector4(1, 0, 0, roep.Value);
+
+                                device.DepthStencilState = DepthStencilState.None;
+                                device.SetRenderTarget(staging_texture);
+                                device.Clear(Color.White);
+
+                                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+                                spriteBatch.Draw(backbuffer, src, Color.White);
+                                spriteBatch.FillRectangle(src, Color.FromNonPremultiplied(drawcolour));
+                                spriteBatch.End();
+
+                                device.SetRenderTarget(backbuffer);
+                                device.Clear(Color.Black);
+                                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+                                spriteBatch.Draw(staging_texture, src, Color.White);
+                                spriteBatch.End();
+
+                                device.SetRenderTarget(null);
+                            }
+                            break;
+                        case Rendering.EffectPasses.EffectPassType.Hypoxia:
+                            {
+                                Effect effect = loadedShaders[@"Shaders\2D\RadialBlur"];
+                                HypoxiaEffectPass hp = (HypoxiaEffectPass)pass;
+
+                                effect.Parameters["BlurIntensity"].SetValue(hp.BlurLevel);
+                                float f = 1.0f - hp.BlackoutLevel;
+                                Vector4 drawcolour = new Vector4(f, f, f, f);
+
+                                device.SetRenderTarget(staging_texture);
+                                device.DepthStencilState = DepthStencilState.None;
+                                spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.NonPremultiplied,SamplerState.LinearClamp,DepthStencilState.None,null,effect);
+                                spriteBatch.Draw(backbuffer, src, Color.White);
+                                spriteBatch.End();
+
+                                device.SetRenderTarget(backbuffer);
+                                spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.AlphaBlend);
+                                spriteBatch.Draw(staging_texture, src, Color.FromNonPremultiplied(drawcolour));
+                                spriteBatch.End();
+
+                                device.SetRenderTarget(null);
+                            }
+                            break;
+                    }
+                   
+                }
+                Renderer.Instance.effectpasses.Clear();
+                spriteBatch.Begin();
+                spriteBatch.Draw(backbuffer, src, Color.White);
+                spriteBatch.End();
+
+            }
+
+
             SignalRenderingComplete();
             Engine.EndDrawFrame(gt);
             SignalRendererFinished();
@@ -518,6 +628,7 @@ namespace GuruEngine
             if (renderingRenderCommand.IsStaticMesh)
             {
                 device.BlendState = renderingRenderCommand.blend;
+                device.RasterizerState = Renderer.GetRasteriser(renderingRenderCommand.RS);
                 renderingRenderCommand.fx.Parameters["World"].SetValue(renderingRenderCommand.World);
                 renderingRenderCommand.fx.Parameters["View"].SetValue(renderingRenderCommand.View);
                 foreach (ModelMesh mesh in renderingRenderCommand.mesh.Meshes)

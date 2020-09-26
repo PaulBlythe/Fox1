@@ -95,6 +95,10 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Aero
 
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void Load(ContentManager content)
         {
             host = (AircraftStateComponent)Parent.FindSingleComponentByType<AircraftStateComponent>();

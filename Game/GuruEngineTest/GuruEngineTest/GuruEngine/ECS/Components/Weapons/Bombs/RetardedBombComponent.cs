@@ -117,6 +117,10 @@ namespace GuruEngine.ECS.Components.Weapons.Bombs
 
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void ReConnect(GameObject other)
         {
             RetardedBombComponent ot = (RetardedBombComponent)other.FindGameComponentByName(Name);

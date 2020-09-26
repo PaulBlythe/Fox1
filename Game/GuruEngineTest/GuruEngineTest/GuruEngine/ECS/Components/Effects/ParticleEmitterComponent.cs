@@ -155,6 +155,11 @@ namespace GuruEngine.ECS.Components.Effects
             }
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+
+        }
+
         public override void Update(float dt)
         {
            

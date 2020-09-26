@@ -15,6 +15,7 @@ using GuruEngine.World;
 using GuruEngine.Helpers;
 using GuruEngine.Assets;
 using GuruEngine.Rendering.Particles;
+using GuruEngine.Rendering.EffectPasses;
 
 #if DEBUG
 using GuruEngineTest;
@@ -28,6 +29,7 @@ namespace GuruEngine.Rendering
         public RenderSettings renderSettings = new RenderSettings();
         public Dictionary<RasteriserStates, RasterizerState> rasterStates = new Dictionary<RasteriserStates, RasterizerState>();
         public Dictionary<int, SamplerState> samplerStates = new Dictionary<int, SamplerState>();
+        public List<RenderEffectPass> effectpasses = new List<RenderEffectPass>();
 
         #region Useful stuff
         public Texture2D RandomVectors;
@@ -395,7 +397,7 @@ namespace GuruEngine.Rendering
                 foreach(String s in DebugStrings)
                 {
                     spriteBatch.DrawString(AssetManager.GetDebugFont(), s, pos, Color.Red);
-                    pos.Y += 15;
+                    pos.Y += 25;
                 }
                 spriteBatch.End();
                 DebugStrings.Clear();
@@ -580,6 +582,8 @@ namespace GuruEngine.Rendering
             {
                 switch (ID)
                 {
+                    case "Mirror":
+                        return @"Shaders\Forward\Mirror";
                     case "MeshPartShader":
                         return @"Shaders\Forward\MeshPartShader";
                     case "Ocean":
@@ -612,6 +616,8 @@ namespace GuruEngine.Rendering
                         return @"Shaders\Deferred\CirrusClouds";
                     case "Textured":
                         return @"Shaders\Deferred\Textured";
+                    case "Mirror":
+                        return @"Shaders\Deferred\Mirror";
                 }
             }
             return "";
@@ -670,6 +676,11 @@ namespace GuruEngine.Rendering
         public static bool IsForward()
         {
             return Instance.UsingForwardRenderer;
+        }
+
+        public static void AddEffectPass(RenderEffectPass pass)
+        {
+            Renderer.Instance.effectpasses.Add(pass);
         }
         #endregion
 

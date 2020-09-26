@@ -97,6 +97,10 @@ namespace GuruEngine.ECS.Components.Animators.Ships.Standard
 
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void ReConnect(GameObject other)
         {
             RadarAnimatorComponent otherT = (RadarAnimatorComponent)other.FindGameComponentByName(Name);

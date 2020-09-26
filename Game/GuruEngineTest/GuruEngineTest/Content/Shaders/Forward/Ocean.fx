@@ -154,7 +154,7 @@ float4 OceanMain(PS_input IN) : COLOR
 	float Is = 0;
 	if (specular > 0)
 	{
-		Is = pow(specular, 32);
+		Is = pow(specular, 8);
 
 	}
 	uint2 screenPos = uint2(IN.Position.xy);

@@ -79,6 +79,11 @@ namespace GuruEngine.ECS.Components.Cockpit
 
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+
+        }
+
         public override void ReConnect(GameObject otherObject)
         {
             NightMaterialListComponent other = (NightMaterialListComponent)otherObject.FindGameComponentByName(Name);

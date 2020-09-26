@@ -27,7 +27,33 @@ namespace GuruEngine.Rendering.RenderCommands
 
         public int Setup(MultiMeshComponent mp, MeshMaterialLibrary mat, FaceGroup f)
         {
-            if (mat.Materials[f.Material].Glass)
+            if (mat.Materials[f.Material].tname == "mirror")
+            {
+                Shader = Renderer.GetShaderName("Mirror");
+                ShaderTechnique = "BasicColorDrawing";
+                World = mp.Animation * mp.world;
+                material = null;
+                PType = PrimitiveType.TriangleList;
+                MType = MeshType.IndexedPrimitives;
+                BaseVertex = 0;
+                StartVertex = f.StartVertex;
+                StartIndex = f.StartFace * 3;
+                PrimitiveCount = f.FaceCount;
+                InstanceCount = 0;
+                declaration = VertexPositionNormalTexture.VertexDeclaration;
+                vbuffer = mp.mesh.vbuffer;
+                ibuffer = mp.mesh.ibuffer;
+                blendstate = BlendState.Opaque;
+
+                SamplerStateID = Renderer.MapBoolsToSamplerState(false, false, false);
+                Variables.Add(ShaderVariables.WorldViewProjection);
+                Variables.Add(ShaderVariables.World);
+                Variables.Add(ShaderVariables.EnvironmentMap);
+                Variables.Add(ShaderVariables.WorldInverseTranspose);
+                Variables.Add(ShaderVariables.ViewVector);
+                return 1;
+            }
+            else if (mat.Materials[f.Material].Glass)
             {
                 Shader = Renderer.GetShaderName("Glass"); 
                 ShaderTechnique = "Glass";
@@ -56,7 +82,6 @@ namespace GuruEngine.Rendering.RenderCommands
                 Variables.Add(ShaderVariables.SunDirection);
                 return 0;
             }
-            
             else
             {
                 Shader = Renderer.GetShaderName("MeshPartShader");

@@ -148,6 +148,11 @@ namespace GuruEngine.ECS.Components.Debug
 
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+
+        }
+
         public override void ReConnect(GameObject other)
         {
             DebugGunneryTargetDrone otherT = (DebugGunneryTargetDrone)other.FindGameComponentByName(Name);

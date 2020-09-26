@@ -17,6 +17,8 @@ namespace GuruEngine.Cameras
         Matrix World;
         Vector3 Up;
 
+        public Quaternion ViewAdjust = Quaternion.Identity;
+
         public QuaternionCamera(float aspectratio)
         {
             FarClip = 60000.0f;
@@ -79,7 +81,9 @@ namespace GuruEngine.Cameras
             Rotation *= additionalRotation;
             Rotation.Normalize();
 
-            Matrix orient = Matrix.CreateFromQuaternion(Rotation);
+            Quaternion temp = Rotation * ViewAdjust;
+
+            Matrix orient = Matrix.CreateFromQuaternion(temp);
             Forward = orient.Forward;
             Right = orient.Right;
             Up = orient.Up;
@@ -92,6 +96,9 @@ namespace GuruEngine.Cameras
             World = Matrix.CreateTranslation(Position) * orient;
 
             AudioManager.MoveListener(View);
+
+            Matrix viewProjection = View * Projection;
+            Frustum = new BoundingFrustum(viewProjection);
         }
 
         public override Matrix GetWorld()

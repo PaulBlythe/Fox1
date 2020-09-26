@@ -122,6 +122,10 @@ namespace GuruEngine.ECS.Components.World
 
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void ReConnect(GameObject other)
         {
             AircraftComponent otherTank = (AircraftComponent)other.FindGameComponentByName(Name);

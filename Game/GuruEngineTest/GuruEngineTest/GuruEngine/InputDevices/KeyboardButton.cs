@@ -11,5 +11,6 @@ namespace GuruEngine.InputDevices
         public String ID;
         public List<Keys> keys = new List<Keys>();
         public bool Down;
+        public bool HasModifiers = false;
     }
 }

@@ -78,6 +78,11 @@ namespace GuruEngine.ECS.Components.Mesh
         {
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+
+        }
+
         public override void ReConnect(GameObject other)
         {
             HookListComponent otherHLC = (HookListComponent)other.FindGameComponentByName(Name);

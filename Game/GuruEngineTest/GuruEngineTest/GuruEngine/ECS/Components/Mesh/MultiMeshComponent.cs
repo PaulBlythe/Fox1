@@ -31,7 +31,7 @@ using GuruEngine.DebugHelpers;
 using GuruEngine.Physics.Aircraft;
 using GuruEngine.Rendering.RenderCommands;
 using GuruEngine.ECS.Components.Game;
-
+using GuruEngine.World;
 
 namespace GuruEngine.ECS.Components.Mesh
 {
@@ -215,6 +215,10 @@ namespace GuruEngine.ECS.Components.Mesh
             readBinary.Close();
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override void ReConnect(GameObject other)
         {
             MultiMeshComponent otherC = (MultiMeshComponent)other.FindGameComponentByName(Name);
@@ -348,44 +352,47 @@ namespace GuruEngine.ECS.Components.Mesh
                         }
                     }
                 }
-                foreach (RenderCommand r in GeometrySet.Commands)
+                BoundingBox b = new BoundingBox(world.Translation - mesh.Size, world.Translation + mesh.Size);
+                if (WorldState.GetWorldState().camera.BoundingVolumeIsInView(b))
                 {
-                    CopyMatrix(ref r.World, ref world);
-                }
-                foreach (RenderCommand r in GlassSet.Commands)
-                {
-                    CopyMatrix(ref r.World, ref world);
-                }
-                foreach (RenderCommand r in SortedSet.Commands)
-                {
-                    CopyMatrix(ref r.World, ref world);
-                }
-                foreach (RenderCommand r in DoubleSided.Commands)
-                {
-                    CopyMatrix(ref r.World, ref world);
-                }
-                foreach (RenderCommand r in Transparent.Commands)
-                {
-                    CopyMatrix(ref r.World, ref world);
-                }
-                foreach (RenderCommand r in Night.Commands)
-                {
-                    CopyMatrix(ref r.World, ref world);
-                }
 
-                Renderer.AddRenderCommand(GeometrySet);
-                if (GlassSet.Commands.Count > 0)
-                    Renderer.AddRenderCommand(GlassSet);
-                if (SortedSet.Commands.Count > 0)
-                    Renderer.AddRenderCommand(SortedSet);
-                if (DoubleSided.Commands.Count > 0)
-                    Renderer.AddRenderCommand(DoubleSided);
-                if (Transparent.Commands.Count > 0)
-                    Renderer.AddRenderCommand(Transparent);
+                    foreach (RenderCommand r in GeometrySet.Commands)
+                    {
+                        CopyMatrix(ref r.World, ref world);
+                    }
+                    foreach (RenderCommand r in GlassSet.Commands)
+                    {
+                        CopyMatrix(ref r.World, ref world);
+                    }
+                    foreach (RenderCommand r in SortedSet.Commands)
+                    {
+                        CopyMatrix(ref r.World, ref world);
+                    }
+                    foreach (RenderCommand r in DoubleSided.Commands)
+                    {
+                        CopyMatrix(ref r.World, ref world);
+                    }
+                    foreach (RenderCommand r in Transparent.Commands)
+                    {
+                        CopyMatrix(ref r.World, ref world);
+                    }
+                    foreach (RenderCommand r in Night.Commands)
+                    {
+                        CopyMatrix(ref r.World, ref world);
+                    }
 
-                if ((Night.Commands.Count > 0) && (LocalPlayerComponent.Instance.CockpitLights))
-                    Renderer.AddRenderCommand(Night);
-
+                    Renderer.AddRenderCommand(GeometrySet);
+                    if (GlassSet.Commands.Count > 0)
+                        Renderer.AddRenderCommand(GlassSet);
+                    if (SortedSet.Commands.Count > 0)
+                        Renderer.AddRenderCommand(SortedSet);
+                    if (DoubleSided.Commands.Count > 0)
+                        Renderer.AddRenderCommand(DoubleSided);
+                    if (Transparent.Commands.Count > 0)
+                        Renderer.AddRenderCommand(Transparent);
+                    if (Night.Commands.Count > 0)
+                        Renderer.AddRenderCommand(Night);
+                }
                 if (coll != null)
                     coll.SetMatrix(world);
             }
@@ -411,9 +418,7 @@ namespace GuruEngine.ECS.Components.Mesh
                 }
             }
 #endif
-
         }
-
         #endregion
 
         #region Public methods
@@ -454,8 +459,6 @@ namespace GuruEngine.ECS.Components.Mesh
         {
             return Active;
         }
-
-
 
         public Matrix GetOriginalHookMatrix(String id)
         {

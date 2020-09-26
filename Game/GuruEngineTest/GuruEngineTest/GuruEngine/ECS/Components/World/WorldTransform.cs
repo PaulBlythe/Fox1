@@ -134,6 +134,9 @@ namespace GuruEngine.ECS.Components.World
             
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
 
         #endregion
 

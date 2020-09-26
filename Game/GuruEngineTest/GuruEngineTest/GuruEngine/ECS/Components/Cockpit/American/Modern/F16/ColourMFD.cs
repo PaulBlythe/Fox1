@@ -271,6 +271,11 @@ namespace GuruEngine.ECS.Components.Cockpit.American.Modern.F16
         {
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+
+        }
+
         public override void HandleEvent(string evt)
         {
             switch (mode)

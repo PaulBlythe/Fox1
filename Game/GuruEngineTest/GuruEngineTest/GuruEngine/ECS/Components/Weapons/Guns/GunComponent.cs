@@ -302,6 +302,9 @@ namespace GuruEngine.ECS.Components.Weapons.Guns
 
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
         #endregion
 
     }

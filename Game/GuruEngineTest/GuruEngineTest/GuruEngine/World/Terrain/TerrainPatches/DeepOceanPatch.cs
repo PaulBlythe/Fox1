@@ -29,6 +29,8 @@ namespace GuruEngine.World.Terrain.TerrainPatches
 
         RenderCommandSet rcs;
 
+        
+
         public DeepOceanPatch(double x,double y)
         {
             Latitude = y;
@@ -50,41 +52,6 @@ namespace GuruEngine.World.Terrain.TerrainPatches
                 double testd  = 0.095f;
                 if(dd<(testd*testd)) 
                 {
-                    // Within range , need to generate structures
-                     
-                    //myVertices = new VertexPositionTexture[myWidth * myHeight];
-                    //
-                    //for (int x = 0; x < myWidth; x++)
-                    //    for (int y = 0; y < myHeight; y++)
-                    //    {
-                    //        myVertices[x + y * myWidth].Position = new Vector3(y, 0, x);
-                    //      
-                    //        myVertices[x + y * myWidth].TextureCoordinate.X = (float)x / 10.0f;
-                    //        myVertices[x + y * myWidth].TextureCoordinate.Y = (float)y / 10.0f;
-                    //      
-                    //    }
-                    //
-                    //vb = new VertexBuffer(MRenderer.Renderer.GetGraphicsDevice(), VertexPositionTexture.VertexDeclaration, myWidth*myHeight, BufferUsage.WriteOnly);
-                    //vb.SetData(myVertices);
-                    //
-                    ////Index 
-                    //short[] terrainIndices = new short[(myWidth - 1) * (myHeight - 1) * 6];
-                    //for (short x = 0; x < myWidth - 1; x++)
-                    //{
-                    //    for (short y = 0; y < myHeight - 1; y++)
-                    //    {
-                    //        terrainIndices[(x + y * (myWidth - 1)) * 6] = (short)((x + 1) + (y + 1) * myWidth);
-                    //        terrainIndices[(x + y * (myWidth - 1)) * 6 + 1] = (short)((x + 1) + y * myWidth);
-                    //        terrainIndices[(x + y * (myWidth - 1)) * 6 + 2] = (short)(x + y * myWidth);
-                    //
-                    //        terrainIndices[(x + y * (myWidth - 1)) * 6 + 3] = (short)((x + 1) + (y + 1) * myWidth);
-                    //        terrainIndices[(x + y * (myWidth - 1)) * 6 + 4] = (short)(x + y * myWidth);
-                    //        terrainIndices[(x + y * (myWidth - 1)) * 6 + 5] = (short)(x + (y + 1) * myWidth);
-                    //    }
-                    //}
-                    //
-                    //ib = new IndexBuffer(MRenderer.Renderer.GetGraphicsDevice(), typeof(short), (myWidth - 1) * (myHeight - 1) * 6, BufferUsage.WriteOnly);
-                    //ib.SetData(terrainIndices);
 
                     rcs = new RenderCommandSet();
                     rcs.RenderPass = RenderPasses.Terrain;
@@ -104,7 +71,17 @@ namespace GuruEngine.World.Terrain.TerrainPatches
             }
             if ((loaded) && (visible))
             {
-                Renderer.AddRenderCommand(rcs);
+                Vector3 size = new Vector3((float)xscale * 128, 1, (float)yscale * 128);
+
+                Vector3 min = basePosition - size;
+                Vector3 max = basePosition + size;
+                BoundingBox b = new BoundingBox(min, max);
+                if (WorldState.GetWorldState().camera.BoundingVolumeIsInView(b))
+                {
+                    Renderer.AddRenderCommand(rcs);
+                }
+                
+                
             }
             
         }

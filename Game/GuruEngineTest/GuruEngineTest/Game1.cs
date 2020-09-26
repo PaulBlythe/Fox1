@@ -9,6 +9,8 @@ using GuruEngine.Assets;
 using GuruEngine.World;
 using GuruEngine.Maths;
 using GuruEngine.Audio;
+using GuruEngine.DebugHelpers;
+using GuruEngine.Rendering;
 
 namespace GuruEngineTest
 {
@@ -24,6 +26,9 @@ namespace GuruEngineTest
         Engine engine;
         public GameTime global_game_time;
 
+#if DEBUG
+        FrameCounter framecounter;
+#endif
 
         public Game1()
         {
@@ -33,9 +38,12 @@ namespace GuruEngineTest
             graphics.PreferredBackBufferHeight = 1000;
             graphics.GraphicsProfile = GraphicsProfile.HiDef;
             graphics.IsFullScreen = false;
+            graphics.SynchronizeWithVerticalRetrace = false;
+
             Window.IsBorderless = true;
             Window.Position = new Point(0, 0);
             IsMouseVisible = true;
+            IsFixedTimeStep = false;
 
             Content.RootDirectory = "Content";
             GameInstance = this;
@@ -50,7 +58,9 @@ namespace GuruEngineTest
         protected override void Initialize()
         {
             engine = new Engine();
-            
+#if DEBUG
+            framecounter = new FrameCounter();
+#endif
             base.Initialize();
         }
 
@@ -92,6 +102,9 @@ namespace GuruEngineTest
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+#if DEBUG
+            framecounter.Update(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+#endif
 
             global_game_time = gameTime;
             base.Update(gameTime);
@@ -104,10 +117,27 @@ namespace GuruEngineTest
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             engine.Draw(gameTime);
 
-           
+#if DEBUG
+            spriteBatch.Begin();
+            Rectangle r = new Rectangle((1920 / 2) - 50, 5, 100, 32);
+            spriteBatch.FillRectangle(r, Color.White);
+            r.X += 2;
+            r.Width -= 4;
+            r.Y += 2;
+            r.Height -= 4;
+            spriteBatch.FillRectangle(r, Color.DarkBlue);
+
+            String s = String.Format("{0:0.00}", framecounter.AverageFramesPerSecond);
+            Vector2 sp = AssetManager.GetDebugFont().MeasureString(s);
+            sp *= -0.5f;
+            sp.X += (1920 / 2);
+            sp.Y += 22;
+            spriteBatch.DrawString(AssetManager.GetDebugFont(), s, sp, Color.White);
+            spriteBatch.End();
+#endif
+
             base.Draw(gameTime);
         }
     }

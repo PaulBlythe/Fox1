@@ -193,7 +193,9 @@ namespace GuruEngine.ECS.Components.Weapons.Bullets
 
         }
 
-
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
 
         #endregion
     }

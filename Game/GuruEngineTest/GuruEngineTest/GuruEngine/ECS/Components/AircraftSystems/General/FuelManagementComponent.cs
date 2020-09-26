@@ -93,6 +93,10 @@ namespace GuruEngine.ECS.Components.AircraftSystems.General
             return null;
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override Texture2D GetOffscreenTexture()
         {
             return null;

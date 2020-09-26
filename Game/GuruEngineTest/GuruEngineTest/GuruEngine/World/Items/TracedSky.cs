@@ -58,7 +58,7 @@ namespace GuruEngine.World.Items
 
         public TracedSky()
         {
-            UpdatePass = 1000;
+            UpdatePass = 1;
 
             String shader = @"Shaders\Forward\TracedSky";
             AssetManager.AddShaderToQue(shader);

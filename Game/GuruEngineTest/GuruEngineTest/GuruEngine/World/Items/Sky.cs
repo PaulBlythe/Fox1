@@ -42,7 +42,7 @@ namespace GuruEngine.World.Items
 
         public Sky()
         {
-            UpdatePass = 1000;
+            UpdatePass = 1;
 
             String mesh = @"StaticMeshes\World\skydome";
             AssetManager.AddStaticMeshToQue(mesh);

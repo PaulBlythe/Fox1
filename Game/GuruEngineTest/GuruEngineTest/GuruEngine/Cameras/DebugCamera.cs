@@ -82,6 +82,8 @@ namespace GuruEngine.Cameras
 
             AudioManager.MoveListener(View);
 
+            Matrix viewProjection = View * Projection;
+            Frustum = new BoundingFrustum(viewProjection);
         }
 
 

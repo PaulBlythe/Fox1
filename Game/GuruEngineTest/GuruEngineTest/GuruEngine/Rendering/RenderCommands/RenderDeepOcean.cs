@@ -14,8 +14,6 @@ namespace GuruEngine.Rendering.RenderCommands
 {
     class RenderDeepOcean : RenderCommand
     {
-
-
         public RenderDeepOcean(int Width, int Height)
         {
             Shader = Renderer.GetShaderName("Ocean");

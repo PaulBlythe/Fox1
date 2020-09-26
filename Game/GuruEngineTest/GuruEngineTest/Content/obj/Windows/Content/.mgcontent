@@ -12,6 +12,7 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Loading.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/mfd.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/ParticleEffect.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/RadialBlur.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/SDFFont2.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Sprite.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Wobble.fx</File>
@@ -24,6 +25,7 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/FFTWater.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/Leaves.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/MeshPart.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/Mirror.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/Ocean.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/PointLight.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Deferred/RestoreDepthBuffer.fx</File>
@@ -33,6 +35,7 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ExtendedMesh.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Glass.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/MeshPartShader.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Mirror.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Moon.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/MSDFShader.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Ocean.fx</File>
@@ -58,6 +61,9 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Textures/SGG.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

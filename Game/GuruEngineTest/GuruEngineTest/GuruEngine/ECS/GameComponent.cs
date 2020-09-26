@@ -26,6 +26,7 @@ namespace GuruEngine.ECS
         public abstract void RenderOffscreenRenderTargets();
         public abstract Texture2D GetOffscreenTexture();
         public abstract object GetContainedObject(String type);
+        public abstract void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement);
 
         public abstract ECSGameComponent Clone();
         public abstract void ReConnect(GameObject other);

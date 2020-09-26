@@ -146,7 +146,7 @@ namespace GuruEngine.Rendering.Particles
             this.device = device;
             state = new RasterizerState();
             state.CullMode = CullMode.None;
-          
+            
 
             Initialize();
             LoadContent();

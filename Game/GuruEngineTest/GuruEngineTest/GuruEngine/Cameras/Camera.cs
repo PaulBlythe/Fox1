@@ -16,11 +16,21 @@ namespace GuruEngine.Cameras
         public Vector3 Forward;
         public Vector3 Right;
         public float FarClip;
+        public BoundingFrustum Frustum;
 
         public abstract void Update(float gt);
         public abstract Matrix GetWorld();
         public abstract void Yaw(float angle);
         public abstract void SetPosition(Vector3 location);
 
+        public bool BoundingVolumeIsInView(BoundingBox box)
+        {
+            return (Frustum.Contains(box) != ContainmentType.Disjoint);
+        }
+
+        public bool BoundingVolumeIsInView(BoundingSphere sphere)
+        {
+            return (Frustum.Contains(sphere) != ContainmentType.Disjoint);
+        }
     }
 }

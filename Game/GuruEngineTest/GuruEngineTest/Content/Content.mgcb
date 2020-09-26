@@ -63,6 +63,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/2D/ParticleEffect.fx
 
+#begin Shaders/2D/RadialBlur.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/2D/RadialBlur.fx
+
 #begin Shaders/2D/SDFFont2.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -135,6 +141,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/Deferred/MeshPart.fx
 
+#begin Shaders/Deferred/Mirror.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Deferred/Mirror.fx
+
 #begin Shaders/Deferred/Ocean.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -188,6 +200,12 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/Forward/MeshPartShader.fx
+
+#begin Shaders/Forward/Mirror.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Forward/Mirror.fx
 
 #begin Shaders/Forward/Moon.fx
 /importer:EffectImporter

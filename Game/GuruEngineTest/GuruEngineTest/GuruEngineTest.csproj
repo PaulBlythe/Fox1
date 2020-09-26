@@ -90,6 +90,7 @@
     <Compile Include="GuruEngine\Characters\Skill.cs" />
     <Compile Include="GuruEngine\Characters\SkillCodes.cs" />
     <Compile Include="GuruEngine\DebugHelpers\DebugMessageQueue.cs" />
+    <Compile Include="GuruEngine\DebugHelpers\FrameCounter.cs" />
     <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Aero\BallastComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Aero\FlapComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Aero\GearComponent.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Aero\StallComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\AircraftSystems\Aero\VStabComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\AircraftSystems\General\FuelManagementComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\AircraftSystems\General\OxygenSupplyComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\AircraftSystems\General\TurretComponent.cs" />
     <Compile Include="GuruEngine\AI\AITarget.cs" />
     <Compile Include="GuruEngine\AI\Generic\AAAGunnerAI.cs" />
@@ -274,6 +276,7 @@
     <Compile Include="GuruEngine\Physics\World\Geodetic\GlobalCoordinates.cs" />
     <Compile Include="GuruEngine\Physics\World\Geodetic\GlobalPosition.cs" />
     <Compile Include="GuruEngine\Physics\World\SimplifiedAtmosphere.cs" />
+    <Compile Include="GuruEngine\Player\HumanFactors\Hypoxia.cs" />
     <Compile Include="GuruEngine\Player\PlayerSettings.cs" />
     <Compile Include="GuruEngine\Player\Records\AircraftCertificationRecord.cs" />
     <Compile Include="GuruEngine\Player\Records\Campaign\CampaignPeriods.cs" />
@@ -286,6 +289,10 @@
     <Compile Include="GuruEngine\Characters\Rank.cs" />
     <Compile Include="GuruEngine\Rendering\BufferManager.cs" />
     <Compile Include="GuruEngine\Rendering\Deferred\DeferredRender.cs" />
+    <Compile Include="GuruEngine\Rendering\EffectPasses\BlackoutEffectPass.cs" />
+    <Compile Include="GuruEngine\Rendering\EffectPasses\EffectPassType.cs" />
+    <Compile Include="GuruEngine\Rendering\EffectPasses\HypoxiaEffectPass.cs" />
+    <Compile Include="GuruEngine\Rendering\EffectPasses\RedOutEffectPass.cs" />
     <Compile Include="GuruEngine\Rendering\Forward\Renderer.cs" />
     <Compile Include="GuruEngine\Rendering\Gui\Gui.cs" />
     <Compile Include="GuruEngine\Rendering\Gui\GuiEventListener.cs" />
@@ -325,6 +332,7 @@
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderSpritesCommand.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderStarsCommand.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderTextCommand.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderEffectPass.cs" />
     <Compile Include="GuruEngine\Rendering\Renderer.cs" />
     <Compile Include="GuruEngine\Rendering\RenderInterface.cs" />
     <Compile Include="GuruEngine\Rendering\RenderPasses.cs" />
@@ -457,6 +465,7 @@
     <Content Include="Content\Shaders\2D\Loading.fx" />
     <Content Include="Content\Shaders\2D\mfd.fx" />
     <Content Include="Content\Shaders\2D\ParticleEffect.fx" />
+    <Content Include="Content\Shaders\2D\RadialBlur.fx" />
     <Content Include="Content\Shaders\2D\SDFFont2.fx" />
     <Content Include="Content\Shaders\2D\Sprite.fx" />
     <Content Include="Content\Shaders\2D\Wobble.fx" />
@@ -468,6 +477,7 @@
     <Content Include="Content\Shaders\Deferred\DSSAO.fx" />
     <Content Include="Content\Shaders\Deferred\FFTWater.fx" />
     <Content Include="Content\Shaders\Deferred\MeshPart.fx" />
+    <Content Include="Content\Shaders\Deferred\Mirror.fx" />
     <Content Include="Content\Shaders\Deferred\Ocean.fx" />
     <Content Include="Content\Shaders\Deferred\PointLight.fx" />
     <Content Include="Content\Shaders\Deferred\RestoreDepthBuffer.fx" />
@@ -478,6 +488,7 @@
     <Content Include="Content\Shaders\Forward\Glass.fx" />
     <Content Include="Content\Shaders\Deferred\Leaves.fx" />
     <Content Include="Content\Shaders\Forward\MeshPartShader.fx" />
+    <Content Include="Content\Shaders\Forward\Mirror.fx" />
     <Content Include="Content\Shaders\Forward\Moon.fx" />
     <Content Include="Content\Shaders\Forward\MSDFShader.fx" />
     <Content Include="Content\Shaders\Forward\Ocean.fx" />

@@ -255,6 +255,14 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Engines
             Prop = null;
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+            if (old is AircraftStateComponent)
+            {
+                State = (AircraftStateComponent)replacement;
+            }
+        }
+
         public override object GetContainedObject(string type)
         {
             return null;

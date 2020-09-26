@@ -32,8 +32,6 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
         public float Scale;
         public int Number;
 
-
-
         #region ECS Game component methods
         public override ECSGameComponent Clone()
         {
@@ -111,6 +109,14 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
             }
 
             State = (AircraftStateComponent)Parent.FindGameComponentByName("AircraftStateComponent_1");
+        }
+
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+            if (old is AircraftStateComponent)
+            {
+                State = (AircraftStateComponent)replacement;
+            }
         }
 
         public override void ReConnect(GameObject other)

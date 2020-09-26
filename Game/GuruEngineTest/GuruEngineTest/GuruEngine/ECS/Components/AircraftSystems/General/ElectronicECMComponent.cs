@@ -35,6 +35,10 @@ namespace GuruEngine.ECS.Components.AircraftSystems.General
             
         }
 
+        public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+        }
+
         public override object GetContainedObject(string type)
         {
             return null;

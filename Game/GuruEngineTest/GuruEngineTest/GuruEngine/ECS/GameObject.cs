@@ -175,5 +175,16 @@ namespace GuruEngine.ECS
             }
             return null;
         }
+
+        public void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
+        {
+            Components.Remove(old.Name);
+
+            foreach (String s in Components.Keys)
+            {
+                Components[s].ReplaceComponent(old, replacement);
+            }
+        }
+
     }
 }

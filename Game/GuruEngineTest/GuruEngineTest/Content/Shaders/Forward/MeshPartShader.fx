@@ -82,6 +82,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 	if (Additive)
 	{
 		Id = 1.0f;
+		Is = 0.0f;
 	}
 	result.xyz = saturate( (saturate(Id+Ia) * textureColor.xyz) + (Is * SpecularColor.xyz));
 	result.a = textureColor.a;

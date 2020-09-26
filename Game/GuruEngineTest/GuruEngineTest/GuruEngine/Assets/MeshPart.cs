@@ -18,11 +18,10 @@ namespace GuruEngine.Assets
         public FaceGroup[] facegroups;
         public ushort[] indices;
         public VertexPositionNormalTexture[] verts;
-        //public Matrix world;
         public Matrix startworld;
-        //public Matrix Animation;
         public VertexBuffer vbuffer;
         public IndexBuffer ibuffer;
+        public Vector3 Size;
 
         /// <summary>
         /// Constructor reads in the MeshPart from a binary stream
@@ -46,7 +45,15 @@ namespace GuruEngine.Assets
 
             nf = b.ReadInt32();
             verts = new VertexPositionNormalTexture[nf];
-            //Matrix adjust = Matrix.CreateFromYawPitchRoll(0, MathHelper.ToRadians(-90), MathHelper.ToRadians(90));
+
+            float maxx = float.MinValue;
+            float maxy = float.MinValue;
+            float maxz = float.MinValue;
+
+            float minx = float.MaxValue;
+            float miny = float.MaxValue;
+            float minz = float.MaxValue;
+
             for (int i = 0; i < nf; i++)
             {
                 VertexPositionNormalTexture vp = new VertexPositionNormalTexture();
@@ -54,6 +61,14 @@ namespace GuruEngine.Assets
                 float px = b.ReadSingle();
                 float py = b.ReadSingle();
                 float pz = b.ReadSingle();
+
+                minx = Math.Min(px, minx);
+                miny = Math.Min(py, miny);
+                minz = Math.Min(pz, minz);
+
+                maxx = Math.Max(px, maxx);
+                maxy = Math.Max(py, maxy);
+                maxz = Math.Max(pz, maxz);
 
                 vp.Position = new Vector3(px, py, pz); 
 
@@ -93,33 +108,14 @@ namespace GuruEngine.Assets
             startworld.M43 = b.ReadSingle();
             startworld.M44 = b.ReadSingle();
 
-            //startworld.M11 = b.ReadSingle();
-            //startworld.M21 = b.ReadSingle();
-            //startworld.M31 = b.ReadSingle();
-            //startworld.M41 = b.ReadSingle();
-            //
-            //startworld.M12 = b.ReadSingle();
-            //startworld.M22 = b.ReadSingle();
-            //startworld.M32 = b.ReadSingle();
-            //startworld.M42 = b.ReadSingle();
-            //
-            //startworld.M13 = b.ReadSingle();
-            //startworld.M23 = b.ReadSingle();
-            //startworld.M33 = b.ReadSingle();
-            //startworld.M43 = b.ReadSingle();
-            //
-            //startworld.M14 = b.ReadSingle();
-            //startworld.M24 = b.ReadSingle();
-            //startworld.M34 = b.ReadSingle();
-            //startworld.M44 = b.ReadSingle();
-
-
             vbuffer = new VertexBuffer(Renderer.GetGraphicsDevice(), VertexPositionNormalTexture.VertexDeclaration, nf, BufferUsage.WriteOnly);
             vbuffer.SetData<VertexPositionNormalTexture>(verts);
 
             ibuffer = new IndexBuffer(Renderer.GetGraphicsDevice(), IndexElementSize.SixteenBits, ni, BufferUsage.WriteOnly);
             ibuffer.SetData<ushort>(indices);
 
+
+            Size = new Vector3((maxx - minx) / 2.0f, (maxy - miny) / 2.0f, (maxz - minz) / 2.0f);
         }
 
         
