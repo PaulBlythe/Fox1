@@ -102,11 +102,6 @@ namespace GuruEngine.Rendering.Deferred
 
         int GUID;
 
-#if DEBUG
-        KeyboardState oldks;
-#endif
-
-
         public DeferredRender(GraphicsDevice Device)
         {
             Instance = this;
@@ -114,9 +109,12 @@ namespace GuruEngine.Rendering.Deferred
             bufferedRenderCommandsA = new List<RenderCommandSet>();
             bufferedRenderCommandsB = new List<RenderCommandSet>();
             updatingRenderCommands = bufferedRenderCommandsA;
+
+#if MULTI_THREADED
             renderCommandsReady = new ManualResetEvent(false);
             renderActive = new ManualResetEvent(true);
             renderCompleted = new ManualResetEvent(true);
+#endif
             activeLightManager = lightManagerB;
             currentLightManager = lightManagerA;
         }
@@ -187,6 +185,7 @@ namespace GuruEngine.Rendering.Deferred
             AssetManager.AddShaderToQue(@"Shaders\SimpleBlur");
             AssetManager.AddShaderToQue(@"Shaders\Deferred\CombineSSAO");
             AssetManager.AddShaderToQue(@"Shaders\Forward\Glass");
+            AssetManager.AddShaderToQue(@"Shaders\Deferred\Mirror");
 
             String mesh = @"StaticMeshes\sphere";
             AssetManager.AddStaticMeshToQue(mesh);
@@ -302,7 +301,7 @@ namespace GuruEngine.Rendering.Deferred
                     {
                         switch (pass)
                         {
-                            #region Sky rendering
+#region Sky rendering
                             // there is only one sky object so this is safe
                             case RenderPasses.Sky:
                                 {
@@ -327,15 +326,15 @@ namespace GuruEngine.Rendering.Deferred
 
                                 }
                                 break;
-                            #endregion
+#endregion
 
-                            #region Moon, Stars, and Planets
+#region Moon, Stars, and Planets
                             case RenderPasses.Ephemeris:
                                 {
                                     DrawToSkyBuffer(renderingRenderCommand, state);
                                 }
                                 break;
-                            #endregion
+#endregion
 
                             case RenderPasses.Terrain:
                                 {
@@ -676,7 +675,7 @@ namespace GuruEngine.Rendering.Deferred
 
         }
 
-        #region Shader management
+#region Shader management
         /// <summary>
         /// Add a shader 
         /// </summary>
@@ -827,7 +826,7 @@ namespace GuruEngine.Rendering.Deferred
             return null;
         }
 
-        #endregion
+#endregion
 
         public static Renderer GetCurrentRenderer()
         {

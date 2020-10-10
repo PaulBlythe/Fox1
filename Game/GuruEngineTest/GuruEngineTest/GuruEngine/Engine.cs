@@ -60,14 +60,15 @@ namespace GuruEngine
             settings = new Settings();
             stringLocaliser = new StringLocalizer(Settings.Language);
            
-
             renderer.Initialise();
 
+#if MULTI_THREADED
             Task.Factory.StartNew(() =>
             {
                 var gl = new UpdateLoop(renderer);
                 gl.Loop();
             });
+#endif
 
         }
 
@@ -121,7 +122,7 @@ namespace GuruEngine
 #endif
         }
 
-        #region Static methods
+#region Static methods
         public static void UpdateAll(float dt)
         {
             Instance.UpdateScenes(dt);
@@ -132,6 +133,6 @@ namespace GuruEngine
         {
             Instance.EndDraw(gameTime);
         }
-        #endregion
+#endregion
     }
 }

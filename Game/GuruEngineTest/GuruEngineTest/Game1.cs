@@ -38,7 +38,7 @@ namespace GuruEngineTest
             graphics.PreferredBackBufferHeight = 1000;
             graphics.GraphicsProfile = GraphicsProfile.HiDef;
             graphics.IsFullScreen = false;
-            graphics.SynchronizeWithVerticalRetrace = false;
+            graphics.SynchronizeWithVerticalRetrace = true;
 
             Window.IsBorderless = true;
             Window.Position = new Point(0, 0);
@@ -76,8 +76,8 @@ namespace GuruEngineTest
             engine.Initialise(GraphicsDevice, Content, Services, true);
             //engine.SetScene(new Scenes.MainMenu());
             //engine.SetScene(new Scenes.LoadingScene());
-            engine.SetScene(new Scenes.Gebug.CarrierTest());
-            //engine.SetScene(new Scenes.Campaign.WWII.British.PilotRecord());
+            //engine.SetScene(new Scenes.Gebug.CarrierTest());
+            engine.SetScene(new Scenes.Campaign.WWII.British.PilotRecord());
             //engine.SetScene(new Scenes.Debug.ParticleEditorScene());
             //engine.SetScene(new Scenes.Developer.AircraftPhysicsTest());
             //engine.SetScene(new Scenes.Developer.ObjectTester());
@@ -102,6 +102,11 @@ namespace GuruEngineTest
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+#if MULTI_THREADED
+#else
+            Engine.UpdateAll(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+#endif
+
 #if DEBUG
             framecounter.Update(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
 #endif

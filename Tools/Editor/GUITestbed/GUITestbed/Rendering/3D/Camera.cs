@@ -58,7 +58,7 @@ namespace GUITestbed.Rendering._3D
         public Matrix Projection
         {
             get { return projection; }
-            protected set
+            set
             {
                 projection = value;
                 generateFrustum();

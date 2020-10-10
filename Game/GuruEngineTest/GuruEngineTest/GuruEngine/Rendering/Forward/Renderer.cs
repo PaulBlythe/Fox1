@@ -69,15 +69,17 @@ namespace GuruEngine
             bufferedRenderCommandsB = new List<RenderCommandSet>();
             updatingRenderCommands = bufferedRenderCommandsA;
             currentLightManager = lightManagerA;
+#if MULTI_THREADED
             renderCommandsReady = new ManualResetEvent(false);
             renderActive = new ManualResetEvent(true);
             renderCompleted = new ManualResetEvent(true);
+#endif
         }
 
         public override void Initialise()
         {
 
-            #region Setup cascade shadow mapping
+#region Setup cascade shadow mapping
             if (Renderer.GetSettings().CascadeShadowMaps)
             {
                 shadows = new RenderTarget2D(device, Renderer.GetSettings().ShadowMapSize, Renderer.GetSettings().ShadowMapSize, false, SurfaceFormat.Single, DepthFormat.Depth24, 1, RenderTargetUsage.DiscardContents, false, Renderer.GetSettings().ShadowMapCascades);
@@ -94,9 +96,9 @@ namespace GuruEngine
                 CascadeScales = new Vector4[Renderer.GetSettings().ShadowMapCascades];
                 CascadeSplits = new float[Renderer.GetSettings().ShadowMapCascades];
             }
-            #endregion
+#endregion
 
-            #region Register standard shaders
+#region Register standard shaders
 
             AssetManager.AddShaderToQue(@"Shaders\Forward\Windsock");
             AssetManager.AddShaderToQue(@"Shaders\Forward\MeshPartShader");
@@ -107,7 +109,7 @@ namespace GuruEngine
             AssetManager.AddShaderToQue(@"Shaders\2D\ParticleEffect");
             AssetManager.AddShaderToQue(@"Shaders\Forward\Textured");
             AssetManager.AddShaderToQue(@"Shaders\2D\RadialBlur");
-            #endregion
+#endregion
 
             rtc = new RenderTargetCube(device, 256, false, SurfaceFormat.Color, DepthFormat.None);
             rtc2 = new RenderTargetCube(device, 256, false, SurfaceFormat.Color, DepthFormat.None);
@@ -171,7 +173,7 @@ namespace GuruEngine
                 }
             }
 
-            #region Shadows
+#region Shadows
             if (Renderer.GetSettings().CascadeShadowMaps)
             {
 
@@ -355,7 +357,7 @@ namespace GuruEngine
                 device.SetRenderTarget(null);
             }
 
-            #endregion
+#endregion
 
             for (int pass = 0; pass < RenderPasses.TotalPasses; pass++)
             {
@@ -380,7 +382,7 @@ namespace GuruEngine
                         {
                             switch (pass)
                             {
-                                #region Sky rendering
+#region Sky rendering
                                 case RenderPasses.Sky:
                                     {
                                         Vector3 pos;
@@ -478,15 +480,15 @@ namespace GuruEngine
 
                                     }
                                     break;
-                                #endregion
+#endregion
 
-                                #region Moon, Stars, and Planets
+#region Moon, Stars, and Planets
                                 case RenderPasses.Ephemeris:
                                     {
                                         RenderACommand(renderingRenderCommand, state);
                                     }
                                     break;
-                                #endregion
+#endregion
 
                                 case RenderPasses.Terrain:
                                     {
@@ -731,7 +733,7 @@ namespace GuruEngine
             currentLightManager.AddPointLight(pos, color, rad, intensity);
         }
 
-        #region Shader management
+#region Shader management
         public override void AddShader(String name, Effect fx)
         {
             if (loadedShaders.ContainsKey(name))
@@ -853,9 +855,9 @@ namespace GuruEngine
         }
 
         
-        #endregion
+#endregion
 
-        #region Sampler state management
+#region Sampler state management
         public static int MapToSamplerStateID(TextureAddressMode x, TextureAddressMode y, TextureAddressMode w)
         {
             int res = 0;
@@ -962,9 +964,9 @@ namespace GuruEngine
         }
 
        
-        #endregion
+#endregion
 
-        #region Static methods
+#region Static methods
         
 
         public static Renderer GetCurrentRenderer()
@@ -985,9 +987,9 @@ namespace GuruEngine
         }
         
 
-        #endregion
+#endregion
 
-        #region Helpers
+#region Helpers
         
 
         /// <summary>
@@ -1039,6 +1041,6 @@ namespace GuruEngine
             frustumCorners[6] = new Vector3(1.0f, -1.0f, 1.0f);
             frustumCorners[7] = new Vector3(-1.0f, -1.0f, 1.0f);
         }
-        #endregion
+#endregion
     }
 }

@@ -29,16 +29,13 @@ namespace GuruEngine.Text
             ss = new SamplerState();
             ss.AddressU = TextureAddressMode.Clamp;
             ss.AddressV = TextureAddressMode.Clamp;
-            ss.Filter = TextureFilter.Anisotropic;
+            ss.Filter = TextureFilter.Linear;
         }
         public void Flush()
         {
             if (verts.Count == 0)
                 return;
 
-            Device.BlendState = BlendState.AlphaBlend;
-            Device.DepthStencilState = DepthStencilState.None;
-            
             current_effect.Parameters["fgColor"].SetValue(DrawColour.ToVector4());
             current_effect.Parameters["Texture"].SetValue(Texture);
             current_effect.Parameters["Projection"].SetValue(projection);
@@ -54,12 +51,13 @@ namespace GuruEngine.Text
                 pass.Apply();
                 Device.DrawUserPrimitives<VertexPositionTexture>(PrimitiveType.TriangleList, lverts, 0, verts.Count / 3);
             }
-            verts.Clear();
+            //verts.Clear();
         }
 
         public void StartSprite(Texture2D Texture, Effect effect, Color color)
         {
             Flush();
+            verts.Clear();
             current_effect = effect;
             DrawColour = color;
         }
@@ -67,6 +65,7 @@ namespace GuruEngine.Text
         public void End()
         {
             Flush();
+
         }
 
         public void Draw(Vector4 src, Vector4 dst)

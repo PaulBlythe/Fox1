@@ -177,7 +177,7 @@ namespace GUITestbed.Tools
                                 String fn = ob.GetPath(r.Name);
                                 if (!LoadedMeshes.ContainsKey(fn))
                                 {
-                                    Wavefront w = new Wavefront(fn);
+                                    DataHandlers.Fox1.Objects.Wavefront w = new DataHandlers.Fox1.Objects.Wavefront(fn);
                                     LoadedMeshes.Add(fn, w.GenerateMeshes(Game1.Instance.GraphicsDevice, Game1.Instance.Content));
                                 }
                                 StaticMeshInstance smi = new StaticMeshInstance();

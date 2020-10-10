@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/SceneObject.fx</SourceFile>
+  <SourceTime>2018-09-23T22:55:46+01:00</SourceTime>
+  <DestFile>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/bin/Windows/Shaders/SceneObject.xnb</DestFile>
+  <DestTime>2020-10-04T13:51:41.0089725+01:00</DestTime>
+  <Importer>EffectImporter</Importer>
+  <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
+  <Processor>EffectProcessor</Processor>
+  <ProcessorTime>2018-09-23T22:55:52+01:00</ProcessorTime>
+  <Parameters>
+    <Key>DebugMode</Key>
+    <Value>Auto</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

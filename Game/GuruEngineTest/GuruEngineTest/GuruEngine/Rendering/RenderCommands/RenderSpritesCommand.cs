@@ -48,7 +48,7 @@ namespace GuruEngine.Rendering.RenderCommands
             
             lock (draws)
             {
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.NonPremultiplied);
                 foreach (DrawRecord dr in draws)
                 {
                     switch (dr.Type)

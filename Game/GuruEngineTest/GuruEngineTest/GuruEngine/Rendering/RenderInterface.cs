@@ -28,9 +28,12 @@ namespace GuruEngine.Rendering
         public LightManager lightManagerB = new LightManager();
         public LightManager currentLightManager;
         public LightManager activeLightManager;
+
+#if MULTI_THREADED
         public ManualResetEvent renderActive;
         public ManualResetEvent renderCommandsReady;
         public ManualResetEvent renderCompleted;
+#endif
 
         public Dictionary<long, ParticleSystem> particleSystems = new Dictionary<long, ParticleSystem>();
         public long RendererUID = 0;
@@ -68,14 +71,16 @@ namespace GuruEngine.Rendering
                 updatingRenderCommands = bufferedRenderCommandsB;
                 renderingRenderCommands = bufferedRenderCommandsA;
                 currentLightManager = lightManagerB;
-
+                activeLightManager = lightManagerA;
             }
             else if (updatingRenderCommands == bufferedRenderCommandsB)
             {
                 updatingRenderCommands = bufferedRenderCommandsA;
                 renderingRenderCommands = bufferedRenderCommandsB;
                 currentLightManager = lightManagerA;
+                activeLightManager = lightManagerB;
             }
+            
             currentLightManager.Reset();
             updatingRenderCommands.Clear();
         }
@@ -97,36 +102,48 @@ namespace GuruEngine.Rendering
 
         public void EndFrame()
         {
+#if MULTI_THREADED
             renderCompleted.WaitOne();
             renderCommandsReady.Set();
+#endif
         }
 
         public void StartFrame()
         {
+#if MULTI_THREADED
             renderActive.WaitOne();
             renderCommandsReady.Reset();
+#endif
 
         }
 
         public void WaitForUpdateToComplete()
         {
+#if MULTI_THREADED
             renderCommandsReady.WaitOne();          // wait for update to finish
             renderCompleted.Reset();
+#endif
         }
 
         public void TellUpdateToContinue()
         {
+#if MULTI_THREADED
             renderActive.Set();                     // tell update to continue
+#endif
         }
 
         public void SignalRenderingComplete()
         {
+#if MULTI_THREADED
             renderActive.Reset();
+#endif
         }
 
         public void SignalRendererFinished()
         {
+#if MULTI_THREADED
             renderCompleted.Set();
+#endif
         }
 
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -46,24 +46,24 @@ namespace GuruEngine.Player.Records.Display.Pages.British.Form414
             set.IsStaticMesh = false;
             set.RenderPass = RenderPasses.Transparent;
 
-            String ba = @"Textures\Logs\British\WWII\front_shadow_2";
+            String ba = FilePaths.DataPath + @"Textures\Logs\British\WWII\front_shadow_2.png";
             AssetManager.AddTextureToQue(ba);
             shadowID = ba.GetHashCode();
 
-            ba = @"Textures\Generic\wood_texture";
+            ba = FilePaths.DataPath + @"Textures\Generic\wood_texture.jpg";
             AssetManager.AddTextureToQue(ba);
             backdropID = ba.GetHashCode();
 
-            ba = @"Textures\Logs\British\WWII\midpage";
+            ba = FilePaths.DataPath + @"Textures\Logs\British\WWII\midpage.png";
             AssetManager.AddTextureToQue(ba);
             mpageID = ba.GetHashCode();
 
 
-            ba = @"Content\Fonts\TimesNewRoman.txt";
+            ba = FilePaths.DataPath + @"\Fonts\TimesNewRoman.txt";
             AssetManager.AddFontToQue(ba);
             fontID = ba.GetHashCode();
 
-            ba = @"Fonts\TimesNewRomanNormal";
+            ba = FilePaths.DataPath + @"Fonts\TimesNewRomanNormal.png";
             AssetManager.AddTextureToQue(ba);
             fontTexID = ba.GetHashCode();
 
@@ -71,17 +71,18 @@ namespace GuruEngine.Player.Records.Display.Pages.British.Form414
             AssetManager.AddShaderToQue(ba);
             shaderID = ba.GetHashCode();
 
-            ba = @"Fonts\handwriting";
+            ba = FilePaths.DataPath + @"Fonts\handwriting.png";
             AssetManager.AddTextureToQue(ba);
             mfontTexID = ba.GetHashCode();
 
-            ba = @"Shaders\MSDFShader";
+            ba = @"Shaders\2D\MSDFShader";
             AssetManager.AddShaderToQue(ba);
             mshaderID = ba.GetHashCode();
 
-            ba = @"Content\Fonts\handwriting.csv";
-            AssetManager.AddMFontToQue(ba);
-            mfontID = ba.GetHashCode();
+            String filename = Path.Combine(FilePaths.DataPath, "Fonts");
+            filename = Path.Combine(filename, "handwriting.csv");
+            AssetManager.AddMFontToQue(filename);
+            mfontID = filename.GetHashCode();
 
 
         }

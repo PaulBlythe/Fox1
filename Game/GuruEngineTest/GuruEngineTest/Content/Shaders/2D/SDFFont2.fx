@@ -1,6 +1,6 @@
 float4x4 Projection;
 float noise;
-float4 colour;
+float4 fgColor;
 
 struct VertexShaderInput
 {
@@ -34,10 +34,10 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-    float mask = tex2D(tex,input.UV).a;
+    float mask = tex2D(tex,input.UV).x;
 	float4 clr;
 	
-	clr.rgb = colour.rgb;
+	clr.rgb = fgColor.rgb;
 
 	if( mask < 0.4 )  
 		discard;

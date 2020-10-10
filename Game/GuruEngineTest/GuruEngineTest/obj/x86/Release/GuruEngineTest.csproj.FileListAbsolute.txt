@@ -1,0 +1,1 @@
+C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\obj\x86\Release\GuruEngineTest.csproj.CoreCompileInputs.cache

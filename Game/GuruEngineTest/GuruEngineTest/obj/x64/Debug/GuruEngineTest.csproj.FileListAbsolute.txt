@@ -1,0 +1,2 @@
+C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\obj\x64\Debug\GuruEngineTest.csprojAssemblyReference.cache
+C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\obj\x64\Debug\GuruEngineTest.csproj.CoreCompileInputs.cache

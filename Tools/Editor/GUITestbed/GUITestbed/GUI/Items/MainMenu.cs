@@ -11,6 +11,7 @@ using GUITestbed.GUI.Dialogs;
 using GUITestbed.DataHandlers.Fox1.Objects;
 using GUITestbed.DataHandlers.FG;
 using GUITestbed.DataHandlers.IL2;
+using GUITestbed.Scenes;
 
 namespace GUITestbed.GUI.Items
 {
@@ -96,6 +97,19 @@ namespace GUITestbed.GUI.Items
                 case "Button:Go to object mode":
                     SetupObjectView();
                     break;
+
+                case "Button:Load scene":
+                    loader = new OpenFileDialog(basedirectory, "Load Scene", ".scene", new Rectangle((1920 - 800) / 2, 100, 800, 700), LoadScene);
+                    GuiManager.Instance.Add(loader);
+                    break;
+
+                #region Scene lighting
+                case "Button:Light Volume":
+                    {
+                        SceneViewTool.CreateLightVolume();
+                    }
+                    break;
+                #endregion
 
                 #region New map
                 case "Map generation:Button:Build":
@@ -517,6 +531,13 @@ namespace GUITestbed.GUI.Items
             sb.Host = this;
 
             GuiManager.Instance.Add(sb);
+            return true;
+        }
+
+        public bool LoadScene(String f)
+        {
+            Scene s = new Scene(f);
+            SceneViewTool.SetScene(s);
             return true;
         }
 
@@ -946,9 +967,17 @@ namespace GUITestbed.GUI.Items
                 b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 130, 200, 30), "Save scene");
                 Widgets.Add(b);
 
+                b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 530, 200, 30), "Light Volume");
+                Widgets.Add(b);
+
                 StatusBar s = new StatusBar();
                 s.mode = "Scene mode";
                 Widgets.Add(s);
+            }
+            if (SceneViewTool.Instance == null)
+            {
+                SceneViewTool w = new SceneViewTool();
+                Game1.Instance.current = w;
             }
         }
 

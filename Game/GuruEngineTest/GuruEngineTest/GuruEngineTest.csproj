@@ -37,7 +37,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS MULTI_THREADED</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -68,6 +68,26 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Game1.cs" />
@@ -380,6 +400,11 @@
     <Compile Include="History\RAF\Common\RAFWingType.cs" />
     <Compile Include="History\RAF\Setups\RAFBattleOfBritain.cs" />
     <Compile Include="History\RAF\WWII\RAFCommandGroupWWII.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Scenes\Campaign\WWII\British\PilotRecord.cs" />
     <Compile Include="Scenes\Debug\CarrierTest.cs" />
     <Compile Include="GuruEngine\SceneManagement\Scene.cs" />
@@ -464,6 +489,7 @@
     <Content Include="Content\SFX\sos.wav" />
     <Content Include="Content\Shaders\2D\Loading.fx" />
     <Content Include="Content\Shaders\2D\mfd.fx" />
+    <Content Include="Content\Shaders\2D\MSDFShader.fx" />
     <Content Include="Content\Shaders\2D\ParticleEffect.fx" />
     <Content Include="Content\Shaders\2D\RadialBlur.fx" />
     <Content Include="Content\Shaders\2D\SDFFont2.fx" />
@@ -516,6 +542,10 @@
     <None Include="Content\Fonts\MainMenu.spritefont" />
     <None Include="Content\StaticMeshes\sphere.x" />
     <None Include="GuruEngineTest_TemporaryKey.pfx" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GuruEngine\Characters\Ranks\RAAF\" />

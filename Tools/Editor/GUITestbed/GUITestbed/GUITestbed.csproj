@@ -176,14 +176,19 @@
     <Compile Include="Rendering\3D\SkyDomeParameters.cs" />
     <Compile Include="Rendering\3D\SkyDomeSystem.cs" />
     <Compile Include="Rendering\3D\StaticMesh.cs" />
+    <Compile Include="Rendering\3D\Wavefront.cs" />
     <Compile Include="Rendering\DebugLineDraw.cs" />
     <Compile Include="Rendering\ScanLineConverter.cs" />
+    <Compile Include="Rendering\Software\Helpers.cs" />
+    <Compile Include="Rendering\Software\Volume.cs" />
+    <Compile Include="Scenes\Scene.cs" />
     <Compile Include="SerialisableData\Location.cs" />
     <Compile Include="SerialisableData\MapGeneratorData.cs" />
     <Compile Include="SerialisableData\SerialisableObject.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Tools\MapGenerator.cs" />
     <Compile Include="Tools\MaterialDisplayTool.cs" />
+    <Compile Include="Tools\SceneViewTool.cs" />
     <Compile Include="Tools\TextureLoader.cs" />
     <Compile Include="Tools\Tool.cs" />
     <Compile Include="Tools\WorldDisplayTool.cs" />
@@ -205,9 +210,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Shaders\BoxLight.fx" />
     <Content Include="Content\Shaders\Button.fx" />
     <Content Include="Content\Shaders\DiffuseFog.fx" />
+    <Content Include="Content\Shaders\LitSceneObject.fx" />
     <Content Include="Content\Shaders\ModelMesh.fx" />
+    <Content Include="Content\Shaders\SceneObject.fx" />
     <Content Include="Content\Shaders\SDFont2.fx" />
     <Content Include="Content\Shaders\Sky\Scatter.fx" />
     <Content Include="Content\Shaders\Sky\SNoise.fx" />
@@ -232,9 +240,7 @@
     <None Include="Content\Models\skySphere.fbx" />
     <None Include="Content\Models\sphere.fbx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scenes\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

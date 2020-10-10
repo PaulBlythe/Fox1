@@ -57,6 +57,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/2D/mfd.fx
 
+#begin Shaders/2D/MSDFShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/2D/MSDFShader.fx
+
 #begin Shaders/2D/ParticleEffect.fx
 /importer:EffectImporter
 /processor:EffectProcessor

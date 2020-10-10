@@ -9,6 +9,7 @@
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Fonts/verdana_small.png</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Models/skySphere.fbx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Models/sphere.fbx</File>
+    <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/BoxLight.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/Button.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/DiffuseFog.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/ModelMesh.fx</File>
@@ -33,6 +34,7 @@
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Textures/Sky/starfield.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

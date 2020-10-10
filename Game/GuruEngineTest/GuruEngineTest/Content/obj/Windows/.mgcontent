@@ -11,6 +11,7 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/SFX/sos.wav</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/Loading.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/mfd.fx</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/MSDFShader.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/ParticleEffect.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/RadialBlur.fx</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/2D/SDFFont2.fx</File>
@@ -61,6 +62,7 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Textures/SGG.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

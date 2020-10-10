@@ -99,3 +99,5 @@ C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\obj\x64\Debug\GUITestbed.exe
 C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\obj\x64\Debug\GUITestbed.pdb
 C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\bin\x64\Debug\Content\Shaders\ModelMesh.xnb
 C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\bin\x64\Debug\Content\Models\sphere.xnb
+C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\bin\x64\Debug\Content\Shaders\BoxLight.xnb
+C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\bin\x64\Debug\Content\Shaders\LitSceneObject.xnb

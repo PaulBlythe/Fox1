@@ -31,14 +31,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GuruEngineTest.exe" size="1358816">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GuruEngineTest.exe" size="1359840">
       <assemblyIdentity name="GuruEngineTest" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>rc/vp39ExdbjtIiPu3YiT8IVgj+3lPk4oILYjYx0yuU=</dsig:DigestValue>
+        <dsig:DigestValue>p+T9t1lHYu7nx5/HLz0ZXaf/AID0dgyFAJwBu1tDaQs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -267,6 +267,24 @@
       <dsig:DigestValue>H3LKAYxI4hBjJvuYQgGnfWLDgb5X0BIkarxZdpFqlxk=</dsig:DigestValue>
     </hash>
   </file>
+  <file name="Content\Shaders\2D\MSDFShader.fx" size="1496">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>SpsvGBVjwtM/0o1dGirw+Bqo0C59b5HpDkP6gK56yx8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Shaders\2D\MSDFShader.xnb" size="1857">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uEgwiqfOoV1PVkUARelhJ+ob7rEckytPPdEtYwQEdFA=</dsig:DigestValue>
+    </hash>
+  </file>
   <file name="Content\Shaders\2D\ParticleEffect.fx" size="7144">
     <hash>
       <dsig:Transforms>
@@ -303,22 +321,22 @@
       <dsig:DigestValue>hMZfQDYtVqNwOqY1bhB70Krhij0GqZHY5vxffmY4/Ac=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Shaders\2D\SDFFont2.fx" size="1051">
+  <file name="Content\Shaders\2D\SDFFont2.fx" size="1053">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>yopBsN29GUvpQhpyWKyEbZU9DDsfp0M3y5xA0kgrJeA=</dsig:DigestValue>
+      <dsig:DigestValue>VWFxmOKvmsuBgjKERlIIZsWN8wUYxa5Gv9HhWxR3DCY=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Shaders\2D\SDFFont2.xnb" size="1864">
+  <file name="Content\Shaders\2D\SDFFont2.xnb" size="1865">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>QOe6MWqZXy/IrjONOEt/jqhcnUfM7Xd36bBODJFhHKU=</dsig:DigestValue>
+      <dsig:DigestValue>avKJb5ljSkqfjT18zGoXtzX1Lwor6o0cLRLjqWVdWa0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Shaders\2D\Sprite.fx" size="844">
