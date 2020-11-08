@@ -29,5 +29,6 @@ I also have started some external panels. These are designed to run on a Raspber
 ![Physics test](/Images/RWR.png)
 
 
-The editor is coming long
-![Physics test](/Images/Desktop Screenshot 2020.11.08 - 08.44.24.33.png)
+The editor is coming along
+
+![Physics test](/Images/editor.png)
