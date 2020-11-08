@@ -7,6 +7,7 @@ using GuruEngine.Rendering;
 using GuruEngine.Rendering.RenderCommands;
 using GuruEngine.Text;
 using GuruEngine.Assets;
+using GuruEngine.Player.Records.WWII.British;
 
 namespace GuruEngine.Player.Records.Display.Pages.British.Form414
 {
@@ -33,9 +34,9 @@ namespace GuruEngine.Player.Records.Display.Pages.British.Form414
         MSDFFont mfont;
 
         Rectangle ba_src = new Rectangle(0, 0, 2048, 1024);
-       
 
         bool Active = false;
+        PlayerLog414 pform;
 
         public override void SetupRenderCommands()
         {
@@ -84,7 +85,7 @@ namespace GuruEngine.Player.Records.Display.Pages.British.Form414
             AssetManager.AddMFontToQue(filename);
             mfontID = filename.GetHashCode();
 
-            
+            pform = PlayerRecord.Instance.pilotsLog as PlayerLog414;
         }
         public override void Update()
         {
@@ -209,7 +210,7 @@ namespace GuruEngine.Player.Records.Display.Pages.British.Form414
 
 
                 mfont.DrawString("Pilot officer", new Vector2(1685, 125));
-                mfont.DrawString("Paul Blythe", new Vector2(1300, 125));
+                mfont.DrawString(pform.PilotName, new Vector2(1300, 125));
                 mfont.DrawString("Spitfire I", new Vector2(1060, 290), 0.8f);
                 mfont.DrawString("2. 9. 39", new Vector2(1280, 290),0.8f);
                 mfont.DrawString("No 327 fs", new Vector2(1450, 290), 0.8f);

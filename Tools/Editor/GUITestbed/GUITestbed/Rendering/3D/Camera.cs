@@ -65,6 +65,8 @@ namespace GUITestbed.Rendering._3D
             }
         }
 
+        public Vector3 Position;
+
         /// <summary>
         /// Near clip plane
         /// </summary>
@@ -136,6 +138,7 @@ namespace GUITestbed.Rendering._3D
             return (Frustum.Contains(box) != ContainmentType.Disjoint);
         }
         #endregion
+
         #region Constructor
         public Camera(GraphicsDevice graphicsDevice, float nearPlane, float farPlane)
         {
@@ -144,6 +147,7 @@ namespace GUITestbed.Rendering._3D
             generatePerspectiveProjectionMatrix(nearPlane, farPlane);
         }
         #endregion
+
         #region Functions
         private void generatePerspectiveProjectionMatrix(float nearPlane, float farPlane)
         {

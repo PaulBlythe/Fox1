@@ -6,6 +6,7 @@ using GuruEngine.Rendering;
 using GuruEngine.Rendering.RenderCommands;
 using GuruEngine.Text;
 using GuruEngine.Assets;
+using GuruEngine.Player.Records.WWII.British;
 
 namespace GuruEngine.Player.Records.Display.Pages.British.Form414
 {
@@ -33,6 +34,7 @@ namespace GuruEngine.Player.Records.Display.Pages.British.Form414
         Texture2D front;
         SDFFont font;
         MSDFFont mfont;
+        PlayerLog414 pform;
 
         String text1 = "ROYAL AIR FORCE";
         Vector2 text1_pos;
@@ -53,7 +55,6 @@ namespace GuruEngine.Player.Records.Display.Pages.British.Form414
         Vector2 text6_pos;
         Vector2 text7_pos;
 
-        String text8 = "Paul Blythe";
         Vector2 text8_pos;
 
 
@@ -106,6 +107,9 @@ namespace GuruEngine.Player.Records.Display.Pages.British.Form414
             mfontID = filename.GetHashCode();
 
             fa_dest = Scale(960, 10, 950, 1060);
+
+            pform = PlayerRecord.Instance.pilotsLog as PlayerLog414;
+
         }
 
         public override void Update()
@@ -200,9 +204,8 @@ namespace GuruEngine.Player.Records.Display.Pages.British.Form414
 
                 set.Commands.Add(text);
 
-
                 text8_pos = Scale(new Vector2(960 + 300, 810));
-                mfont.DrawString(text8, text8_pos);
+                mfont.DrawString(pform.PilotName, text8_pos);
 
                 set.Commands.Add(mtext);
 

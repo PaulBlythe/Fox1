@@ -13,6 +13,13 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin debug.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:debug.spritefont
+
 #begin Fonts/MapFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -94,6 +101,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/Button.fx
 
+#begin Shaders/DepthOnly.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/DepthOnly.fx
+
 #begin Shaders/DiffuseFog.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -141,6 +154,12 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/SpecularDiffuseFog.fx
+
+#begin Shaders/Spotlight.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Spotlight.fx
 
 #begin Test.fx
 /importer:EffectImporter

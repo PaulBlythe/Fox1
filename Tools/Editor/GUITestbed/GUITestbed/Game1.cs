@@ -26,6 +26,7 @@ namespace GUITestbed
         DebugLineDraw linedrawer;
         public DateTime GameDateTime;
         ShaderManager shaderManager;
+        public SpriteFont debug_font;
 
         public Game1()
         {
@@ -70,6 +71,7 @@ namespace GUITestbed
 
             linedrawer = new DebugLineDraw();
             ShaderManager.Preload("Shaders/DiffuseFog");
+            debug_font = Content.Load<SpriteFont>("debug");
         }
 
         /// <summary>

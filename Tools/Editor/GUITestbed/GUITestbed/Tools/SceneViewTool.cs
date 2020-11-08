@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using GUITestbed.DataHandlers.Fox1;
-using GUITestbed.SerialisableData;
+using GUITestbed.DebugHelpers;
 using GUITestbed.Rendering._3D;
 using GUITestbed.DataHandlers.Fox1.Objects;
 using GUITestbed.Rendering;
@@ -24,7 +24,7 @@ namespace GUITestbed.Tools
         public static SceneViewTool Instance;
         Matrix Projection;
         SkyDomeSystem sky;
-        FreeCamera camera;
+        Camera camera;
         public GameTime time;
         MouseState oldmouse;
         bool grabbed = false;
@@ -43,16 +43,19 @@ namespace GUITestbed.Tools
 
         List<Volume> Volumes = new List<Volume>();
 
-        RenderTarget2D[] lightmeshes;
         Effect box_light_effect;
         Effect lit_effect;
+        Effect spot_effect;
+        Effect depth_only;
+
+        float depth_bias = 0.004f;
 
         Rectangle displayArea = new Rectangle(256, 30, 1920 - 256 - 320, 950);
 
         public SceneViewTool()
         {
-            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60), Game1.Instance.GraphicsDevice.Viewport.AspectRatio, 1.0f, 65000);
-            camera = new FreeCamera(new Vector3(0,3.85f,-5.8f), MathHelper.ToRadians(180), 0, 0.5f, 65000, Game1.Instance.GraphicsDevice);
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60), Game1.Instance.GraphicsDevice.Viewport.AspectRatio, 1.0f, 1000);
+            camera = new FreeCamera(new Vector3(0,3.85f,-5.8f), MathHelper.ToRadians(180), 0, 0.5f, 1000, Game1.Instance.GraphicsDevice);
             sky = new SkyDomeSystem(Game1.Instance, camera, time, Game1.Instance.GraphicsDevice);
             sky.Initialize();
             sky.LoadContent();
@@ -77,7 +80,8 @@ namespace GUITestbed.Tools
 
             box_light_effect = Game1.Instance.Content.Load<Effect>(@"Shaders\BoxLight");
             lit_effect = Game1.Instance.Content.Load<Effect>(@"Shaders\LitSceneObject");
-
+            spot_effect = Game1.Instance.Content.Load<Effect>(@"Shaders\Spotlight");
+            depth_only = Game1.Instance.Content.Load<Effect>(@"Shaders\DepthOnly");
         }
 
         public override void Update(float dt)
@@ -94,15 +98,19 @@ namespace GUITestbed.Tools
                 {
                     if (displayArea.Contains(ms.X, ms.Y))
                     {
-                        float scalar = dt * 0.01f;
-                        float x = ms.X - gpos.X;
-                        float y = ms.Y - gpos.Y;
-                        camera.Rotate(x * scalar, y * scalar);
+                        if (camera is FreeCamera)
+                        {
+                            FreeCamera fcamera = (FreeCamera)camera;
+                            float scalar = dt * 0.01f;
+                            float x = ms.X - gpos.X;
+                            float y = ms.Y - gpos.Y;
+                            fcamera.Rotate(x * scalar, y * scalar);
 
-                        int clicks = ms.ScrollWheelValue;
-                        clicks -= oldclicks;
-                        float dy = clicks * 0.5f;
-                        camera.Move(new Vector3(0, dy, 0));
+                            int clicks = ms.ScrollWheelValue;
+                            clicks -= oldclicks;
+                            float dy = clicks * 0.5f;
+                            fcamera.Move(new Vector3(0, dy, 0));
+                        }
                     }
                 }
 
@@ -119,18 +127,27 @@ namespace GUITestbed.Tools
                 {
                     if (displayArea.Contains(ms.X, ms.Y))
                     {
-                        float scale = 0.5f;
-                        if (ks.IsKeyDown(Keys.LeftShift))
-                            scale *= 0.5f;
-                        if (ks.IsKeyDown(Keys.LeftControl))
-                            scale *= 0.5f;
+                        if (camera is FreeCamera)
+                        {
+                            FreeCamera fcamera = (FreeCamera)camera;
+                            float scale = 0.5f;
+                            if (ks.IsKeyDown(Keys.LeftShift))
+                                scale *= 0.5f;
+                            if (ks.IsKeyDown(Keys.LeftControl))
+                                scale *= 0.5f;
 
-                        int df = oldclicks - ms.ScrollWheelValue;
-                        camera.Move(Vector3.Forward * (df * scale * 0.01f));
+                            int df = oldclicks - ms.ScrollWheelValue;
+                            fcamera.Move(Vector3.Forward * (df * scale * 0.01f));
+                        }
                     }
 
                 }
             }
+            if (ks.IsKeyDown(Keys.D))
+                depth_bias -= 0.00001f;
+            if (ks.IsKeyDown(Keys.C))
+                depth_bias += 0.00001f;
+
             oldclicks = ms.ScrollWheelValue;
             time.TotalGameTime.Add(new TimeSpan(0, 0, 0, 0, (int)(dt * 1000)));
             sky.Update(time);
@@ -160,6 +177,9 @@ namespace GUITestbed.Tools
             }
         }
 
+        /// <summary>
+        /// Draw
+        /// </summary>
         public override void Draw()
         {
             sky.PreDraw(time);
@@ -169,33 +189,30 @@ namespace GUITestbed.Tools
 
             Game1.Instance.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             Game1.Instance.GraphicsDevice.RasterizerState = rasterState;
-
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60), Game1.Instance.GraphicsDevice.Viewport.AspectRatio, 1.0f, 100);
 
             if (current!=null)
             {
                 if (isLit)
                 {
-                    int index = 0;
-                   
                     for (int i = 0; i < current.Instances.Count; i++)
                     {
-                        SetupLights(index);
+                        lit_effect.Parameters["LightTexture"].SetValue(current.Instances[i].LightMap);
                         ObjectInstance oi = current.Instances[i];
                         current.Meshes[oi.Object].Draw(lit_effect, Projection, camera.View, current.Instances[i].World);
-                        index++;
                     }
                     for (int i = 0; i < current.tanims.Count; i++)
                     {
-                        SetupLights(index);
+                        lit_effect.Parameters["LightTexture"].SetValue(current.tanims[i].LightMap);
                         TranslateAnimator ta = current.tanims[i];
                         float d = SceneValues[ta.Key] / (ta.MaxValue - ta.MinValue);
                         Vector3 pos = Vector3.Lerp(ta.LowPosition, ta.HighPosition, d);
                         Matrix w = Matrix.CreateFromYawPitchRoll(ta.Rotation.X, ta.Rotation.Y, ta.Rotation.Z) * Matrix.CreateTranslation(pos);
 
                         current.Meshes[ta.Object].Draw(lit_effect, Projection, camera.View, w);
-                        index++;
+
                     }
-                    DebugLineDraw.DrawBoundingBox(current.LightBoxes[0].Bounds, Matrix.Identity, Color.Red);
+                    //DebugLineDraw.DrawBoundingBox(current.LightBoxes[0].Bounds, Matrix.Identity, Color.Red);
                 }
                 else
                 {
@@ -219,6 +236,10 @@ namespace GUITestbed.Tools
             }
             camera.Projection = Projection;
             DebugLineDraw.Instance.Draw(camera);
+            Game1.Instance.spriteBatch.Begin();
+            Game1.Instance.spriteBatch.DrawString(Game1.Instance.debug_font, depth_bias.ToString(), new Vector2(950, 100), Color.White);
+            Game1.Instance.spriteBatch.End();
+
         }
 
         public override void SaveResults(string path)
@@ -226,50 +247,46 @@ namespace GUITestbed.Tools
 
         }
 
-        #region Create a light volume
+        #region Create light textures
 
         public const int LightTextureSize = 256;
         public const int LightMeshSize = 4096;
         public const int MeshesPerLine = (LightMeshSize / LightTextureSize);
         public const int MeshesPerFile = (MeshesPerLine * MeshesPerLine);
-        public const float CellSize = (2.0f / (float)MeshesPerLine);
+        public const float CellSize = (1.0f / (float)MeshesPerLine);
 
+        /// <summary>
+        /// Create light textures 
+        /// </summary>
         public void CreateLightVolume1()
         {
             if (current == null)
                 return;
 
-            int total_meshes = current.Instances.Count;
-            total_meshes += current.tanims.Count;
-            int textures = (total_meshes / MeshesPerFile) + 1;
-            lightmeshes = new RenderTarget2D[textures];
-            for (int i=0; i<textures; i++)
+            for (int i=0; i<current.Instances.Count; i++)
             {
-                lightmeshes[i] = new RenderTarget2D(Game1.Instance.GraphicsDevice, 4096, 4096, false, SurfaceFormat.Color, DepthFormat.None,0,RenderTargetUsage.PreserveContents);
-                Game1.Instance.GraphicsDevice.SetRenderTarget(lightmeshes[i]);
-                Game1.Instance.GraphicsDevice.Clear(Color.Blue);
+                current.Instances[i].LightMap = new RenderTarget2D(Game1.Instance.GraphicsDevice, 256, 256, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+                Game1.Instance.GraphicsDevice.SetRenderTarget(current.Instances[i].LightMap);
+                Game1.Instance.GraphicsDevice.Clear(Color.Black);
+                Game1.Instance.GraphicsDevice.SetRenderTarget(null);
+            }
+            for (int i = 0; i < current.tanims.Count; i++)
+            {
+                current.tanims[i].LightMap = new RenderTarget2D(Game1.Instance.GraphicsDevice, 256, 256, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+                Game1.Instance.GraphicsDevice.SetRenderTarget(current.tanims[i].LightMap);
+                Game1.Instance.GraphicsDevice.Clear(Color.Black);
                 Game1.Instance.GraphicsDevice.SetRenderTarget(null);
             }
 
-            int oldtex = -1;
+            // Do each light box
             foreach (LightBox lb in current.LightBoxes)
             {
                 box_light_effect.Parameters["Minimums"].SetValue(lb.Bounds.Min);
                 box_light_effect.Parameters["Maximums"].SetValue(lb.Bounds.Max);
-                box_light_effect.Parameters["Scale"].SetValue(CellSize);
-                for (int i = 0; i < total_meshes; i++)
+                box_light_effect.Parameters["Direction"].SetValue(lb.Direction);
+                for (int i = 0; i < current.Instances.Count; i++)
                 {
-                    int tex = (i / MeshesPerFile);
-                    int subtex = i - (tex * MeshesPerFile);
-                    int line = (subtex / MeshesPerLine);
-                    int cell = subtex - (line * MeshesPerLine);
-            
-                    Vector2 offset = new Vector2(cell * CellSize, line * CellSize);
-                    if (oldtex != tex)
-                    {
-                        Game1.Instance.GraphicsDevice.SetRenderTarget(lightmeshes[tex]);
-                        oldtex = tex;
-                    }
+                    Game1.Instance.GraphicsDevice.SetRenderTarget(current.Instances[i].LightMap);
                     Game1.Instance.GraphicsDevice.BlendState = BlendState.Opaque;
                     Game1.Instance.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
                     Game1.Instance.GraphicsDevice.DepthStencilState = DepthStencilState.None;
@@ -277,40 +294,116 @@ namespace GUITestbed.Tools
                     Matrix m = current.GetWorld(i);
             
                     box_light_effect.Parameters["World"].SetValue(m);
-                    box_light_effect.Parameters["Offset"].SetValue(offset);
                     box_light_effect.Parameters["WorldInverseTranspose"].SetValue(Matrix.Transpose(Matrix.Invert(m)));
                     box_light_effect.Parameters["EyePosition"].SetValue(camera.Position);
 
-                    w.Draw(box_light_effect);
+                    //w.Draw(box_light_effect);
                    
                 }
-                Game1.Instance.GraphicsDevice.SetRenderTarget(null);
+                for (int i = 0; i < current.tanims.Count; i++)
+                {
+                    Game1.Instance.GraphicsDevice.SetRenderTarget(current.tanims[i].LightMap);
+                    Game1.Instance.GraphicsDevice.BlendState = BlendState.Opaque;
+                    Game1.Instance.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+                    Game1.Instance.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+                    Wavefront w = current.GetMesh(i);
+                    Matrix m = current.GetWorld(i);
+
+                    box_light_effect.Parameters["World"].SetValue(m);
+                    box_light_effect.Parameters["WorldInverseTranspose"].SetValue(Matrix.Transpose(Matrix.Invert(m)));
+                    box_light_effect.Parameters["EyePosition"].SetValue(camera.Position);
+
+                    //w.Draw(box_light_effect);
+
+                }
+
             }
-            for (int i=0; i< lightmeshes.Length; i++)
+            int temp = 0;
+            // do each spotlight
+            foreach (SpotLight lb in current.SpotLights)
             {
-                Stream stream = File.Create("file" + i.ToString() + ".png");
-                RenderTarget2D tex = lightmeshes[i];
-                tex.SaveAsPng(stream, tex.Width, tex.Height);
-                stream.Dispose();
+                #region Depth buffer generation
+                Vector3 lookAt = lb.Position - lb.Direction;
+                Vector3 right = Vector3.Normalize(Vector3.Cross(lookAt, Vector3.Up));
+                Vector3 localUp = Vector3.Normalize(Vector3.Cross(right, lookAt));
+                if (float.IsNaN(right.X) || float.IsNaN(right.Y) || float.IsNaN(right.Z))
+                {
+                    localUp = Vector3.Forward;
+                }
+
+                RenderTarget2D depth = new RenderTarget2D(Game1.Instance.GraphicsDevice, 1024, 1024, false, SurfaceFormat.Single, DepthFormat.Depth24,0,RenderTargetUsage.PreserveContents);
+                Matrix lightView = Matrix.CreateLookAt(lb.Position, lookAt, localUp);
+                Matrix lightProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60), 1.0f, 0.01f, 50);
+                Matrix lightViewProjection = lightView * lightProjection;
+
+                Game1.Instance.GraphicsDevice.BlendState = BlendState.Opaque;
+                Game1.Instance.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+                Game1.Instance.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+                Game1.Instance.GraphicsDevice.SetRenderTarget(depth);
+                Game1.Instance.GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Target, Color.White, 1, 0);
+                depth_only.Parameters["ViewProjection"].SetValue(lightViewProjection);
+               
+
+                for (int i = 0; i < current.GetCount(); i++)
+                {
+                    Wavefront w = current.GetMesh(i);
+                    Matrix m = current.GetWorld(i);                  
+                    depth_only.Parameters["World"].SetValue(m);
+                    w.Draw(depth_only);
+                }
+
+                Game1.Instance.GraphicsDevice.SetRenderTarget(null);
+
+                String name = "depthtest" + temp.ToString() + ".png";
+                DebugHelpers.DebugHelpers.SaveDepthTexture(name, depth, 30);
+                temp++;
+                #endregion
+
+                Game1.Instance.GraphicsDevice.BlendState = BlendState.Additive;
+                Game1.Instance.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+                Game1.Instance.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+
+                spot_effect.Parameters["LightViewProj"].SetValue(lightViewProjection);
+                spot_effect.Parameters["ShadowTexture"]?.SetValue(depth);
+                spot_effect.Parameters["LightPosition"].SetValue(lb.Position);
+                spot_effect.Parameters["LightDirection"].SetValue(lb.Direction);
+                spot_effect.Parameters["LightConeAngle"].SetValue((float)Math.Cos(lb.ConeAngle));
+                spot_effect.Parameters["SpotCosOuterCone"].SetValue((float)Math.Cos(lb.ConeAngle + MathHelper.ToRadians(10)));
+                //spot_effect.Parameters["DepthBias"].SetValue(depth_bias);
+                for (int i = 0; i < current.GetCount(); i++)
+                {
+                    Game1.Instance.GraphicsDevice.SetRenderTarget(current.GetLightMap(i));                
+                    Wavefront w = current.GetMesh(i);
+                    Matrix m = current.GetWorld(i);
+
+                    spot_effect.Parameters["World"].SetValue(m);
+                    spot_effect.Parameters["WorldInverseTranspose"].SetValue(Matrix.Transpose(Matrix.Invert(m)));
+                   
+                    w.Draw(spot_effect);
+                }
+                Game1.Instance.GraphicsDevice.SetRenderTarget(null);
 
             }
+            Game1.Instance.GraphicsDevice.SetRenderTarget(null);
             isLit = true;
+            //{
+            //    SpotLight tlb = current.SpotLights[7];
+            //   
+            //
+            //    Vector3 lookAt = tlb.Position - tlb.Direction;
+            //    Vector3 right = Vector3.Normalize(Vector3.Cross(lookAt, Vector3.Up));
+            //    Vector3 localUp = Vector3.Normalize(Vector3.Cross(right, lookAt));
+            //    if (float.IsNaN(right.X) || float.IsNaN(right.Y) || float.IsNaN(right.Z))
+            //    {
+            //        localUp = Vector3.Forward;
+            //    }
+            //
+            //    camera = new FixedCamera(tlb.Position, lookAt, localUp, 0.1f, 100, Game1.Instance.GraphicsDevice);
+            //}
         }
 
-        void SetupLights(int i)
-        {
-            int tex = (i / MeshesPerFile);
-            int subtex = i - (tex * MeshesPerFile);
-            int line = (subtex / MeshesPerLine);
-            int cell = subtex - (line * MeshesPerLine);
+        
 
-            float cx = 1.0f / MeshesPerLine;
-
-            Vector2 offset = new Vector2(cell * cx, line * cx);
-            lit_effect.Parameters["Offset"].SetValue(offset);
-            lit_effect.Parameters["LightTexture"].SetValue(lightmeshes[tex]);
-            lit_effect.Parameters["Scale"].SetValue(cx);
-        }
         #endregion
 
 

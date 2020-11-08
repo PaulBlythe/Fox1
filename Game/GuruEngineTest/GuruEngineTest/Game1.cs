@@ -11,6 +11,8 @@ using GuruEngine.Maths;
 using GuruEngine.Audio;
 using GuruEngine.DebugHelpers;
 using GuruEngine.Rendering;
+using GuruEngine.Player.Records;
+using GuruEngine.Player.Records.WWII.British;
 
 namespace GuruEngineTest
 {
@@ -25,6 +27,7 @@ namespace GuruEngineTest
         SpriteBatch spriteBatch;
         Engine engine;
         public GameTime global_game_time;
+        PlayerRecord playerRecord = new PlayerRecord();
 
 #if DEBUG
         FrameCounter framecounter;
@@ -61,6 +64,8 @@ namespace GuruEngineTest
 #if DEBUG
             framecounter = new FrameCounter();
 #endif
+            playerRecord.pilotsLog = new PlayerLog414();
+
             base.Initialize();
         }
 
@@ -73,7 +78,7 @@ namespace GuruEngineTest
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            engine.Initialise(GraphicsDevice, Content, Services, true);
+            engine.Initialise(GraphicsDevice, Content, Services, false);
             //engine.SetScene(new Scenes.MainMenu());
             //engine.SetScene(new Scenes.LoadingScene());
             //engine.SetScene(new Scenes.Gebug.CarrierTest());

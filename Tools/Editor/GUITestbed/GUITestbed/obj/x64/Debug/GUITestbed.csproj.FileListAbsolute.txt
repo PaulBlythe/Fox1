@@ -101,3 +101,6 @@ C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\bin\x64\Debug\Content\Shaders\
 C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\bin\x64\Debug\Content\Models\sphere.xnb
 C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\bin\x64\Debug\Content\Shaders\BoxLight.xnb
 C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\bin\x64\Debug\Content\Shaders\LitSceneObject.xnb
+C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\bin\x64\Debug\Content\Shaders\Spotlight.xnb
+C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\bin\x64\Debug\Content\Shaders\DepthOnly.xnb
+C:\GitHub\Fox1\Tools\Editor\GUITestbed\GUITestbed\bin\x64\Debug\Content\debug.xnb

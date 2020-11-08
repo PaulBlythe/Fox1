@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using GUITestbed.Rendering._3D;
 
 namespace GUITestbed.Scenes
@@ -13,6 +14,14 @@ namespace GUITestbed.Scenes
     {
         public Matrix World;
         public int Object;
+        public RenderTarget2D LightMap;
+    }
+
+    public class SpotLight
+    {
+        public Vector3 Direction;
+        public Vector3 Position;
+        public float ConeAngle;
     }
 
     public class LightBox
@@ -45,6 +54,7 @@ namespace GUITestbed.Scenes
         public float MinValue;
         public float MaxValue;
         public String Key;
+        public RenderTarget2D LightMap;
     }
 
     public class Scene
@@ -52,6 +62,7 @@ namespace GUITestbed.Scenes
         public List<String> Objects = new List<string>();
         public List<ObjectInstance> Instances = new List<ObjectInstance>();
         public List<LightBox> LightBoxes = new List<LightBox>();
+        public List<SpotLight> SpotLights = new List<SpotLight>();
         public List<TranslateAnimator> tanims = new List<TranslateAnimator>();
 
         public List<Wavefront> Meshes = new List<Wavefront>();
@@ -141,6 +152,22 @@ namespace GUITestbed.Scenes
                     ta.HighPosition = new Vector3(x, y, z);
 
                     tanims.Add(ta);
+                }else if (line.StartsWith("spotlight"))
+                {
+                    SpotLight sp = new SpotLight();
+
+                    float x = float.Parse(parts[1]);
+                    float y = float.Parse(parts[2]);
+                    float z = float.Parse(parts[3]);
+                    sp.Position = new Vector3(x, y, z);
+
+                    x = float.Parse(parts[4]);
+                    y = float.Parse(parts[5]);
+                    z = float.Parse(parts[6]);
+                    sp.Direction = new Vector3(x, y, z);
+                    sp.ConeAngle = MathHelper.ToRadians(float.Parse(parts[7]));
+
+                    SpotLights.Add(sp);
                 }
             }
             reader.Close();
@@ -175,5 +202,19 @@ namespace GUITestbed.Scenes
             return Matrix.CreateFromYawPitchRoll(ta.Rotation.X, ta.Rotation.Y, ta.Rotation.Z) * Matrix.CreateTranslation(ta.BasePosition);
         }
 
+        public int GetCount()
+        {
+            return Instances.Count + tanims.Count;
+        }
+
+        public RenderTarget2D GetLightMap(int i)
+        {
+            if (i<Instances.Count)
+            {
+                return Instances[i].LightMap;
+            }
+            i -= Instances.Count;
+            return tanims[i].LightMap;
+        }
     }
 }

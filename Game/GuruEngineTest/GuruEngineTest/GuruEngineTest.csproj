@@ -301,12 +301,17 @@
     <Compile Include="GuruEngine\Player\Records\AircraftCertificationRecord.cs" />
     <Compile Include="GuruEngine\Player\Records\Campaign\CampaignPeriods.cs" />
     <Compile Include="GuruEngine\Player\Records\Campaign\PlayerCampaignRecord.cs" />
+    <Compile Include="GuruEngine\Player\Records\Common\Certification.cs" />
+    <Compile Include="GuruEngine\Player\Records\Common\PilotEvent.cs" />
+    <Compile Include="GuruEngine\Player\Records\Common\PilotEvents.cs" />
     <Compile Include="GuruEngine\Player\Records\Display\Pages\British\Form414\FrontPage.cs" />
     <Compile Include="GuruEngine\Player\Records\Display\Pages\British\Form414\Page1.cs" />
     <Compile Include="GuruEngine\Player\Records\Display\Pages\British\Form414\Page2.cs" />
     <Compile Include="GuruEngine\Player\Records\Display\Pages\Page.cs" />
+    <Compile Include="GuruEngine\Player\Records\PilotsLog.cs" />
     <Compile Include="GuruEngine\Player\Records\PlayerRecord.cs" />
     <Compile Include="GuruEngine\Characters\Rank.cs" />
+    <Compile Include="GuruEngine\Player\Records\WWII\British\PlayerLog414.cs" />
     <Compile Include="GuruEngine\Rendering\BufferManager.cs" />
     <Compile Include="GuruEngine\Rendering\Deferred\DeferredRender.cs" />
     <Compile Include="GuruEngine\Rendering\EffectPasses\BlackoutEffectPass.cs" />
@@ -363,6 +368,7 @@
     <Compile Include="GuruEngine\Rendering\VertexDeclarations\OceanVertex.cs" />
     <Compile Include="GuruEngine\Rendering\VertexDeclarations\TreeVertex.cs" />
     <Compile Include="GuruEngine\SceneManagement\SubScene.cs" />
+    <Compile Include="GuruEngine\World\Aircraft\AircraftTypes.cs" />
     <Compile Include="GuruEngine\World\Developer\GroundPlane.cs" />
     <Compile Include="GuruEngine\World\Developer\WindTunnel.cs" />
     <Compile Include="GuruEngine\World\Trees\Instructions\Align.cs" />
@@ -550,7 +556,6 @@
   <ItemGroup>
     <Folder Include="GuruEngine\Characters\Ranks\RAAF\" />
     <Folder Include="GuruEngine\ECS\Components\Cockpit\American\Early Years\" />
-    <Folder Include="GuruEngine\Player\Records\WWII\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

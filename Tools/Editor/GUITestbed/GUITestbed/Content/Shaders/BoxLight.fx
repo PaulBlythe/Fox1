@@ -10,8 +10,7 @@
 float4x4 World;
 float3 Minimums;
 float3 Maximums;
-float2 Offset;
-float Scale;
+float3 Direction;
 
 float4x4 WorldInverseTranspose;
 float3 EyePosition;
@@ -35,10 +34,9 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 {
 	VertexShaderOutput output = (VertexShaderOutput)0;
 
-	float2 sp = float2(-1,-1) + (Scale * input.TextureCoordinate );
-	sp += Offset;
+	float2 outp = input.TextureCoordinate.xy * float2(2.0, -2.0) + float2(-1.0, 1.0);
 
-	output.Position = float4(sp.x, sp.y, 1.0f, 1);                        
+	output.Position = float4(outp.x, outp.y, 0.0f, 1);
 	output.WorldPos = mul(input.Position, World);
 	output.View = normalize(EyePosition - output.WorldPos.xyz);
 	output.Norm = normalize(mul(input.Normal, WorldInverseTranspose).xyz);
@@ -61,7 +59,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 						if (input.WorldPos.z < Maximums.z)
 						{
 							float3 Normal = normalize(input.Norm);
-							float3 LightDir = float3(0, -1, 0);
+							float3 LightDir = normalize(Direction);
 							float3 ViewDir = normalize(input.View);
 							float3 H = normalize(LightDir + ViewDir);
 

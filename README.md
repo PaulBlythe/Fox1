@@ -27,3 +27,7 @@ There are older games that fit into the area I am targeting, such as IL2, but th
 I also have started some external panels. These are designed to run on a Raspberry Pi with a touch screen and form part of a simulated cockpit.
 
 ![Physics test](/Images/RWR.png)
+
+
+The editor is coming long
+![Physics test](/Images/Desktop Screenshot 2020.11.08 - 08.44.24.33.png)

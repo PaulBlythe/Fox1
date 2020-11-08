@@ -26,7 +26,7 @@ float LinearizeDepth(float2 uv)
 	float zNear = 1.0;				// camera z near
 	float zFar = 100000.0;			// camera z far
 	float d = tex2D(DepthMapSampler, uv).x;
-	return zNear * zFar / (zFar + d * (zNear - zFar)); return zNear * zFar / (zFar + d * (zNear - zFar));
+	return zNear * zFar / (zFar + d * (zNear - zFar)); 
 }
 
 

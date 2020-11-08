@@ -31,14 +31,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GuruEngineTest.exe" size="1359840">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GuruEngineTest.exe" size="1360864">
       <assemblyIdentity name="GuruEngineTest" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>p+T9t1lHYu7nx5/HLz0ZXaf/AID0dgyFAJwBu1tDaQs=</dsig:DigestValue>
+        <dsig:DigestValue>JIucQjQdCWHAxqwEUAsHIwTgE+3gr8FVhbsjypMcNjs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -645,13 +645,13 @@
       <dsig:DigestValue>BG4+/dgiTMP4h9foQ088hWW7gZjejNIyRiaeXmQ8Nxc=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Shaders\DisplayDepth.fx" size="1174">
+  <file name="Content\Shaders\DisplayDepth.fx" size="1124">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>/ovYu0Vr21tJnPcYPaxozl9mp1Vq/FVhKfYEcZ8vevI=</dsig:DigestValue>
+      <dsig:DigestValue>9UfsxmZMqE3hVRvBaHu60LrCTgCc3aXfCk26o4b2Oks=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Shaders\DisplayDepth.xnb" size="1170">

@@ -4,6 +4,7 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/debug.spritefont</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Fonts/MapFont.spritefont</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Fonts/Verdana.png</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Fonts/verdana_small.png</File>
@@ -11,7 +12,9 @@
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Models/sphere.fbx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/BoxLight.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/Button.fx</File>
+    <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/DepthOnly.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/DiffuseFog.fx</File>
+    <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/LitSceneObject.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/ModelMesh.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/SDFont2.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/Sky/Scatter.fx</File>
@@ -34,6 +37,9 @@
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Textures/Sky/starfield.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

@@ -13,9 +13,6 @@ namespace GUITestbed.Rendering._3D
     {
         public float Yaw { get; set; }
         public float Pitch { get; set; }
-
-        public Vector3 Position { get; set; }
-
         private Vector3 translation;
         public override float NearPlane { get; set; }
         public override float FarPlane { get; set; }
