@@ -278,7 +278,7 @@ namespace GUITestbed.Tools
                 Game1.Instance.GraphicsDevice.SetRenderTarget(null);
             }
 
-            // Do each light box
+            #region Do each light box
             foreach (LightBox lb in current.LightBoxes)
             {
                 box_light_effect.Parameters["Minimums"].SetValue(lb.Bounds.Min);
@@ -318,7 +318,8 @@ namespace GUITestbed.Tools
                 }
 
             }
-            int temp = 0;
+            #endregion
+
             // do each spotlight
             foreach (SpotLight lb in current.SpotLights)
             {
@@ -353,10 +354,6 @@ namespace GUITestbed.Tools
                 }
 
                 Game1.Instance.GraphicsDevice.SetRenderTarget(null);
-
-                String name = "depthtest" + temp.ToString() + ".png";
-                DebugHelpers.DebugHelpers.SaveDepthTexture(name, depth, 30);
-                temp++;
                 #endregion
 
                 Game1.Instance.GraphicsDevice.BlendState = BlendState.Additive;

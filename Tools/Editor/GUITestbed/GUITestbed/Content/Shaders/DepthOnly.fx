@@ -35,7 +35,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-	 return float4(input.Depth.x,0,0,1);// / input.Depth.y, 0, 0, 1.0);
+	 return float4(input.Depth.x,0,0,1);
 }
 
 technique BasicColorDrawing

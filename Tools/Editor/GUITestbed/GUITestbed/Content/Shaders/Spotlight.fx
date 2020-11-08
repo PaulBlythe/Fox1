@@ -64,10 +64,12 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 float CalcShadowTermPCF(float light_space_depth, float ndotl, float2 shadow_coord)
 {
 	float variableBias = clamp(0.001 * tan(acos(ndotl)), 0, DepthBias);
-	light_space_depth -= variableBias;
+	//light_space_depth = -light_space_depth;
+	light_space_depth += variableBias;
 
 	float size = 1.0 / 1024.0;
 	float samples = 0;
+
 
 	if (light_space_depth < tex2D(ShadowSampler, shadow_coord).r)
 	{
@@ -108,11 +110,12 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 
 	float SpotCosConeAttRange = LightConeAngle - SpotCosOuterCone;
 	float conAtt = 0;
+
 	// Cone attenuation
 	float cosAng = dot(LightDirection, ToLight);
 	float shadowContribution = 0.0f;
 
-	float4 lightingPosition = mul(input.WorldPos, LightViewProj);
+	float4 lightingPosition = mul(float4(input.WorldPos,1), LightViewProj);
 	float ourdepth = lightingPosition.z;
 	lightingPosition.xy /= lightingPosition.w;
 
