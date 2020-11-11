@@ -14,6 +14,7 @@
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/Button.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/DepthOnly.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/DiffuseFog.fx</File>
+    <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/GaussianBlur.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/LitSceneObject.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/ModelMesh.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/SDFont2.fx</File>
@@ -21,6 +22,7 @@
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/Sky/SNoise.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/Sky/Textured.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/SpecularDiffuseFog.fx</File>
+    <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Shaders/Spotlight.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Test.fx</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Textures/Airport/ac_helipad.png</File>
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Textures/Airport/asphalt.png</File>
@@ -37,6 +39,8 @@
     <File>C:/GitHub/Fox1/Tools/Editor/GUITestbed/GUITestbed/Content/Textures/Sky/starfield.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

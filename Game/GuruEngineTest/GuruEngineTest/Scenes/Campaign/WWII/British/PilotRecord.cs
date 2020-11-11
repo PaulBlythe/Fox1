@@ -27,8 +27,8 @@ namespace GuruEngineTest.Scenes.Campaign.WWII.British
         public override void Init()
         {
             //currentPage = new FrontPage();
-            currentPage = new Page1();
-            //currentPage = new Page2();
+            //currentPage = new Page1();
+            currentPage = new Page2();
             currentPage.SetupRenderCommands();
         }
 

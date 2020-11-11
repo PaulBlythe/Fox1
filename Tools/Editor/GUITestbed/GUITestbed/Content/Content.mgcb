@@ -113,6 +113,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/DiffuseFog.fx
 
+#begin Shaders/GaussianBlur.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/GaussianBlur.fx
+
 #begin Shaders/LitSceneObject.fx
 /importer:EffectImporter
 /processor:EffectProcessor

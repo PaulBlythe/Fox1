@@ -33,6 +33,7 @@ namespace GUITestbed.Tools
         GroundPlaneSystem ground = null;
         Scene current = null;
         RasterizerState rasterState;
+        float BlurAmount = 1;
 
         Dictionary<String, float> SceneValues = new Dictionary<string, float>();
         Dictionary<string, Vector2> SceneRanges = new Dictionary<string, Vector2>();
@@ -47,6 +48,7 @@ namespace GUITestbed.Tools
         Effect lit_effect;
         Effect spot_effect;
         Effect depth_only;
+        Effect gaussianBlurEffect;
 
         float depth_bias = 0.004f;
 
@@ -82,6 +84,7 @@ namespace GUITestbed.Tools
             lit_effect = Game1.Instance.Content.Load<Effect>(@"Shaders\LitSceneObject");
             spot_effect = Game1.Instance.Content.Load<Effect>(@"Shaders\Spotlight");
             depth_only = Game1.Instance.Content.Load<Effect>(@"Shaders\DepthOnly");
+            gaussianBlurEffect = Game1.Instance.Content.Load<Effect>(@"Shaders\GaussianBlur");
         }
 
         public override void Update(float dt)
@@ -262,17 +265,18 @@ namespace GUITestbed.Tools
         {
             if (current == null)
                 return;
+            int temp_texture_size = 1024;
 
             for (int i=0; i<current.Instances.Count; i++)
             {
-                current.Instances[i].LightMap = new RenderTarget2D(Game1.Instance.GraphicsDevice, 256, 256, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+                current.Instances[i].LightMap = new RenderTarget2D(Game1.Instance.GraphicsDevice, temp_texture_size, temp_texture_size, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
                 Game1.Instance.GraphicsDevice.SetRenderTarget(current.Instances[i].LightMap);
                 Game1.Instance.GraphicsDevice.Clear(Color.Black);
                 Game1.Instance.GraphicsDevice.SetRenderTarget(null);
             }
             for (int i = 0; i < current.tanims.Count; i++)
             {
-                current.tanims[i].LightMap = new RenderTarget2D(Game1.Instance.GraphicsDevice, 256, 256, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+                current.tanims[i].LightMap = new RenderTarget2D(Game1.Instance.GraphicsDevice, temp_texture_size, temp_texture_size, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
                 Game1.Instance.GraphicsDevice.SetRenderTarget(current.tanims[i].LightMap);
                 Game1.Instance.GraphicsDevice.Clear(Color.Black);
                 Game1.Instance.GraphicsDevice.SetRenderTarget(null);
@@ -382,21 +386,32 @@ namespace GUITestbed.Tools
 
             }
             Game1.Instance.GraphicsDevice.SetRenderTarget(null);
-            isLit = true;
-            //{
-            //    SpotLight tlb = current.SpotLights[7];
-            //   
-            //
-            //    Vector3 lookAt = tlb.Position - tlb.Direction;
-            //    Vector3 right = Vector3.Normalize(Vector3.Cross(lookAt, Vector3.Up));
-            //    Vector3 localUp = Vector3.Normalize(Vector3.Cross(right, lookAt));
-            //    if (float.IsNaN(right.X) || float.IsNaN(right.Y) || float.IsNaN(right.Z))
-            //    {
-            //        localUp = Vector3.Forward;
-            //    }
-            //
-            //    camera = new FixedCamera(tlb.Position, lookAt, localUp, 0.1f, 100, Game1.Instance.GraphicsDevice);
-            //}
+
+            #region Blur light maps
+
+            RenderTarget2D temprt = new RenderTarget2D(Game1.Instance.GraphicsDevice, temp_texture_size, temp_texture_size, false, SurfaceFormat.Single, DepthFormat.None);
+            SpriteBatch tempsb = new SpriteBatch(Game1.Instance.GraphicsDevice);
+            SetBlurEffectParameters(1.0f/temp_texture_size, 1.0f/temp_texture_size);
+            for (int i = 0; i < current.GetCount(); i++)
+            {
+                Game1.Instance.GraphicsDevice.SetRenderTarget(temprt);
+                Game1.Instance.GraphicsDevice.Clear(Color.Black);
+                tempsb.Begin(SpriteSortMode.Immediate, BlendState.Opaque, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, gaussianBlurEffect, null);
+                tempsb.Draw(current.GetLightMap(i), new Rectangle(0, 0, temp_texture_size, temp_texture_size), Color.White);
+                tempsb.End();
+
+                Game1.Instance.GraphicsDevice.SetRenderTarget(current.GetLightMap(i));
+                Game1.Instance.GraphicsDevice.Clear(Color.Black);
+                tempsb.Begin();
+                tempsb.Draw(temprt, new Rectangle(0, 0, temp_texture_size, temp_texture_size), Color.White);
+                tempsb.End();
+                Game1.Instance.GraphicsDevice.SetRenderTarget(null);
+            }
+
+            #endregion
+
+                isLit = true;
+            
         }
 
         
@@ -420,6 +435,80 @@ namespace GUITestbed.Tools
                 Instance.SceneRanges.Add(ta.Key, range);
                 Instance.SceneDirections.Add(ta.Key, (ta.MaxValue - ta.MinValue) / 5.0f);
             }
+        }
+
+
+        float ComputeGaussian(float n)
+        {
+            float theta = BlurAmount;
+
+            return (float)((1.0 / Math.Sqrt(2 * Math.PI * theta)) *
+                           Math.Exp(-(n * n) / (2 * theta * theta)));
+        }
+        /// <summary>
+        /// Computes sample weightings and texture coordinate offsets
+        /// for one pass of a separable gaussian blur filter.
+        /// </summary>
+        void SetBlurEffectParameters(float dx, float dy)
+        {
+            // Look up the sample weight and offset effect parameters.
+            EffectParameter weightsParameter, offsetsParameter;
+
+            weightsParameter = gaussianBlurEffect.Parameters["SampleWeights"];
+            offsetsParameter = gaussianBlurEffect.Parameters["SampleOffsets"];
+
+            // Look up how many samples our gaussian blur effect supports.
+            int sampleCount = weightsParameter.Elements.Count;
+
+            // Create temporary arrays for computing our filter settings.
+            float[] sampleWeights = new float[sampleCount];
+            Vector2[] sampleOffsets = new Vector2[sampleCount];
+
+            // The first sample always has a zero offset.
+            sampleWeights[0] = ComputeGaussian(0);
+            sampleOffsets[0] = new Vector2(0);
+
+            // Maintain a sum of all the weighting values.
+            float totalWeights = sampleWeights[0];
+
+            // Add pairs of additional sample taps, positioned
+            // along a line in both directions from the center.
+            for (int i = 0; i < sampleCount / 2; i++)
+            {
+                // Store weights for the positive and negative taps.
+                float weight = ComputeGaussian(i + 1);
+
+                sampleWeights[i * 2 + 1] = weight;
+                sampleWeights[i * 2 + 2] = weight;
+
+                totalWeights += weight * 2;
+
+                // To get the maximum amount of blurring from a limited number of
+                // pixel shader samples, we take advantage of the bilinear filtering
+                // hardware inside the texture fetch unit. If we position our texture
+                // coordinates exactly halfway between two texels, the filtering unit
+                // will average them for us, giving two samples for the price of one.
+                // This allows us to step in units of two texels per sample, rather
+                // than just one at a time. The 1.5 offset kicks things off by
+                // positioning us nicely in between two texels.
+                float sampleOffset = i * 2 + 1.5f;
+
+                Vector2 delta = new Vector2(dx, dy) * sampleOffset;
+
+                // Store texture coordinate offsets for the positive and negative taps.
+                sampleOffsets[i * 2 + 1] = delta;
+                sampleOffsets[i * 2 + 2] = -delta;
+            }
+
+            // Normalize the list of sample weightings, so they will always sum to one.
+            for (int i = 0; i < sampleWeights.Length; i++)
+            {
+                sampleWeights[i] /= totalWeights;
+            }
+
+            // Tell the effect about our new filter settings.
+            weightsParameter.SetValue(sampleWeights);
+            offsetsParameter.SetValue(sampleOffsets);
         }
     }
 }

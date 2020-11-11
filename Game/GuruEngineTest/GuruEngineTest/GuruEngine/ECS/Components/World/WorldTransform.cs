@@ -143,11 +143,13 @@ namespace GuruEngine.ECS.Components.World
         public void SetOrientation(Quaternion inq)
         {
             Orientation = inq;
+            world = Matrix.CreateFromQuaternion(Orientation) * Matrix.CreateTranslation(LocalPosition);
         }
 
         public void SetPosition(Vector3 inpos)
         {
             LocalPosition = inpos;
+            world = Matrix.CreateFromQuaternion(Orientation) * Matrix.CreateTranslation(LocalPosition);
         }
 
     }

@@ -26,8 +26,8 @@ texture ShadowTexture;
 sampler2D ShadowSampler = sampler_state
 {
 	Texture = (ShadowTexture);
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
+	MinFilter = POINT;
+	MagFilter = POINT;
 	MipFilter = LINEAR;
 	AddressU = CLAMP;
 	AddressV = CLAMP;

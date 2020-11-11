@@ -216,6 +216,7 @@
     <Content Include="Content\Shaders\Button.fx" />
     <Content Include="Content\Shaders\DepthOnly.fx" />
     <Content Include="Content\Shaders\DiffuseFog.fx" />
+    <Content Include="Content\Shaders\GaussianBlur.fx" />
     <Content Include="Content\Shaders\LitSceneObject.fx" />
     <Content Include="Content\Shaders\ModelMesh.fx" />
     <Content Include="Content\Shaders\SceneObject.fx" />

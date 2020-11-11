@@ -8,6 +8,8 @@ using GuruEngine.Rendering.RenderCommands;
 using GuruEngine.Text;
 using GuruEngine.Assets;
 using GuruEngine.Player.Records.WWII.British;
+using GuruEngine.Player.Records.Common;
+using GuruEngine.World.Aircraft;
 
 namespace GuruEngine.Player.Records.Display.Pages.British.Form414
 {
@@ -208,19 +210,31 @@ namespace GuruEngine.Player.Records.Display.Pages.British.Form414
 
                 set.Commands.Add(text);
 
+                mfont.DrawString(pform.PilotName, new Vector2(1300, 125));
+                int ypos = 290;
+                int y2 = 645;
+                foreach (Certification c in pform.aircraftCertifications)
+                {
+                    if (c.DayOnly)
+                    {
+                        mfont.DrawString(c.Location, new Vector2(1450, ypos), 0.8f);
+                        mfont.DrawString(c.CertifyingOfficer, new Vector2(1600, ypos), 0.8f);
+                        mfont.DrawString(c.Date.ToShortDateString(), new Vector2(1280, ypos), 0.8f);
+                        mfont.DrawString(AircraftNames.GetAircraftName(c.AircraftType), new Vector2(1060, ypos), 0.8f);
+                        ypos += 36;
+                    }
+                    else
+                    {
+                        mfont.DrawString(c.Location, new Vector2(1450, y2), 0.8f);
+                        mfont.DrawString(c.CertifyingOfficer, new Vector2(1600, y2), 0.8f);
+                        mfont.DrawString(c.Date.ToShortDateString(), new Vector2(1280, y2), 0.8f);
+                        mfont.DrawString(AircraftNames.GetAircraftName(c.AircraftType), new Vector2(1060, y2), 0.8f);
+                        y2 += 36;
+                    }
+                }
 
                 mfont.DrawString("Pilot officer", new Vector2(1685, 125));
-                mfont.DrawString(pform.PilotName, new Vector2(1300, 125));
-                mfont.DrawString("Spitfire I", new Vector2(1060, 290), 0.8f);
-                mfont.DrawString("2. 9. 39", new Vector2(1280, 290),0.8f);
-                mfont.DrawString("No 327 fs", new Vector2(1450, 290), 0.8f);
-                mfont.DrawString("W/Cmdr F Brown.", new Vector2(1600, 290), 0.8f);
 
-                mfont.DrawString("Spitfire I", new Vector2(1060, 645), 0.8f);
-                mfont.DrawString("21. 9. 39", new Vector2(1280, 645), 0.8f);
-                mfont.DrawString("No 327 fs", new Vector2(1450, 645), 0.8f);
-                mfont.DrawString("W/Cmdr F Brown.", new Vector2(1600, 645), 0.8f);
-                
                 set.Commands.Add(mtext);
 
                 overlay = new RenderSpritesCommand();
