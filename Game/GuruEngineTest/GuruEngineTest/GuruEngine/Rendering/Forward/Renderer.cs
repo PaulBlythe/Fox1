@@ -19,6 +19,7 @@ using GuruEngine.Maths;
 using GuruEngine.Rendering.Particles;
 using GuruEngine.World.Weather;
 using GuruEngine.Rendering.EffectPasses;
+using GuruEngineTest.GuruEngine.Rendering;
 
 namespace GuruEngine
 {
@@ -33,7 +34,7 @@ namespace GuruEngine
         public RenderTarget2D backbuffer;
         public RenderTarget2D staging_texture;
 
-        private Dictionary<String, Effect> loadedShaders = new Dictionary<string, Effect>();
+        private Dictionary<String, RenderEffect> loadedShaders = new Dictionary<string, RenderEffect>();
 
         private float[] cascadeSplits;
         private Vector3[] frustumCorners;
@@ -178,7 +179,7 @@ namespace GuruEngine
             {
 
                 Vector3 lightDirection = new Vector3(state.SunDirection.X, state.SunDirection.Y, state.SunDirection.Z);
-                Effect shadowMapEffect = loadedShaders["ShadowMap"];
+                RenderEffect shadowMapEffect = loadedShaders["ShadowMap"];
                 globalShadowMatrix = MakeGlobalShadowMatrix(state);
                 for (var cascadeIdx = 0; cascadeIdx < Renderer.GetSettings().ShadowMapCascades; ++cascadeIdx)
                 {
@@ -311,7 +312,7 @@ namespace GuruEngine
                                 Matrix worldViewProjection = r.World * ViewProjection;
 
                                 shadowMapEffect.Parameters["WorldViewProjection"].SetValue(worldViewProjection);
-                                foreach (EffectPass p in shadowMapEffect.CurrentTechnique.Passes)
+                                foreach (EffectPass p in shadowMapEffect.effect.CurrentTechnique.Passes)
                                 {
                                     p.Apply();
 
@@ -454,7 +455,7 @@ namespace GuruEngine
                                         Matrix World = Matrix.CreateTranslation(pos);
                                         if (Renderer.GetSkyType() == Skies.SimpleScattered)
                                         {
-                                            Effect effect = loadedShaders[@"Shaders\Forward\ScatteredSky"];
+                                            RenderEffect effect = loadedShaders[@"Shaders\Forward\ScatteredSky"];
                                             effect.Parameters["View"].SetValue(View);
                                             effect.Parameters["WorldViewProjection"].SetValue(World * View * Projection);
                                             effect.Parameters["ViewInverse"].SetValue(Matrix.Invert(View));
@@ -462,7 +463,7 @@ namespace GuruEngine
                                         }
                                         else
                                         {
-                                            Effect effect = loadedShaders[@"Shaders\Forward\TracedSky"];
+                                            RenderEffect effect = loadedShaders[@"Shaders\Forward\TracedSky"];
                                             effect.Parameters["View"].SetValue(View);
                                             effect.Parameters["Projection"].SetValue(Projection);
                                             effect.Parameters["World"].SetValue(World);
@@ -578,16 +579,16 @@ namespace GuruEngine
                             break;
                         case Rendering.EffectPasses.EffectPassType.Hypoxia:
                             {
-                                Effect effect = loadedShaders[@"Shaders\2D\RadialBlur"];
+                                RenderEffect effect = loadedShaders[@"Shaders\2D\RadialBlur"];
                                 HypoxiaEffectPass hp = (HypoxiaEffectPass)pass;
 
-                                effect.Parameters["BlurIntensity"].SetValue(hp.BlurLevel);
+                                effect.effect.Parameters["BlurIntensity"].SetValue(hp.BlurLevel);
                                 float f = 1.0f - hp.BlackoutLevel;
                                 Vector4 drawcolour = new Vector4(f, f, f, f);
 
                                 device.SetRenderTarget(staging_texture);
                                 device.DepthStencilState = DepthStencilState.None;
-                                spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.NonPremultiplied,SamplerState.LinearClamp,DepthStencilState.None,null,effect);
+                                spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.NonPremultiplied,SamplerState.LinearClamp,DepthStencilState.None,null,effect.effect);
                                 spriteBatch.Draw(backbuffer, src, Color.White);
                                 spriteBatch.End();
 
@@ -741,23 +742,64 @@ namespace GuruEngine
                 LogHelper.Instance.Warning("Multiple loads of shader " + name);
                 return;
             }
-            loadedShaders.Add(name, fx);
+            RenderEffect rfx = new RenderEffect();
+            rfx.effect = fx;
+
+            EffectParameter ep = fx.Parameters["WindSpeed"];
+            rfx.Parameters["WindSpeed"] = ep;
+            ep = fx.Parameters["WindDirection"];
+            rfx.Parameters["WindDirection"] = ep;
+            ep = fx.Parameters["WorldViewProjection"];
+            rfx.Parameters["WorldViewProjection"] = ep;
+            ep = fx.Parameters["World"];
+            rfx.Parameters["World"] = ep;
+            ep = fx.Parameters["View"];
+            rfx.Parameters["View"] = ep;
+            ep = fx.Parameters["Projection"];
+            rfx.Parameters["Projection"] = ep;
+            ep = fx.Parameters["ViewInverse"];
+            rfx.Parameters["ViewInverse"] = ep;
+            ep = fx.Parameters["LightMask"];
+            rfx.Parameters["LightMask"] = ep;
+            ep = fx.Parameters["MoonLit"];
+            rfx.Parameters["MoonLit"] = ep;
+            ep = fx.Parameters["MoonDirection"];
+            rfx.Parameters["MoonDirection"] = ep;          
+            ep = fx.Parameters["SunColour"];
+            rfx.Parameters["SunColour"] = ep;
+            ep = fx.Parameters["SunDirection"];
+            rfx.Parameters["SunDirection"] = ep;
+            ep = fx.Parameters["AmbientColour"];
+            rfx.Parameters["AmbientColour"] = ep;
+            ep = fx.Parameters["WorldInverseTranspose"];
+            rfx.Parameters["WorldInverseTranspose"] = ep;
+            ep = fx.Parameters["environmentMap"];
+            rfx.Parameters["environmentMap"] = ep;
+            ep = fx.Parameters["time"];
+            rfx.Parameters["time"] = ep;
+            ep = fx.Parameters["Texture1"];
+            rfx.Parameters["Texture1"] = ep;
+            ep = fx.Parameters["ViewVector"];
+            rfx.Parameters["ViewVector"] = ep;
+            ep = fx.Parameters["ShadowMap"];
+            rfx.Parameters["ShadowMap"] = ep;
+
+            loadedShaders.Add(name, rfx);
         }
 
         public override Effect ApplyShader(WorldState state, RenderCommand r)
         {
             if (loadedShaders.ContainsKey(r.Shader))
             {
-                Effect fx = loadedShaders[r.Shader];
-                fx.CurrentTechnique = fx.Techniques[r.ShaderTechnique];
+                RenderEffect fx = loadedShaders[r.Shader];
+                fx.effect.CurrentTechnique = fx.effect.Techniques[r.ShaderTechnique];
 
                 foreach (ShaderVariables s in r.Variables)
                 {
                     switch (s)
                     {
                         case ShaderVariables.WindSpeed:
-                            if (fx.Parameters["WindSpeed"] != null)
-                                fx.Parameters["WindSpeed"].SetValue(WeatherManager.GetWindSpeed());
+                            fx.Parameters["WindSpeed"]?.SetValue(WeatherManager.GetWindSpeed());
                             break;
 
                         case ShaderVariables.WindDirection:
@@ -843,8 +885,8 @@ namespace GuruEngine
 
                     }
                 }
-                fx.Techniques[r.ShaderTechnique].Passes[0].Apply();
-                return fx;
+                fx.effect.Techniques[r.ShaderTechnique].Passes[0].Apply();
+                return fx.effect;
 
             }
             else

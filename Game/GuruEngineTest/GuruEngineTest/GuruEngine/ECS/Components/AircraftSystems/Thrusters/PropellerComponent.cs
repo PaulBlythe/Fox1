@@ -154,6 +154,10 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Thrusters
             f0 = (float)(2 * etaC * CruisePower / (res.Density * CruiseSpeed * V2));
 
             host = (DynamicPhysicsComponent)Parent.FindSingleComponentByType<DynamicPhysicsComponent>();
+
+            FeatherCommand = "PropFeather" + Number.ToString();
+            Engine = "Engine" + Number.ToString();
+
         }
 
         public override void ReConnect(GameObject otherT)
@@ -175,8 +179,6 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Thrusters
             other.MinRPM = MinRPM;
             other.MaxRPM = MaxRPM;
             other.GearRatio = GearRatio;
-            other.FeatherCommand = FeatherCommand;
-            other.Engine = Engine;
             other.Number = Number;
             other.VariablePitch = VariablePitch;
         }
@@ -226,11 +228,8 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Thrusters
                 case "MaxRPM":
                     MaxRPM = float.Parse(Value);
                     break;
-                case "Engine":
-                    Engine = Value;
-                    break;
-                case "Feather":
-                    FeatherCommand = Value;
+                case "Number":
+                    Number = int.Parse(Value);
                     break;
             }
         }

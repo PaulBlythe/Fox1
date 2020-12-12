@@ -35,10 +35,10 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	VertexShaderOutput output = (VertexShaderOutput)0;
 
 	float2 outp = input.TextureCoordinate.xy * float2(2.0, -2.0) + float2(-1.0, 1.0);
-
 	output.Position = float4(outp.x, outp.y, 0.0f, 1);
-	output.WorldPos = mul(input.Position, World);
-	output.View = normalize(EyePosition - output.WorldPos.xyz);
+
+	output.WorldPos = mul(input.Position, World).xyz;
+	output.View = normalize(EyePosition - output.WorldPos);
 	output.Norm = normalize(mul(input.Normal, WorldInverseTranspose).xyz);
 	return output;
 }
@@ -46,27 +46,28 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
 	float4 res = float4(0,0,0,1);
-	if (input.WorldPos.x > Minimums.x)
+	if (input.WorldPos.x >= Minimums.x)
 	{
-		if (input.WorldPos.y > Minimums.y)
+		if (input.WorldPos.y >= Minimums.y)
 		{
-			if (input.WorldPos.z > Minimums.z)
+			if (input.WorldPos.z >= Minimums.z)
 			{
 				if (input.WorldPos.x < Maximums.x)
 				{
 					if (input.WorldPos.y < Maximums.y)
 					{
-						if (input.WorldPos.z < Maximums.z)
+						//if (input.WorldPos.z < Maximums.z)
 						{
-							float3 Normal = normalize(input.Norm);
-							float3 LightDir = normalize(Direction);
-							float3 ViewDir = normalize(input.View);
-							float3 H = normalize(LightDir + ViewDir);
-
-							float3 Id = saturate(dot(Normal, LightDir));
-							float3 Is = pow(saturate(dot(Normal, H)), 15);
-							float l = saturate(0.4f + Id + Is);
-							res = float4(l, l, l, 1.0);
+							//float3 Normal = normalize(input.Norm);
+							//float3 LightDir = normalize(Direction);
+							//float3 ViewDir = normalize(input.View);
+							//float3 H = normalize(LightDir + ViewDir);
+							//
+							//float3 Id = saturate(dot(Normal, LightDir));
+							//float3 Is = pow(saturate(dot(Normal, H)), 15);
+							//float l = saturate(0.2f + Id + Is);
+							//res = float4(l, l, l, 1.0);
+							res = float4(1.0, 1.0, 1.0, 1.0);
 						}
 					}
 				}

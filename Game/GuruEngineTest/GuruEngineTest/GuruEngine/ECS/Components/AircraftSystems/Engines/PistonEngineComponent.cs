@@ -39,6 +39,7 @@ using GuruEngine.ECS.Components.AircraftSystems.Thrusters;
 //( Parameter Bool Boosted )
 //( Parameter Bool BoostOverride )
 //( Parameter Bool TakeoffBoost )  
+//( Parameter Bool Injected )
 //( Parameter Float TakeoffBoostPSI )
 //( Parameter ArrayDouble RatedBoost )
 //( Parameter ArrayDouble RatedAltitude )
@@ -64,7 +65,7 @@ using GuruEngine.ECS.Components.AircraftSystems.Thrusters;
 //( Parameter ArrayDouble ICE_Index )
 //( Parameter ArrayDouble ICE_Values )
 //( Parameter ArrayDouble MCE_Index )
-//( Parameter ArrayDouble MCE_Vlaues )
+//( Parameter ArrayDouble MCE_Values )
 
 
 namespace GuruEngine.ECS.Components.AircraftSystems.Engines
@@ -94,7 +95,8 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Engines
         public int BoostSpeed;	                    // The current boost-speed (zero-based).
         public bool Boosted;		                // Set true for boosted engine.
         public bool BoostOverride;	                // Set true if pilot override of the boost regulator was fitted. (Typically called 'war emergency power').    Merlin false
-        public bool TakeoffBoost;	                // Set true if extra takeoff / emergency boost above rated boost could be attained. (Typically by extra throttle movement past a mechanical 'gate').  Merlin 45
+        public bool TakeoffBoost;                   // Set true if extra takeoff / emergency boost above rated boost could be attained. (Typically by extra throttle movement past a mechanical 'gate').  Merlin 45
+        public bool Injected;                       // Has fuel injection
         public double TakeoffBoostPSI;	            // Sea-level takeoff boost in psi. (if fitted).
 
         public double[] RatedBoost = new double[3];	                // Sea-level rated boost in psi.                    Merlin [37,37]
@@ -185,6 +187,7 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Engines
         List<FuelTank> Tanks = new List<FuelTank>();
         AircraftStateComponent State = null;
         PropellerComponent Prop = null;
+        Random rand = new Random();
 
         #region ECS Game component methods
         public override ECSGameComponent Clone()
@@ -546,6 +549,72 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Engines
                         EngineNumber = int.Parse(Value);
                     }
                     break;
+                case "Boosted":
+                    {
+                        Boosted = bool.Parse(Value);
+                    }
+                    break;
+                case "BoostOverride":
+                    {
+                        BoostOverride = bool.Parse(Value);
+                    }
+                    break;
+                case "TakeoffBoost":
+                    {
+                        TakeoffBoost = bool.Parse(Value);
+                    }
+                    break;
+                case "Injected":
+                    {
+                        Injected = bool.Parse(Value);
+                    }
+                    break;
+                case "TakeoffBoostPSI":
+                    {
+                        TakeoffBoostPSI = float.Parse(Value);
+                    }
+                    break;
+                case "StarterHP":
+                    {
+                        StarterHP = float.Parse(Value);
+                    }
+                    break;
+                case "BoostSpeeds":
+                    {
+                        BoostSpeeds = int.Parse(Value);
+                    }
+                    break;
+                case "BoostSpeed":
+                    {
+                        BoostSpeed = int.Parse(Value);
+                    }
+                    break;
+                case "minMAP":
+                    {
+                        minMAP = float.Parse(Value);
+                    }
+                    break;
+                case "maxMAP":
+                    {
+                        maxMAP = float.Parse(Value);
+                    }
+                    break;
+                case "MAP":
+                    {
+                        MAP = float.Parse(Value);
+                    }
+                    break;
+                case "TMAP":
+                    {
+                        TMAP = float.Parse(Value);
+                    }
+                    break;
+                case "ISFC":
+                    {
+                        ISFC = float.Parse(Value);
+                    }
+                    break;
+               
             }
         }
 
@@ -796,11 +865,15 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Engines
             double thi_sea_level = 1.3 * State.DoubleVariables[Mixture_descriptor];                   // Allows an AFR of infinity:1 to 11.3075:1
             equivalence_ratio = thi_sea_level * 101325.0 / p_amb;
 
-            //  double AFR = 10+(12*(1-Mixture));
-            //  mixture 10:1 to 22:1
-            //  m_dot_fuel = m_dot_air / AFR;
-
             m_dot_fuel = (m_dot_air * equivalence_ratio) / 14.7;
+            if (!Injected)                                                                           // if fuel is not injected , negative g can starve the engine of fuel
+            {
+                float engine_g = (float)State.DoubleVariables["pilot_g"];
+                if (engine_g > 1)
+                {
+                    m_dot_fuel = (rand.NextDouble() > 0.5) ? 0 : m_dot_fuel;
+                }
+            }
             FuelFlowRate = m_dot_fuel * 2.2046;                     // kg to lb
             FuelFlow_pph = FuelFlowRate * 3600;                     // seconds to hours
             FuelFlow_gph = FuelFlow_pph / 6.0;                      // Assumes 6 lbs / gallon
@@ -956,8 +1029,7 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Engines
             // Check if we are turning the starter motor
             if (Cranking != Starter)
             {
-                // This check saves .../cranking from getting updated every loop - they
-                // only update when changed.
+                // This check saves .../cranking from getting updated every loop - they only update when changed.
                 Cranking = Starter;
                 crank_counter = 0;
             }
@@ -965,7 +1037,8 @@ namespace GuruEngine.ECS.Components.AircraftSystems.Engines
             if (Cranking) crank_counter++;  //Check mode of engine operation
 
             if (!Running && spark && fuel)
-            {  // start the engine if revs high enough
+            {  
+                // start the engine if revs high enough
                 if (Cranking)
                 {
                     if ((State.DoubleVariables[RPM_descriptor] > IdleRPM * 0.8) && (crank_counter > 175)) // Add a little delay to startup on the starter

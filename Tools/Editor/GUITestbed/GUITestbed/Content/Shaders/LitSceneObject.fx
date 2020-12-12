@@ -10,6 +10,7 @@
 float4x4 World;
 float4x4 View;
 float4x4 Projection;
+float2   HalfPixel;
 
 texture LightTexture;
 sampler2D LightSampler = sampler_state
@@ -57,7 +58,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	float4 textureColor = tex2D(textureSampler, input.Tex);
 
 	float light = 0.2f;
-	light = saturate(light + tex2D(LightSampler, input.Tex).x);
+	light = saturate(light + tex2D(LightSampler, input.Tex + HalfPixel).x);
 
 	float4 result;
 	result.xyz = light * textureColor.xyz;

@@ -52,7 +52,7 @@ namespace GuruEngineTest.Scenes.Debug
             world = new World("ParticleEditor");
             worldState = new WorldState();
             batch = new SpriteBatch(Renderer.GetGraphicsDevice());
-            
+            ID = "ParticleEditorScene".GetHashCode();
         }
 
         public override void Load(ContentManager Content)

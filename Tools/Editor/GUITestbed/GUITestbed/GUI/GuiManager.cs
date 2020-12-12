@@ -117,6 +117,8 @@ namespace GUITestbed.GUI
             sbatch.Begin();
             foreach (GuiItem i in Items)
                 i.Draw(sbatch);
+            foreach (Dialog d in dialogs)
+                d.Draw(sbatch);
             sbatch.End();
 
             font.Begin();

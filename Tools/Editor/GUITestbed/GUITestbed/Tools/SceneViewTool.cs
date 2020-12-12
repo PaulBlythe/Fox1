@@ -16,6 +16,8 @@ using GUITestbed.Rendering;
 using GUITestbed.Scenes;
 using GUITestbed.Rendering.Software;
 using Wavefront = GUITestbed.Rendering._3D.Wavefront;
+using GUITestbed.GUI.Dialogs;
+using GUITestbed.GUI;
 
 namespace GUITestbed.Tools
 {
@@ -82,9 +84,15 @@ namespace GUITestbed.Tools
 
             box_light_effect = Game1.Instance.Content.Load<Effect>(@"Shaders\BoxLight");
             lit_effect = Game1.Instance.Content.Load<Effect>(@"Shaders\LitSceneObject");
+            Vector2 hp = new Vector2(1.0f / Game1.Instance.GraphicsDevice.Viewport.Width, 1.0f / Game1.Instance.GraphicsDevice.Viewport.Height);
+            hp *= 0.5f;
+            lit_effect.Parameters["HalfPixel"].SetValue(hp);
+
             spot_effect = Game1.Instance.Content.Load<Effect>(@"Shaders\Spotlight");
             depth_only = Game1.Instance.Content.Load<Effect>(@"Shaders\DepthOnly");
             gaussianBlurEffect = Game1.Instance.Content.Load<Effect>(@"Shaders\GaussianBlur");
+
+            //GuiManager.Instance.Add(new ProgressDialog());
         }
 
         public override void Update(float dt)
@@ -288,9 +296,9 @@ namespace GUITestbed.Tools
                 box_light_effect.Parameters["Minimums"].SetValue(lb.Bounds.Min);
                 box_light_effect.Parameters["Maximums"].SetValue(lb.Bounds.Max);
                 box_light_effect.Parameters["Direction"].SetValue(lb.Direction);
-                for (int i = 0; i < current.Instances.Count; i++)
+                for (int i = 0; i < current.GetCount(); i++)
                 {
-                    Game1.Instance.GraphicsDevice.SetRenderTarget(current.Instances[i].LightMap);
+                    Game1.Instance.GraphicsDevice.SetRenderTarget(current.GetLightMap(i));
                     Game1.Instance.GraphicsDevice.BlendState = BlendState.Opaque;
                     Game1.Instance.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
                     Game1.Instance.GraphicsDevice.DepthStencilState = DepthStencilState.None;
@@ -301,25 +309,10 @@ namespace GUITestbed.Tools
                     box_light_effect.Parameters["WorldInverseTranspose"].SetValue(Matrix.Transpose(Matrix.Invert(m)));
                     box_light_effect.Parameters["EyePosition"].SetValue(camera.Position);
 
-                    //w.Draw(box_light_effect);
+                    w.Draw(box_light_effect);
                    
                 }
-                for (int i = 0; i < current.tanims.Count; i++)
-                {
-                    Game1.Instance.GraphicsDevice.SetRenderTarget(current.tanims[i].LightMap);
-                    Game1.Instance.GraphicsDevice.BlendState = BlendState.Opaque;
-                    Game1.Instance.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
-                    Game1.Instance.GraphicsDevice.DepthStencilState = DepthStencilState.None;
-                    Wavefront w = current.GetMesh(i);
-                    Matrix m = current.GetWorld(i);
-
-                    box_light_effect.Parameters["World"].SetValue(m);
-                    box_light_effect.Parameters["WorldInverseTranspose"].SetValue(Matrix.Transpose(Matrix.Invert(m)));
-                    box_light_effect.Parameters["EyePosition"].SetValue(camera.Position);
-
-                    //w.Draw(box_light_effect);
-
-                }
+                
 
             }
             #endregion

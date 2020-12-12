@@ -55,6 +55,8 @@ namespace GUITestbed.GUI.Widgets
 
         public override void Draw(SpriteBatch b)
         {
+            foreach (Widget w in Children)
+                w.Draw(b);
         }
     }
 }

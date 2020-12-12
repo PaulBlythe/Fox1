@@ -532,8 +532,11 @@ namespace GUITestbed
             DrawPoints(spriteBatch, center, arc, color, thickness);
         }
 
+        
+
         #endregion
 
 
     }
+
 }

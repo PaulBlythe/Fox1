@@ -72,6 +72,7 @@ namespace GuruEngineTest.Scenes.Developer
         public override void Init()
         {
             batch = new SpriteBatch(Renderer.GetGraphicsDevice());
+            ID = "ObjectTester".GetHashCode();
         }
 
         public override void Update(float dt)

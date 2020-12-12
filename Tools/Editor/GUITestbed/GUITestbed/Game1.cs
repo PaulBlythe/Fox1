@@ -17,6 +17,7 @@ namespace GUITestbed
     public class Game1 : Game
     {
         public static string GISLocation = @"C:\Data\GIS\Natural_Earth_quick_start\";
+        public static string SRTMLoocation = @"\\NFS1\FileStore\Data\SRTM\";
 
         public static Game1 Instance;
         GraphicsDeviceManager graphics;

@@ -1,0 +1,11 @@
+8
+1
+1
+English
+C:\Data\Fox1\/PaintSchemes/
+10
+C:\Data\Fox1\
+C:\Data\Fox1\
+False
+2560
+1080

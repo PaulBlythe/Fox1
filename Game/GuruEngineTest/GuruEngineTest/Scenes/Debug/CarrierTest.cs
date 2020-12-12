@@ -26,7 +26,7 @@ namespace GuruEngineTest.Scenes.Gebug
         {
             worldState = new WorldState();
             gameWorld = new World(@"Debug/CarrierTest.txt");
-           
+            ID = "CarrierTest".GetHashCode();
         }
 
         public override void Update(float dt)

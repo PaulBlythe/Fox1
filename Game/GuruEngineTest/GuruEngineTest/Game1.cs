@@ -13,6 +13,7 @@ using GuruEngine.DebugHelpers;
 using GuruEngine.Rendering;
 using GuruEngine.Player.Records;
 using GuruEngine.Player.Records.WWII.British;
+using Microsoft.Xna.Framework.Content;
 
 namespace GuruEngineTest
 {
@@ -28,7 +29,7 @@ namespace GuruEngineTest
         Engine engine;
         public GameTime global_game_time;
         PlayerRecord playerRecord = new PlayerRecord();
-
+        public String nextscene = "";
 #if DEBUG
         FrameCounter framecounter;
 #endif
@@ -78,10 +79,12 @@ namespace GuruEngineTest
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            engine.Initialise(GraphicsDevice, Content, Services, false);
+          
+            engine.Initialise(GraphicsDevice, Content, Services, true);
+            engine.SetScene(new Scenes.Debug.DebugSceneSelection());
             //engine.SetScene(new Scenes.MainMenu());
             //engine.SetScene(new Scenes.LoadingScene());
-            engine.SetScene(new Scenes.Gebug.CarrierTest());
+            //engine.SetScene(new Scenes.Gebug.CarrierTest());
             //engine.SetScene(new Scenes.Campaign.WWII.British.PilotRecord());
             //engine.SetScene(new Scenes.Debug.ParticleEditorScene());
             //engine.SetScene(new Scenes.Developer.AircraftPhysicsTest());
@@ -107,6 +110,12 @@ namespace GuruEngineTest
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            if(nextscene != "")
+            {
+                Engine.SetScene(nextscene);
+                nextscene = "";
+            }
 #if MULTI_THREADED
 #else
             Engine.UpdateAll(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
@@ -139,12 +148,15 @@ namespace GuruEngineTest
             r.Height -= 4;
             spriteBatch.FillRectangle(r, Color.DarkBlue);
 
-            String s = String.Format("{0:0.00}", framecounter.AverageFramesPerSecond);
-            Vector2 sp = AssetManager.GetDebugFont().MeasureString(s);
-            sp *= -0.5f;
-            sp.X += (1920 / 2);
-            sp.Y += 22;
-            spriteBatch.DrawString(AssetManager.GetDebugFont(), s, sp, Color.White);
+            if (!float.IsInfinity(framecounter.AverageFramesPerSecond))
+            {
+                String s = String.Format("{0:0.00}", framecounter.AverageFramesPerSecond);
+                Vector2 sp = AssetManager.GetDebugFont().MeasureString(s);
+                sp *= -0.5f;
+                sp.X += (1920 / 2);
+                sp.Y += 22;
+                spriteBatch.DrawString(AssetManager.GetDebugFont(), s, sp, Color.White);
+            }
             spriteBatch.End();
 #endif
 

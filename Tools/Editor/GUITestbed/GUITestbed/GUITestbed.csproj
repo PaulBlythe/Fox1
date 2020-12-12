@@ -134,6 +134,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="GUI\Dialogs\MessageBox.cs" />
     <Compile Include="GUI\Dialogs\OpenFileDialog.cs" />
+    <Compile Include="GUI\Dialogs\ProgressDialog.cs" />
     <Compile Include="GUI\Dialogs\SaveFileDialog.cs" />
     <Compile Include="GUI\Dialogs\TextEntryDialog.cs" />
     <Compile Include="GUI\FrameCounter.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="GUI\Widgets\ListView.cs" />
     <Compile Include="GUI\Widgets\NumericUpDown.cs" />
     <Compile Include="GUI\Widgets\Panel.cs" />
+    <Compile Include="GUI\Widgets\ProgressBar.cs" />
     <Compile Include="GUI\Widgets\Selector.cs" />
     <Compile Include="GUI\Widgets\SideBar.cs" />
     <Compile Include="GUI\Widgets\Slider.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\3D\Camera.cs" />
+    <Compile Include="Rendering\3D\Face.cs" />
     <Compile Include="Rendering\3D\FenceObject.cs" />
     <Compile Include="Rendering\3D\FixedCamera.cs" />
     <Compile Include="Rendering\3D\FreeCamera.cs" />
@@ -178,8 +181,23 @@
     <Compile Include="Rendering\3D\SkyDomeParameters.cs" />
     <Compile Include="Rendering\3D\SkyDomeSystem.cs" />
     <Compile Include="Rendering\3D\StaticMesh.cs" />
+    <Compile Include="Rendering\3D\VertexPositionNormalColor.cs" />
     <Compile Include="Rendering\3D\Wavefront.cs" />
     <Compile Include="Rendering\DebugLineDraw.cs" />
+    <Compile Include="Rendering\Lighting\Photon\Hit.cs" />
+    <Compile Include="Rendering\Lighting\Photon\KDTree.cs" />
+    <Compile Include="Rendering\Lighting\Photon\KDTreeNode.cs" />
+    <Compile Include="Rendering\Lighting\Photon\Pair.cs" />
+    <Compile Include="Rendering\Lighting\Photon\Photon.cs" />
+    <Compile Include="Rendering\Lighting\Photon\PhotonEdge.cs" />
+    <Compile Include="Rendering\Lighting\Photon\PhotonEmitter.cs" />
+    <Compile Include="Rendering\Lighting\Photon\PhotonMapper.cs" />
+    <Compile Include="Rendering\Lighting\Photon\PhotonMapperSettings.cs" />
+    <Compile Include="Rendering\Lighting\Photon\PhotonTree.cs" />
+    <Compile Include="Rendering\Lighting\Photon\Primitive.cs" />
+    <Compile Include="Rendering\Lighting\Photon\Radiosity.cs" />
+    <Compile Include="Rendering\Lighting\Photon\Raytracer.cs" />
+    <Compile Include="Rendering\Lighting\Photon\RayTree.cs" />
     <Compile Include="Rendering\ScanLineConverter.cs" />
     <Compile Include="Rendering\Software\Helpers.cs" />
     <Compile Include="Rendering\Software\Volume.cs" />
@@ -194,6 +212,7 @@
     <Compile Include="Tools\TextureLoader.cs" />
     <Compile Include="Tools\Tool.cs" />
     <Compile Include="Tools\WorldDisplayTool.cs" />
+    <Compile Include="Types\SRTM.cs" />
     <Compile Include="World\BezierVector2D.cs" />
     <Compile Include="World\Cartography.cs" />
     <Compile Include="World\Constants.cs" />

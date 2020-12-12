@@ -17,6 +17,11 @@ using GuruEngine.DebugHelpers;
 using GuruEngine.Localization;
 using GuruEngine.Localization.Strings;
 using GuruEngine.Audio;
+using GuruEngineTest.Scenes;
+using GuruEngineTest.Scenes.Campaign.WWII.British;
+using GuruEngineTest.Scenes.Gebug;
+using GuruEngineTest.Scenes.Developer;
+using GuruEngineTest.Scenes.Debug;
 
 namespace GuruEngine
 {
@@ -50,8 +55,11 @@ namespace GuruEngine
             Instance = this;
             renderer = new Renderer(device, ForwardRenderer);
             assetManager = new AssetManager(device, serviceProvider, "Content");
-           
-            sceneManager = new SceneManager(content);
+
+            ContentManager c2 = new ContentManager(serviceProvider);
+            c2.RootDirectory = "Content";
+            sceneManager = new SceneManager(c2);
+
             inputDeviceManager = new InputDeviceManager();
             ai = new AIManager();
             ammo = new AmmunitionDatabase();
@@ -132,6 +140,40 @@ namespace GuruEngine
         public static void EndDrawFrame(GameTime gameTime)
         {
             Instance.EndDraw(gameTime);
+        }
+
+        public static void SetScene(String s)
+        {
+            Instance.loaded = false;
+            switch (s)
+            {
+                case "Main menu":
+                    Instance.SetScene(new MainMenu());
+                    break;
+                case "RAF pilot record":
+                    Instance.SetScene(new PilotRecord());
+                    break;
+                case "Loading screen":
+                    Instance.SetScene(new LoadingScene());
+                    break;
+                case "Carrier test":
+                    Instance.SetScene(new CarrierTest());
+                    break;
+                case "Aircraft physics":
+                    Instance.SetScene(new AircraftPhysicsTest());
+                    break;
+                case "Object tester":
+                    Instance.SetScene(new ObjectTester());
+                    break;
+                case "Particle editor":
+                    Instance.SetScene(new ParticleEditorScene());
+                    break;
+                default:
+                    System.Console.WriteLine("Missing scene " + s);
+                    Instance.loaded = true;
+                    break;
+            }
+          
         }
 #endregion
     }

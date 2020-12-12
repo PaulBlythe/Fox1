@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GUITestbed.Rendering._3D;
+using GUITestbed.Rendering.Lighting.Photon;
 
 namespace GUITestbed.Scenes
 {
@@ -39,7 +40,7 @@ namespace GUITestbed.Scenes
             Vector3 dz = Vector3.Cross(Axis, -Direction) * Depth * 0.5f;
             Vector3 min = Position - dx - dz;
             Vector3 max = Position + dx + dz;
-            min.Y = -2;
+            min.Y = -4;
             Bounds = new BoundingBox(min, max);
         }
     }
@@ -64,7 +65,6 @@ namespace GUITestbed.Scenes
         public List<LightBox> LightBoxes = new List<LightBox>();
         public List<SpotLight> SpotLights = new List<SpotLight>();
         public List<TranslateAnimator> tanims = new List<TranslateAnimator>();
-
         public List<Wavefront> Meshes = new List<Wavefront>();
 
         public Scene(String file)
@@ -216,5 +216,113 @@ namespace GUITestbed.Scenes
             i -= Instances.Count;
             return tanims[i].LightMap;
         }
+
+
+        #region Photon mapping extensions
+        List<Face> faces = new List<Face>();
+        public int CountFaces()
+        {
+            int total = 0;
+            for (int i=0; i<GetCount(); i++)
+            {
+                Wavefront w = GetMesh(i);
+
+            }
+            return total;
+        }
+
+        public Face GetFace(int i)
+        {
+            return faces[i];
+        }
+
+        public int GetFaceCount()
+        {
+            return faces.Count;
+        }
+
+        public int GetLightCount()
+        {
+            return SpotLights.Count + LightBoxes.Count;
+        }
+
+        public PhotonEmitter GetLight(int i)
+        {
+            PhotonEmitter f = new PhotonEmitter();
+            f.EmittedColor = new Vector3(1, 1, 1);
+
+            if (i<SpotLights.Count)
+            {
+                Vector3 dir = SpotLights[i].Direction;
+                f.Normal = dir;
+
+                Vector3 centre = SpotLights[i].Position;
+                f.Centre = centre;
+
+                /// TODO use light direction
+                Vector3 right = 0.10f * Vector3.Right;
+                Vector3 back = 0.10f * Vector3.Forward;
+                f.V1 = centre - right - back;
+                f.V2 = centre - right + back;
+                f.V3 = centre + right - back;
+                f.V4 = centre + right + back;
+                return f;
+
+            }
+            i -= SpotLights.Count;
+            f.Normal = LightBoxes[i].Direction;
+            f.V1 = new Vector3(LightBoxes[i].Bounds.Min.X, LightBoxes[i].Bounds.Max.Y, LightBoxes[i].Bounds.Min.Z);
+            f.V2 = new Vector3(LightBoxes[i].Bounds.Min.X, LightBoxes[i].Bounds.Max.Y, LightBoxes[i].Bounds.Max.Z);
+            f.V3 = new Vector3(LightBoxes[i].Bounds.Max.X, LightBoxes[i].Bounds.Max.Y, LightBoxes[i].Bounds.Min.Z);
+            f.V4 = new Vector3(LightBoxes[i].Bounds.Max.X, LightBoxes[i].Bounds.Max.Y, LightBoxes[i].Bounds.Max.Z);
+            f.Centre = LightBoxes[i].Position;
+            return f;
+
+        }
+
+        public BoundingBox GetBoundingBox()
+        {
+            BoundingBox b = new BoundingBox();
+            foreach(Wavefront w in Meshes)
+            {
+                b = BoundingBox.CreateMerged(b, w.boundingBox);
+            }
+            return b;
+        }
+
+        public List<Face> GetLights()
+        {
+            List<Face> faces = new List<Face>();
+            foreach (SpotLight s in SpotLights)
+            {
+                Vector3 delta_lr = new Vector3(0.25f, 0.00f, 0.00f);
+                Vector3 delta_fb = new Vector3(0.00f, 0.00f, 0.25f);
+                Vector3 p = s.Position;
+
+                Face f = new Face();
+                f.V1 = p - delta_lr - delta_fb;
+                f.V2 = p + delta_lr - delta_fb;
+                f.V3 = p - delta_lr + delta_fb;
+                f.Normal = s.Direction;
+
+                faces.Add(f);
+
+                f = new Face();
+                f.V1 = p + delta_lr - delta_fb;
+                f.V2 = p - delta_lr + delta_fb;
+                f.V3 = p + delta_lr + delta_fb;
+                f.Normal = s.Direction;
+
+                faces.Add(f);
+
+            }
+
+            foreach (LightBox l in LightBoxes)
+            {
+                // TODO
+            }
+            return faces;
+        }
+        #endregion
     }
 }

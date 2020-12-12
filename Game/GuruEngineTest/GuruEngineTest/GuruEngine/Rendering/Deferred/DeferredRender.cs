@@ -16,7 +16,7 @@ using GuruEngine.Assets;
 using GuruEngine.Maths;
 using GuruEngine.Rendering.Particles;
 using GuruEngine.World.Weather;
-
+using GuruEngineTest.GuruEngine.Rendering;
 
 /// <summary>
 /// Gbuffer layouts
@@ -90,7 +90,7 @@ namespace GuruEngine.Rendering.Deferred
         public RenderTarget2D ssaoRT;
         public RenderTarget2D temp;
 
-        private Dictionary<String, Effect> loadedShaders = new Dictionary<string, Effect>();
+        private Dictionary<String, RenderEffect> loadedShaders = new Dictionary<string, RenderEffect>();
 
         RenderTargetBinding[] GBufferTargets;
 
@@ -688,43 +688,82 @@ namespace GuruEngine.Rendering.Deferred
                 LogHelper.Instance.Warning("Multiple loads of shader " + name);
                 return;
             }
-            loadedShaders.Add(name, fx);
+            RenderEffect rfx = new RenderEffect();
+            rfx.effect = fx;
+
+            EffectParameter ep = fx.Parameters["WindSpeed"];
+            rfx.Parameters["WindSpeed"] = ep;
+            ep = fx.Parameters["WindDirection"];
+            rfx.Parameters["WindDirection"] = ep;
+            ep = fx.Parameters["WorldViewProjection"];
+            rfx.Parameters["WorldViewProjection"] = ep;
+            ep = fx.Parameters["World"];
+            rfx.Parameters["World"] = ep;
+            ep = fx.Parameters["View"];
+            rfx.Parameters["View"] = ep;
+            ep = fx.Parameters["Projection"];
+            rfx.Parameters["Projection"] = ep;
+            ep = fx.Parameters["ViewInverse"];
+            rfx.Parameters["ViewInverse"] = ep;
+            ep = fx.Parameters["LightMask"];
+            rfx.Parameters["LightMask"] = ep;
+            ep = fx.Parameters["MoonLit"];
+            rfx.Parameters["MoonLit"] = ep;
+            ep = fx.Parameters["MoonDirection"];
+            rfx.Parameters["MoonDirection"] = ep;
+            loadedShaders.Add(name, rfx);
+            ep = fx.Parameters["SunColour"];
+            rfx.Parameters["SunColour"] = ep;
+            ep = fx.Parameters["SunDirection"];
+            rfx.Parameters["SunDirection"] = ep;
+            ep = fx.Parameters["AmbientColour"];
+            rfx.Parameters["AmbientColour"] = ep;
+            ep = fx.Parameters["WorldInverseTranspose"];
+            rfx.Parameters["WorldInverseTranspose"] = ep;
+            ep = fx.Parameters["environmentMap"];
+            rfx.Parameters["environmentMap"] = ep;
+            ep = fx.Parameters["time"];
+            rfx.Parameters["time"] = ep;
+            ep = fx.Parameters["Texture1"];
+            rfx.Parameters["Texture1"] = ep;
+            ep = fx.Parameters["ViewVector"];
+            rfx.Parameters["ViewVector"] = ep;
+            ep = fx.Parameters["ShadowMap"];
+            rfx.Parameters["ShadowMap"] = ep;
+
         }
 
         public override Effect ApplyShader(WorldState state, RenderCommand r)
         {
             if (loadedShaders.ContainsKey(r.Shader))
             {
-                Effect fx = loadedShaders[r.Shader];
-                fx.CurrentTechnique = fx.Techniques[r.ShaderTechnique];
+                RenderEffect fx = loadedShaders[r.Shader];
+                fx.effect.CurrentTechnique = fx.effect.Techniques[r.ShaderTechnique];
 
                 foreach (ShaderVariables s in r.Variables)
                 {
                     switch (s)
                     {
                         case ShaderVariables.WindSpeed:
-                            if (fx.Parameters["WindSpeed"] != null)
-                                fx.Parameters["WindSpeed"].SetValue(WeatherManager.GetWindSpeed());
+                            fx.Parameters["WindSpeed"]?.SetValue(WeatherManager.GetWindSpeed());
                             break;
                         case ShaderVariables.WindDirection:
-                            if (fx.Parameters["WindDirection"] != null)
-                                fx.Parameters["WindDirection"].SetValue(WeatherManager.GetWindDirection());
+                            fx.Parameters["WindDirection"]?.SetValue(WeatherManager.GetWindDirection());
                             break;
                         case ShaderVariables.WorldViewProjection:
-                            fx.Parameters["WorldViewProjection"].SetValue(r.World * View * Projection);
+                            fx.Parameters["WorldViewProjection"]?.SetValue(r.World * View * Projection);
                             break;
                         case ShaderVariables.World:
-                            if (fx.Parameters["World"] != null)
-                                fx.Parameters["World"].SetValue(r.World);
+                            fx.Parameters["World"]?.SetValue(r.World);
                             break;
                         case ShaderVariables.View:
-                            fx.Parameters["View"].SetValue(View);
+                            fx.Parameters["View"]?.SetValue(View);
                             break;
                         case ShaderVariables.Projection:
-                            fx.Parameters["Projection"].SetValue(Projection);
+                            fx.Parameters["Projection"]?.SetValue(Projection);
                             break;
                         case ShaderVariables.ViewInverse:
-                            fx.Parameters["ViewInverse"].SetValue(ViewInverse);
+                            fx.Parameters["ViewInverse"]?.SetValue(ViewInverse);
                             break;
                         case ShaderVariables.Lit:
                             {
@@ -740,7 +779,7 @@ namespace GuruEngine.Rendering.Deferred
                                 float lit = 0;
                                 if (state.SunElevation > da)
                                     lit = 1;
-                                fx.Parameters["LightMask"].SetValue(lit);
+                                fx.Parameters["LightMask"]?.SetValue(lit);
                             }
                             break;
 
@@ -749,7 +788,6 @@ namespace GuruEngine.Rendering.Deferred
                                 Vector3 textPosition = -WorldState.GetWorldState().MoonPosition.ToVector3F();
                                 textPosition.Normalize();
                                
-
                                 float h1 = MathUtils.HorizonDistance(r.World.Translation.Y);
                                 if (h1 < 1)
                                     h1 = 1;
@@ -763,44 +801,40 @@ namespace GuruEngine.Rendering.Deferred
                                 float moonelevation = (float)Math.Asin(textPosition.Y);
                                 if (moonelevation > da)
                                     lit = 1;
-                                fx.Parameters["MoonLit"].SetValue(lit);
+                                fx.Parameters["MoonLit"]?.SetValue(lit);
                             }
                             break;
                         case ShaderVariables.MoonDirection:
-                                fx.Parameters["MoonDirection"]?.SetValue(MoonDirection);
+                            fx.Parameters["MoonDirection"]?.SetValue(MoonDirection);
                             break;
                         case ShaderVariables.SunColour:
-                                fx.Parameters["SunColour"]?.SetValue(SunColour);
+                            fx.Parameters["SunColour"]?.SetValue(SunColour);
                             break;
                         case ShaderVariables.SunDirection:
-                            if (fx.Parameters["SunDirection"] != null)
-                                fx.Parameters["SunDirection"].SetValue(SunDirection);
+                            fx.Parameters["SunDirection"]?.SetValue(SunDirection);
                             break;
                         case ShaderVariables.AmbientColour:
-                            if (fx.Parameters["AmbientColour"] != null)
-                                fx.Parameters["AmbientColour"].SetValue(AmbientColour);
+                            fx.Parameters["AmbientColour"]?.SetValue(AmbientColour);
                             break;
                         case ShaderVariables.WorldInverseTranspose:
                             Matrix m = Matrix.Transpose(Matrix.Invert(r.World));
-                            fx.Parameters["WorldInverseTranspose"].SetValue(m);
+                            fx.Parameters["WorldInverseTranspose"]?.SetValue(m);
                             break;
                         case ShaderVariables.EnvironmentMap:
-                            if (fx.Parameters["environmentMap"] != null)
-                                fx.Parameters["environmentMap"].SetValue(AssetManager.Instance.environment);
+                            fx.Parameters["environmentMap"]?.SetValue(AssetManager.Instance.environment);
                             break;
                         case ShaderVariables.Time:
-                            if (fx.Parameters["time"] != null)
-                                fx.Parameters["time"].SetValue(time);
+                            fx.Parameters["time"]?.SetValue(time);
                             break;
 
                         case ShaderVariables.Texture01:
-                            if (fx.Parameters["Texture1"] != null)
-                                fx.Parameters["Texture1"].SetValue(AssetManager.Instance.GetTexture(r.textures[0]));
+                            fx.Parameters["Texture1"]?.SetValue(AssetManager.Instance.GetTexture(r.textures[0]));
                             break;
+
                         case ShaderVariables.ViewVector:
-                            if (fx.Parameters["ViewVector"] != null)
-                                fx.Parameters["ViewVector"].SetValue(CameraPosition);
+                            fx.Parameters["ViewVector"]?.SetValue(CameraPosition);
                             break;
+
                         case ShaderVariables.Shadows:
                             // if (fx.Parameters["ShadowMap"] != null)
                             //     fx.Parameters["ShadowMap"].SetValue(shadows);
@@ -815,8 +849,8 @@ namespace GuruEngine.Rendering.Deferred
 
                     }
                 }
-                fx.Techniques[r.ShaderTechnique].Passes[0].Apply();
-                return fx;
+                fx.effect.Techniques[r.ShaderTechnique].Passes[0].Apply();
+                return fx.effect;
 
             }
             else

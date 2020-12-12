@@ -43,6 +43,7 @@ namespace GuruEngineTest.Scenes
 
         public override void Init()
         {
+            ID = "MainMenu".GetHashCode();
             Instance = this;
             device = Renderer.GetGraphicsDevice();
             batch = new SpriteBatch(device);

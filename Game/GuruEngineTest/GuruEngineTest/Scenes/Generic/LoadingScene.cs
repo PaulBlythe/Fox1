@@ -44,6 +44,8 @@ namespace GuruEngineTest.Scenes
 
             width = device.Viewport.Width - 200;
             height = device.Viewport.Height - 80;
+
+            ID = "LoadingScene".GetHashCode();
         }
 
         public override void Load(ContentManager Content)

@@ -20,6 +20,27 @@ namespace GUITestbed.GUI.Widgets
 
         List<Widget> Children = new List<Widget>();
 
+        public NumericUpDown(Vector2 position, float min, float max, float value, float step)
+        {
+            MinValue = min;
+            MaxValue = max;
+            Value = value;
+            Position = position;
+
+            Button b = new Button(new Rectangle((int)position.X, (int)position.Y, 28, 28), "-");
+            b.Parent = this;
+            Children.Add(b);
+
+            b = new Button(new Rectangle(200 + (int)position.X, (int)position.Y, 28, 28), "+");
+            b.Parent = this;
+            Children.Add(b);
+
+            TextRegion = new Rectangle(30 + (int)position.X, (int)position.Y, 170, 28);
+
+            ValuePos = new Vector2(position.X + 34, position.Y + 22);
+
+            this.step = step;
+        }
 
         public NumericUpDown(Vector2 position, float min, float max, float value)
         {

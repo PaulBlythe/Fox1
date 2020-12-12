@@ -37,7 +37,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS MULTI_THREADED</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -84,6 +84,26 @@
     <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Multithreaded|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug Multithreaded\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINDOWS, MULTI_THREADED</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Multithreaded|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug Multithreaded\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
+    <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -356,6 +376,7 @@
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderSpritesCommand.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderStarsCommand.cs" />
     <Compile Include="GuruEngine\Rendering\RenderCommands\RenderTextCommand.cs" />
+    <Compile Include="GuruEngine\Rendering\RenderEffect.cs" />
     <Compile Include="GuruEngine\Rendering\RenderEffectPass.cs" />
     <Compile Include="GuruEngine\Rendering\Renderer.cs" />
     <Compile Include="GuruEngine\Rendering\RenderInterface.cs" />
@@ -457,6 +478,7 @@
     <Compile Include="GuruEngine\World\WorldState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenes\Debug\DebugSceneSelection.cs" />
     <Compile Include="Scenes\Debug\ParticleEditorScene.cs" />
     <Compile Include="Scenes\Developer\AircraftPhysicsTest.cs" />
     <Compile Include="Scenes\Developer\ObjectTester.cs" />

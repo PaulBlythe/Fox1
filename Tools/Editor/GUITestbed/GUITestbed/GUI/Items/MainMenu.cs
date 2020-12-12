@@ -65,6 +65,17 @@ namespace GUITestbed.GUI.Items
                 case "Toolbar:Materials":
                     SetupMaterialView();
                     break;
+                case "Toolbar:Terrain":
+                    SetupTerrainView();
+                    break;
+                #endregion
+
+                #region Terrain
+                case "Button:New patch":
+                    {
+                        SetupNewTerrainPatch();
+                    }
+                    break;
                 #endregion
 
                 case "Button:Save material":
@@ -338,6 +349,7 @@ namespace GUITestbed.GUI.Items
         }
 
         #region Callbacks
+
         public bool ScanAPT(String f)
         {
             if (f != "")
@@ -617,6 +629,7 @@ namespace GUITestbed.GUI.Items
             top.AddButton("Object", 128);
             top.AddButton("Airports", 128);
             top.AddButton("Materials", 128);
+            top.AddButton("Terrain", 128);
             top.AddButton("Settings", 128);
             top.AddCloseButton();
             top.Finalise();
@@ -949,6 +962,38 @@ namespace GUITestbed.GUI.Items
             }
         }
 
+        void SetupNewTerrainPatch()
+        {
+            ActiveWidgets.Clear();
+
+            Rectangle r2 = new Rectangle(1920 - 320, 30, 320, 940);
+            SideBar sb = new SideBar("Map generation", r2);
+
+            int x1 = r2.X + 20;
+            int x2 = x1 + 40;
+
+            Label l1 = new Label(new Vector2(x1, 100), "Start latitude");
+            sb.Children.Add(l1);
+
+            NumericUpDown n = new NumericUpDown(new Vector2(x1 + 20, 110), -90, 90, 0, 1);
+            sb.Children.Add(n);
+            ActiveWidgets.Add(n);
+
+            l1 = new Label(new Vector2(x1, 160), "Start longitude");
+            sb.Children.Add(l1);
+
+            n = new NumericUpDown(new Vector2(x1 + 20, 170), -180, 180, 0, 1);
+            sb.Children.Add(n);
+            ActiveWidgets.Add(n);
+
+            Button b = new Button(new Rectangle(x2, 900, 200, 30), "Build terrain");
+            b.Parent = sb;
+            sb.Children.Add(b);
+            sb.Host = this;
+
+            GuiManager.Instance.Add(sb);
+        }
+
         void SetupSceneView()
         {
             lock (Widgets)
@@ -979,6 +1024,32 @@ namespace GUITestbed.GUI.Items
                 SceneViewTool w = new SceneViewTool();
                 Game1.Instance.current = w;
             }
+        }
+
+        void SetupTerrainView()
+        {
+            lock (Widgets)
+            {
+                Widgets.Clear();
+
+                AddToolbar();
+
+                Panel p = new Panel(new Microsoft.Xna.Framework.Rectangle(0, 31, 256, 940));
+                Widgets.Add(p);
+
+                Button b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 50, 200, 30), "New patch");
+                Widgets.Add(b);
+                b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 90, 200, 30), "Load patch");
+                Widgets.Add(b);
+                b = new Button(new Microsoft.Xna.Framework.Rectangle(28, 130, 200, 30), "Save patch");
+                Widgets.Add(b);
+
+
+                StatusBar s = new StatusBar();
+                s.mode = "Terrain mode";
+                Widgets.Add(s);
+            }
+            
         }
 
         #endregion

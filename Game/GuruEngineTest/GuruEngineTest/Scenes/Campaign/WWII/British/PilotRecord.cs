@@ -30,6 +30,7 @@ namespace GuruEngineTest.Scenes.Campaign.WWII.British
             //currentPage = new Page1();
             currentPage = new Page2();
             currentPage.SetupRenderCommands();
+            ID = "PilotRecord".GetHashCode();
         }
 
         public override void Load(ContentManager Content)

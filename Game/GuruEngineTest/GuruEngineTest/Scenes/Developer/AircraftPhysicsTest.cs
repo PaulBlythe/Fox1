@@ -106,6 +106,7 @@ namespace GuruEngineTest.Scenes.Developer
         public override void Init()
         {
             batch = new SpriteBatch(Renderer.GetGraphicsDevice());
+            ID = "AircraftPhysicsTest".GetHashCode();
         }
 
         public override void Update(float dt)

@@ -13,6 +13,7 @@ namespace GuruEngine.SceneManagement
         Scene current = null;
         public ContentManager content;
         public bool Paused = false;
+        bool holdoff = false;
 
         public SceneManager(ContentManager Content)
         {
@@ -28,15 +29,21 @@ namespace GuruEngine.SceneManagement
         {
             if ((current == null)||(current.ID != scene.ID))
             {
+                holdoff = true;
+                if (current !=null)
+                {
+                    content.Unload();
+                }
                 current = scene;
                 current.Init();
                 current.Load(content);
+                holdoff = false;
             }
         }
 
         public void Update(float dt)
         {
-            if (current != null)
+            if ((current != null) && (!holdoff))
             {
                 if (Paused)
                     dt = 0;
@@ -46,7 +53,7 @@ namespace GuruEngine.SceneManagement
 
         public void Draw(GameTime gt)
         {
-            if (current != null)
+            if ((current != null) && (!holdoff))
             {
                 current.Draw(gt);
             }
