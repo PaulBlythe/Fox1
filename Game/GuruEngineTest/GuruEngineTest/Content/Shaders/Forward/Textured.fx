@@ -63,7 +63,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 
 	float3 Ia = LightMask * 0.2 * AmbientColour;
 	float3 Id = LightMask * 0.8 * saturate(dot(Normal, LightDir));
-	float3 Is = LightMask * 0.5 * pow(saturate(dot(Normal, H)), Shininess);
+	float3 Is = LightMask * SpecularIntensity * pow(saturate(dot(Normal, H)), Shininess);
 
 	result.xyz = saturate((saturate(Id + Ia) * textureColor.xyz) + (Is * SpecularColor.xyz));
 	result.a = textureColor.a;

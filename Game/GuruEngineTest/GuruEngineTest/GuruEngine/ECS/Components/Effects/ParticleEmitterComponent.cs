@@ -131,6 +131,7 @@ namespace GuruEngine.ECS.Components.Effects
             ot.rate = rate;
             ot.Mode = Mode;
             ot.Parent = other;
+            ot.psystem = psystem;
         }
 
         public override void RenderOffscreenRenderTargets()
@@ -240,7 +241,7 @@ namespace GuruEngine.ECS.Components.Effects
                 }
                 if ((texid == -2) && (psettings != null))
                 {
-                    String dir = Path.Combine(FilePaths.DataPath, @"\Textures\Particles");
+                    String dir = Path.Combine(FilePaths.DataPath, @"Textures\Particles");
                     String file = Path.Combine(dir, psettings.TextureName);
                     AssetManager.AddTextureToQue(file);
                     texid = file.GetHashCode();

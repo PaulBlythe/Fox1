@@ -147,7 +147,8 @@ namespace GuruEngine.ECS.Components.Mesh
 
 
                     default:
-                        throw new Exception("GameComponent::MultiMeshComponent:: Unknown direct connection request to " + parts[1]);
+                        //throw new Exception("GameComponent::MultiMeshComponent:: Unknown direct connection request to " + parts[1]);
+                        break;
                 }
             }
         }
@@ -230,7 +231,8 @@ namespace GuruEngine.ECS.Components.Mesh
             }
             if (father != null)
                 otherC.father = (MultiMeshComponent)other.FindGameComponentByName(father.Name);
-            otherC.aircraft = (AircraftComponent)other.FindGameComponentByName(aircraft.Name);
+            if (aircraft != null)
+                otherC.aircraft = (AircraftComponent)other.FindGameComponentByName(aircraft.Name);
             //otherC.lods = (LODGroupComponent)other.FindGameComponentByName(lods.Name);
             if (coll != null)
                 otherC.coll = (CollisionMeshComponent)other.FindGameComponentByName(coll.Name);

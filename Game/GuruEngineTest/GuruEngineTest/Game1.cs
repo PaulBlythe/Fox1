@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -30,6 +32,8 @@ namespace GuruEngineTest
         public GameTime global_game_time;
         PlayerRecord playerRecord = new PlayerRecord();
         public String nextscene = "";
+
+        public bool Running = true;
 #if DEBUG
         FrameCounter framecounter;
 #endif
@@ -39,7 +43,7 @@ namespace GuruEngineTest
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferMultiSampling = true;
             graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 1000;
+            graphics.PreferredBackBufferHeight = 1080;
             graphics.GraphicsProfile = GraphicsProfile.HiDef;
             graphics.IsFullScreen = false;
             graphics.SynchronizeWithVerticalRetrace = true;
@@ -70,6 +74,8 @@ namespace GuruEngineTest
             base.Initialize();
         }
 
+       
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -79,16 +85,8 @@ namespace GuruEngineTest
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-          
             engine.Initialise(GraphicsDevice, Content, Services, true);
             engine.SetScene(new Scenes.Debug.DebugSceneSelection());
-            //engine.SetScene(new Scenes.MainMenu());
-            //engine.SetScene(new Scenes.LoadingScene());
-            //engine.SetScene(new Scenes.Gebug.CarrierTest());
-            //engine.SetScene(new Scenes.Campaign.WWII.British.PilotRecord());
-            //engine.SetScene(new Scenes.Debug.ParticleEditorScene());
-            //engine.SetScene(new Scenes.Developer.AircraftPhysicsTest());
-            //engine.SetScene(new Scenes.Developer.ObjectTester());
 
         }
 

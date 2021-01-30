@@ -17,6 +17,7 @@ namespace GuruEngine.Cameras
         public Vector3 Right;
         public float FarClip;
         public BoundingFrustum Frustum;
+        public bool HasFocus = true;
 
         public abstract void Update(float gt);
         public abstract Matrix GetWorld();
@@ -25,11 +26,15 @@ namespace GuruEngine.Cameras
 
         public bool BoundingVolumeIsInView(BoundingBox box)
         {
+            if (Frustum == null)
+                return true;
             return (Frustum.Contains(box) != ContainmentType.Disjoint);
         }
 
         public bool BoundingVolumeIsInView(BoundingSphere sphere)
         {
+            if (Frustum == null)
+                return true;
             return (Frustum.Contains(sphere) != ContainmentType.Disjoint);
         }
     }

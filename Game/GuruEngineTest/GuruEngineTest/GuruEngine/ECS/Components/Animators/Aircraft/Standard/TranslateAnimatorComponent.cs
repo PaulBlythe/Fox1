@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using GuruEngine.ECS;
 using GuruEngine.ECS.Components.Mesh;
 using GuruEngine.ECS.Components.World;
+using GuruEngine.ECS.Components.Artillery;
 
 //( Class TranslateAnimatorComponent )
 //( Group Animation )
@@ -27,7 +28,7 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
     {
 
         MultiMeshComponent HostL;
-        AircraftStateComponent State;
+        ECSGameComponent State;
 
         public float Scale;
         public String Target;
@@ -99,8 +100,11 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
         public override void Load(ContentManager content)
         {
             HostL = (MultiMeshComponent)Parent.FindGameComponentByName(Target);
- 
-            State = (AircraftStateComponent)Parent.FindGameComponentByName("AircraftStateComponent_1");
+            State = Parent.FindGameComponentByName("AircraftStateComponent_1");
+            if (State == null)
+            {
+                State = Parent.FindGameComponentByName("AntiAircraftArtilleryComponent_1");
+            }
         }
 
         public override void ReplaceComponent(ECSGameComponent old, ECSGameComponent replacement)
@@ -146,7 +150,12 @@ namespace GuruEngine.ECS.Components.Animators.Aircraft.Standard
 
         public override void Update(float dt)
         {
-            double Vator = State.GetVar(ControlVariable, 0);
+            double Vator = 0;
+            if (State is AircraftStateComponent)
+                Vator = ((AircraftStateComponent)State).GetVar(ControlVariable, 0);
+            if (State is AntiAircraftArtilleryComponent)
+                Vator = ((AntiAircraftArtilleryComponent)State).DoubleVariables[ControlVariable];
+
             Vator *= Scale;
 
             Matrix m = Matrix.Identity;

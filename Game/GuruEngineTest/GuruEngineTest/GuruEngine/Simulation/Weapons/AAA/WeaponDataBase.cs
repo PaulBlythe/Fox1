@@ -3,18 +3,28 @@ using System.Collections.Generic;
 using System.IO;
 using GuruEngine.Core;
 using Microsoft.Xna.Framework;
+using GuruEngine.Audio;
 
 namespace GuruEngine.Simulation.Weapons.AAA
 {
     public class WeaponDataBase
     {
         public Dictionary<int, WeaponAAA> AAAWeapons = new Dictionary<int, WeaponAAA>();
+        public Dictionary<int, WeaponArtillery> ArtilleryWeapons = new Dictionary<int, WeaponArtillery>();
+
         public static WeaponDataBase Instance;
 
         public WeaponDataBase()
         {
             Instance = this;
             
+        }
+
+        public static WeaponArtillery GetArtilleryWeapon(int id)
+        {
+            if (Instance.ArtilleryWeapons.ContainsKey(id))
+                return Instance.ArtilleryWeapons[id];
+            return null;
         }
 
         public static WeaponAAA GetAAAWeapon(int id)
@@ -27,7 +37,8 @@ namespace GuruEngine.Simulation.Weapons.AAA
 
         public static void Load(String name)
         {
-            if ( (name.StartsWith("AAA")) && (Instance.AAAWeapons.ContainsKey(name.GetHashCode()))) return;
+            if (Instance.AAAWeapons.ContainsKey(name.GetHashCode())) return;
+            if (Instance.ArtilleryWeapons.ContainsKey(name.GetHashCode())) return;
 
             String basepath = Settings.GetInstance().GameObjectDirectory;
             basepath += @"\Weapons\";
@@ -41,18 +52,36 @@ namespace GuruEngine.Simulation.Weapons.AAA
                 readFile.Close();
 
                 string[] parts = l.Split(',');
-                if (name.StartsWith("AAA"))
+                switch (parts[0])
                 {
-                    WeaponAAA w = new WeaponAAA();
-                    w.AimMaxDistance = float.Parse(parts[0]);
-                    w.FireDelay = float.Parse(parts[1]);
-                    w.MuzzleVelocity = float.Parse(parts[2]);
-                    w.Bullets = int.Parse(parts[3]);
-                    w.Sound = parts[4].GetHashCode();
-                    w.Round = parts[5].GetHashCode();
-                    Instance.AAAWeapons.Add(name.GetHashCode(), w);
-                }
+                    case "ARTILLERY":
+                        {
+                            WeaponArtillery w = new WeaponArtillery();
+                            w.AimMaxDistance = float.Parse(parts[1]);
+                            w.FireDelay = float.Parse(parts[2]);
+                            w.MuzzleVelocity = float.Parse(parts[3]);
+                            w.Bullets = int.Parse(parts[4]);
+                            w.Round = parts[6].GetHashCode();
+                            w.Sound = AudioManager.AddSoundEffect(parts[5]);
 
+                            Instance.ArtilleryWeapons.Add(name.GetHashCode(), w);
+                        }
+                        break;
+                    case "AAA":
+                    {
+                        WeaponAAA w = new WeaponAAA();
+                        w.AimMaxDistance = float.Parse(parts[1]);
+                        w.FireDelay = float.Parse(parts[2]);
+                        w.MuzzleVelocity = float.Parse(parts[3]);
+                        w.Bullets = int.Parse(parts[4]);
+                        w.Round = parts[6].GetHashCode();
+                        w.Sound = AudioManager.AddSoundEffect(parts[5]);
+
+                        Instance.AAAWeapons.Add(name.GetHashCode(), w);
+                       
+                    }
+                    break;
+                 }
             }
             else
             {

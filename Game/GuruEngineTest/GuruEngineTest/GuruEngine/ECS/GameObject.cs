@@ -50,7 +50,9 @@ namespace GuruEngine.ECS
 
         public ECSGameComponent FindGameComponentByName(String name)
         {
-            return Components[name];
+            if (Components.ContainsKey(name))
+                return Components[name];
+            return null;
         }
 
         /// <summary>

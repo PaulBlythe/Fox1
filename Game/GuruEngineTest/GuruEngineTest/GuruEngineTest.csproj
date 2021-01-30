@@ -116,11 +116,13 @@
     <Compile Include="GuruEngine\AI\Aircraft\Formations\Formation.cs" />
     <Compile Include="GuruEngine\AI\Aircraft\Formations\Wing.cs" />
     <Compile Include="GuruEngine\AI\Aircraft\Gunners\AerialGunnery.cs" />
+    <Compile Include="GuruEngine\AI\Artillery\FlakBallistics.cs" />
     <Compile Include="GuruEngine\AI\Scripting\Script.cs" />
     <Compile Include="GuruEngine\AI\Scripting\ScriptClasses.cs" />
     <Compile Include="GuruEngine\AI\Scripting\ScriptManager.cs" />
     <Compile Include="GuruEngine\AI\Scripting\Scripts\Aircraft\British\Fighter\SpitfireIXc.cs" />
     <Compile Include="GuruEngine\Audio\ActiveSoundEffect3D.cs" />
+    <Compile Include="GuruEngine\Cameras\OrbitCamera.cs" />
     <Compile Include="GuruEngine\Cameras\QuaternionCamera.cs" />
     <Compile Include="GuruEngine\Characters\AirforceCode.cs" />
     <Compile Include="GuruEngine\Characters\NPC\Crew\CrewMember.cs" />
@@ -195,7 +197,12 @@
     <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\RudderAnimatorComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\SmoothedAngleAnimatorComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Animators\Aircraft\Standard\TranslateAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Animators\Generic\PitchAnimatorComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Animators\Ships\Standard\RadarAnimatorComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Artillery\AntiAircraftArtilleryComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Artillery\ArtilleryComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Artillery\ArtilleryGunnerComponent.cs" />
+    <Compile Include="GuruEngine\ECS\Components\Artillery\FlakGunnerComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Cockpit\American\Modern\F16\ColourMFD.cs" />
     <Compile Include="GuruEngine\ECS\Components\Cockpit\American\Modern\F16\F16HudComponent.cs" />
     <Compile Include="GuruEngine\ECS\Components\Cockpit\NightMaterialListComponent.cs" />
@@ -388,6 +395,8 @@
     <Compile Include="GuruEngine\Rendering\VertexDeclarations\OceanVertex.cs" />
     <Compile Include="GuruEngine\Rendering\VertexDeclarations\TreeVertex.cs" />
     <Compile Include="GuruEngine\SceneManagement\SubScene.cs" />
+    <Compile Include="GuruEngine\Simulation\Weapons\AAA\WeaponArtillery.cs" />
+    <Compile Include="GuruEngine\Simulation\Weapons\Ammunition\ArtilleryRound.cs" />
     <Compile Include="GuruEngine\World\Aircraft\AircraftNames.cs" />
     <Compile Include="GuruEngine\World\Aircraft\AircraftTypes.cs" />
     <Compile Include="GuruEngine\World\Developer\GroundPlane.cs" />
@@ -418,6 +427,7 @@
     <Compile Include="GuruEngine\World\Weather\WeatherManager.cs" />
     <Compile Include="History\Common\Geographic\GeographicLocation.cs" />
     <Compile Include="History\Common\Organisation\AircraftType.cs" />
+    <Compile Include="GuruEngine\Player\Records\Training\TrainingStages.cs" />
     <Compile Include="History\RAF\Common\RAFGroup.cs" />
     <Compile Include="History\RAF\Common\RAFGroupRole.cs" />
     <Compile Include="History\RAF\Common\RAFSquadron.cs" />
@@ -481,6 +491,7 @@
     <Compile Include="Scenes\Debug\DebugSceneSelection.cs" />
     <Compile Include="Scenes\Debug\ParticleEditorScene.cs" />
     <Compile Include="Scenes\Developer\AircraftPhysicsTest.cs" />
+    <Compile Include="Scenes\Developer\Helpers\AnimatedVar.cs" />
     <Compile Include="Scenes\Developer\ObjectTester.cs" />
     <Compile Include="Scenes\Developer\Subs\LoadAircraft.cs" />
     <Compile Include="Scenes\Developer\Subs\LoadObject.cs" />
@@ -568,6 +579,7 @@
     <None Include="app.manifest" />
     <None Include="Content\Fonts\DebugFont.spritefont" />
     <None Include="Content\Fonts\MainMenu.spritefont" />
+    <None Include="Content\Fonts\SmallDebugFont.spritefont" />
     <None Include="Content\StaticMeshes\sphere.x" />
     <None Include="GuruEngineTest_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">

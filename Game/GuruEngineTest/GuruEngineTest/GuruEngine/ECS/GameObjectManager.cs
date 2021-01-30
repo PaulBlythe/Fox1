@@ -30,6 +30,8 @@ using GuruEngine.ECS.Components.Physics;
 using GuruEngine.ECS.Components.AircraftSystems.Thrusters;
 using GuruEngine.ECS.Components.Settings;
 using GuruEngine.ECS.Components.Cockpit;
+using GuruEngine.ECS.Components.Artillery;
+using GuruEngine.ECS.Components.Animators.Generic;
 
 namespace GuruEngine.ECS
 {
@@ -189,6 +191,27 @@ namespace GuruEngine.ECS
                         break;
                     case "PropellerComponent":
                         newobj = new PropellerComponent();
+                        break;
+                    #endregion
+
+                    #region Artillery
+                    case "ArtilleryComponent":
+                        newobj = new ArtilleryComponent();
+                        break;
+                    case "AntiAircraftArtilleryComponent":
+                        newobj = new AntiAircraftArtilleryComponent();
+                        break;
+                    case "FlakGunnerComponent":
+                        newobj = new FlakGunnerComponent();
+                        break;
+                    case "ArtilleryGunnerComponent":
+                        newobj = new ArtilleryGunnerComponent();
+                        break;
+                    #endregion
+
+                    #region Animators
+                    case "PitchAnimatorComponent":
+                        newobj = new PitchAnimatorComponent();
                         break;
                     #endregion
 

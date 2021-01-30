@@ -187,7 +187,7 @@ namespace GuruEngine.ECS.Components
             DoubleVariables["TotalFuel"] = Math.Abs(ep) * 400;
             DoubleVariables["OilTemp"] = Math.Abs(ep) * 100;
             DoubleVariables["RadiatorTemp"] = Math.Abs(ep) * 140;
-            DoubleVariables["FlapPosition"] = Math.Abs(ep);
+            //DoubleVariables["FlapPosition"] = Math.Abs(ep);
             DoubleVariables["Mixture"] = Math.Abs(ep);
             DoubleVariables["Engine0Oil"] = Math.Abs(ep) * 10;
             DoubleVariables["VerticleVelocity"] = ep * 30;

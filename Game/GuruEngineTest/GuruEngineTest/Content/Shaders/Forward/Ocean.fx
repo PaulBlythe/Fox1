@@ -56,8 +56,8 @@ float waterAmount = 0.55f;
 float waveAmp  = 2.2;
 float2 waveFreq = float2(0.3,-0.3);
 
-float FogStart = 10000;
-float FogEnd =  12000;
+float FogStart = 1000.0f;
+float FogEnd = 60000.0f;
 
 //////////// CONNECTOR STRUCTS ////////////////// 
 

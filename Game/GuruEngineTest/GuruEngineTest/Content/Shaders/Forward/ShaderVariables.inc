@@ -38,8 +38,8 @@ float4 MoonDirection = float4(0,0,0,1);
 /*********************************************************************************************************************/
 float4 MaterialColour = float4(1, 1, 1, 1);
 float DiffuseIntensity = 0.9;
-float Shininess = 200;
-float SpecularIntensity = 1;
+float Shininess = 400;
+float SpecularIntensity = 0.0;
 float AlphaCut = 1.0;
 bool TestAlpha = false;
 float4 SpecularColor = float4(1, 1, 1, 1);

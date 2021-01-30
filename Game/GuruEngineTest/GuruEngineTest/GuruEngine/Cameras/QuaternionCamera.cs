@@ -29,6 +29,7 @@ namespace GuruEngine.Cameras
             View = Matrix.CreateLookAt(Position, Position + Forward, Up);
             Right = Vector3.Right;
             Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 0);
+            
         }
 
         public override void Update(float dt)
@@ -36,44 +37,48 @@ namespace GuruEngine.Cameras
             float updownRotation = 0.0f;
             float leftrightRotation = 0.0f;
             float roll = 0.0f;
-
-            KeyboardState ks = Keyboard.GetState();
             float f = 0;
             float l = 0;
-
-            if (ks.IsKeyDown(Keys.W))
-                f = 1;
-            if (ks.IsKeyDown(Keys.S))
-                f = -1;
-            if (ks.IsKeyDown(Keys.D))
-                l = 1;
-            if (ks.IsKeyDown(Keys.A))
-                l = -1;
-            if (ks.IsKeyDown(Keys.LeftShift))
-            {
-                l *= 10;
-                f *= 10;
-            }
-            if (ks.IsKeyDown(Keys.LeftControl))
-            {
-                l *= 100;
-                f *= 100;
-            }
-
             MouseState ms = Mouse.GetState();
-            float dx = ms.Position.X - OldState.Position.X;
-            float dy = ms.Position.Y - OldState.Position.Y;
 
-            if (ms.LeftButton == ButtonState.Pressed)
+            if (HasFocus)
             {
-                leftrightRotation = dx* dt;
-                updownRotation = dy * dt;
-            }
-            if (ms.RightButton == ButtonState.Pressed)
-            {
-               roll = dx * dt;
-            }
+                KeyboardState ks = Keyboard.GetState();
+                
 
+                if (ks.IsKeyDown(Keys.W))
+                    f = 1;
+                if (ks.IsKeyDown(Keys.S))
+                    f = -1;
+                if (ks.IsKeyDown(Keys.D))
+                    l = 1;
+                if (ks.IsKeyDown(Keys.A))
+                    l = -1;
+                if (ks.IsKeyDown(Keys.LeftShift))
+                {
+                    l *= 10;
+                    f *= 10;
+                }
+                if (ks.IsKeyDown(Keys.LeftControl))
+                {
+                    l *= 100;
+                    f *= 100;
+                }
+
+               
+                float dx = ms.Position.X - OldState.Position.X;
+                float dy = ms.Position.Y - OldState.Position.Y;
+
+                if (ms.LeftButton == ButtonState.Pressed)
+                {
+                    leftrightRotation = dx * dt;
+                    updownRotation = dy * dt;
+                }
+                if (ms.RightButton == ButtonState.Pressed)
+                {
+                    roll = dx * dt;
+                }
+            }
             Quaternion additionalRotation = Quaternion.CreateFromAxisAngle(Vector3.UnitX, -updownRotation) * 
                                             Quaternion.CreateFromAxisAngle(Vector3.UnitY, leftrightRotation) *
                                             Quaternion.CreateFromAxisAngle(Vector3.UnitZ, -roll);

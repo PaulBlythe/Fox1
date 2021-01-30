@@ -10,6 +10,7 @@ namespace GuruEngine.Simulation.Weapons.Ammunition
     {
         public static AmmunitionDatabase Instance;
         public Dictionary<int, AAARound> AAARounds = new Dictionary<int, AAARound>();
+        public Dictionary<int, ArtilleryRound> ArtilleryRounds = new Dictionary<int, ArtilleryRound>();
 
         public AmmunitionDatabase()
         {
@@ -18,7 +19,7 @@ namespace GuruEngine.Simulation.Weapons.Ammunition
 
         public static void Load(String name)
         {
-            if ((name.StartsWith("AAA")) && (Instance.AAARounds.ContainsKey(name.GetHashCode())))
+            if (Instance.AAARounds.ContainsKey(name.GetHashCode()))
                 return;
 
             String basepath = Settings.GetInstance().GameObjectDirectory;
@@ -33,19 +34,38 @@ namespace GuruEngine.Simulation.Weapons.Ammunition
                 readFile.Close();
 
                 string[] parts = l.Split(',');
-                if (name.StartsWith("AAA"))
+                switch (parts[0])
                 {
-                    AAARound w = new AAARound();
-                    w.LiveTime = float.Parse(parts[0]);
-                    w.Mass = float.Parse(parts[1]);
-                    w.Power = float.Parse(parts[2]);
-                    w.Caliber = float.Parse(parts[3]);
-                    w.Fused = bool.Parse(parts[4]);
-                    w.FuseType = int.Parse(parts[5]);
-                    w.Explodes = bool.Parse(parts[6]);
-                    w.ExplosionRadius = float.Parse(parts[7]);
+                    case "ARTILLERY":
+                        {
+                            ArtilleryRound w = new ArtilleryRound();
+                            w.LiveTime = float.Parse(parts[1]);
+                            w.Mass = float.Parse(parts[2]);
+                            w.Power = float.Parse(parts[3]);
+                            w.Caliber = float.Parse(parts[4]);
+                            w.Fused = bool.Parse(parts[5]);
+                            w.FuseType = int.Parse(parts[6]);
+                            w.Explodes = bool.Parse(parts[7]);
+                            w.ExplosionRadius = float.Parse(parts[8]);
 
-                    Instance.AAARounds.Add(name.GetHashCode(), w);
+                            Instance.ArtilleryRounds.Add(name.GetHashCode(), w);
+                        }
+                        break;
+                    case "AAA":
+                        {
+                            AAARound w = new AAARound();
+                            w.LiveTime = float.Parse(parts[1]);
+                            w.Mass = float.Parse(parts[2]);
+                            w.Power = float.Parse(parts[3]);
+                            w.Caliber = float.Parse(parts[4]);
+                            w.Fused = bool.Parse(parts[5]);
+                            w.FuseType = int.Parse(parts[6]);
+                            w.Explodes = bool.Parse(parts[7]);
+                            w.ExplosionRadius = float.Parse(parts[8]);
+
+                            Instance.AAARounds.Add(name.GetHashCode(), w);
+                        }
+                        break;
                 }
 
             }
@@ -59,6 +79,12 @@ namespace GuruEngine.Simulation.Weapons.Ammunition
         {
             if (Instance.AAARounds.ContainsKey(hashcode))
                 return Instance.AAARounds[hashcode];
+            throw new Exception("AmmunitionDatabase: Missing ammo type");
+        }
+        public static ArtilleryRound GetArtilleryRound(int hashcode)
+        {
+            if (Instance.ArtilleryRounds.ContainsKey(hashcode))
+                return Instance.ArtilleryRounds[hashcode];
             throw new Exception("AmmunitionDatabase: Missing ammo type");
         }
     }

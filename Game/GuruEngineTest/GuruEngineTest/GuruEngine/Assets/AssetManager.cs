@@ -35,6 +35,7 @@ namespace GuruEngine.Assets
 
         Texture2D defaultTexture;
         public SpriteFont debugFont;
+        public SpriteFont smalldebugFont;
         public Texture2D white;
         public Texture2D black;
         public Texture2D gaze;
@@ -93,6 +94,7 @@ namespace GuruEngine.Assets
             black.SetData<Color>(pixels);
 
             debugFont = Load<SpriteFont>(@"Fonts\DebugFont");
+            smalldebugFont = Load<SpriteFont>(@"Fonts\SmallDebugFont");
             gaze = Load<Texture2D>(@"Textures\gaze");
 
             single_pixel = new Texture2D(device, 1, 1);
@@ -658,6 +660,10 @@ namespace GuruEngine.Assets
         public static SpriteFont GetDebugFont()
         {
             return AssetManager.Instance.debugFont;
+        }
+        public static SpriteFont GetSmallDebugFont()
+        {
+            return AssetManager.Instance.smalldebugFont;
         }
         public static SDFFont GetFont(int id)
         {

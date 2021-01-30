@@ -202,7 +202,7 @@ namespace GuruEngine.DebugHelpers
                 }
                 
                 //batch.DrawRectangle(e.Rect, Color.White);
-                batch.DrawString(AssetManager.GetDebugFont(), e.ID, new Vector2(e.Rect.X + 2, e.Rect.Y + 2), Color.White);
+                batch.DrawString(AssetManager.GetSmallDebugFont(), e.ID, new Vector2(e.Rect.X + 2, e.Rect.Y + 2), Color.White);
             }
             if (SelectedEntry != null)
             {

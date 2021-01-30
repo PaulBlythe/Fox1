@@ -75,6 +75,17 @@ namespace GuruEngine.World
             playerAircraftState = new AircraftState();
         }
 
+        public WorldState(Camera cam)
+        {
+            Instance = this;
+
+            camera = cam;
+            GameTime = new DateTime(1940, 9, 2, 12, 0, 0);
+            CameraLatitude = 50;
+            CameraLongitude = -2;
+            playerAircraftState = new AircraftState();
+        }
+
         public void Update(float timeStep)
         {
             OldCameraPosition = CameraPosition;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GuruEngine.Simulation.Weapons.Ammunition
 {
-    public class AAARound
+    public class ArtilleryRound
     {
         public float LiveTime;
         public float Mass;

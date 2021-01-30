@@ -34,7 +34,13 @@ namespace GuruEngine.Cameras
 
         public override void Update(float dt)
         {
+            if (!HasFocus)
+            {
+                return;
+            }
             dt = 0.016f;
+
+
             MouseState ms = Mouse.GetState();
             float dx = ms.Position.X - OldState.Position.X;
             float dy = ms.Position.Y - OldState.Position.Y;
