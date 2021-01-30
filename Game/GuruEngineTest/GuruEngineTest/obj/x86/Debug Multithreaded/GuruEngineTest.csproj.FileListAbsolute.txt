@@ -83,3 +83,4 @@ C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\obj\x86\Debug Multithreaded\Gu
 C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\obj\x86\Debug Multithreaded\GuruEngineTest.csproj.CopyComplete
 C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\obj\x86\Debug Multithreaded\GuruEngineTest.exe
 C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\obj\x86\Debug Multithreaded\GuruEngineTest.pdb
+C:\GitHub\Fox1\Game\GuruEngineTest\GuruEngineTest\bin\x86\Debug Multithreaded\Content\Fonts\SmallDebugFont.xnb

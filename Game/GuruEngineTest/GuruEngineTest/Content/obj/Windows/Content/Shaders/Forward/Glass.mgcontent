@@ -3,7 +3,7 @@
   <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/Glass.fx</SourceFile>
   <SourceTime>2020-09-06T19:00:44.0344825+01:00</SourceTime>
   <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Content/Shaders/Forward/Glass.xnb</DestFile>
-  <DestTime>2020-09-06T19:00:45.2137249+01:00</DestTime>
+  <DestTime>2020-12-12T20:40:37.554557+00:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>EffectProcessor</Processor>

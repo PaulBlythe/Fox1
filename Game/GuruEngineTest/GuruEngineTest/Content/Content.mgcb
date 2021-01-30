@@ -27,6 +27,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/MainMenu.spritefont
 
+#begin Fonts/SmallDebugFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/SmallDebugFont.spritefont
+
 #begin Music/music1.mp3
 /importer:Mp3Importer
 /processor:SongProcessor

@@ -3,7 +3,7 @@
   <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/ScatteredSky.fx</SourceFile>
   <SourceTime>2019-01-24T10:58:56+00:00</SourceTime>
   <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Content/Shaders/Forward/ScatteredSky.xnb</DestFile>
-  <DestTime>2020-07-21T07:38:59.9885287+01:00</DestTime>
+  <DestTime>2020-12-12T20:40:38.3045532+00:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>EffectProcessor</Processor>

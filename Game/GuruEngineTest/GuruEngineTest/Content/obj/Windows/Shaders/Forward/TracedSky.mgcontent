@@ -3,7 +3,7 @@
   <SourceFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Shaders/Forward/TracedSky.fx</SourceFile>
   <SourceTime>2019-02-11T10:19:52+00:00</SourceTime>
   <DestFile>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/bin/Windows/Shaders/Forward/TracedSky.xnb</DestFile>
-  <DestTime>2020-07-21T07:39:11.9020878+01:00</DestTime>
+  <DestTime>2021-01-02T15:22:44.7162473+00:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2018-09-23T22:55:52+01:00</ImporterTime>
   <Processor>EffectProcessor</Processor>

@@ -6,6 +6,7 @@
   <SourceFiles>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Fonts/DebugFont.spritefont</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Fonts/MainMenu.spritefont</File>
+    <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Fonts/SmallDebugFont.spritefont</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Music/music1.mp3</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/SFX/Click.wav</File>
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/SFX/sos.wav</File>
@@ -62,6 +63,7 @@
     <File>C:/GitHub/Fox1/Game/GuruEngineTest/GuruEngineTest/Content/Textures/SGG.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
